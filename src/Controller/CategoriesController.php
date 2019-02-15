@@ -160,12 +160,13 @@ class CategoriesController extends AppController
                 if (isset($params['zone_id']) && intval($params['zone_id'])) {
                     $where['Categories.zone_id'] = intval($params['zone_id']);
                 }
+                if (isset($params['group_id']) && intval($params['group_id'])) {
+                    $where['Categories.group_id'] = intval($params['group_id']);
+                }
                 if (isset($params['is_visible']) && trim($params['is_visible']) == 'on') {
                     $where['Categories.is_visible'] = 1;
                 }
             }
-            debug($params);
-            debug($where);
             $contain = ['Zones','Groups'];
 
             $order = ['Categories.sort' => 'desc', 'Categories.modified' => 'desc', 'Categories.created' => 'desc', 'Categories.id' => 'desc'];

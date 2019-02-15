@@ -134,7 +134,7 @@ class AppController extends Controller
         $order = [$controller . '.sort' => 'desc', $controller . '.modified' => 'desc', $controller . '.id' => 'desc', $controller . '.created' => 'desc'];
 
         list($fields, $where, $contain, $order) = $sqlFn();
-debug([$fields, $where, $contain, $order]);
+
         if (isset($params['order']) && is_array($params['order'])) {
             foreach ($params['order'] as $key => $value) {
                 $order = [$controller . '.' . $key => $value] + $order;
@@ -163,7 +163,7 @@ debug([$fields, $where, $contain, $order]);
             'conditions' => $where,
         ])->count();
 
-        // $this->resApi(0, $data, '加载完成', ['count' => $count]);
+        $this->resApi(0, $data, '加载完成', ['count' => $count]);
     }
 
     protected function resApi($code, $data, $msg, $extra = [])
