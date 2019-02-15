@@ -12,20 +12,34 @@ use App\Controller\AppController;
  */
 class CategoriesController extends AppController
 {
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
+    //首页列表
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Groups']
+        $tableParams = [
+            'name'        => 'categories',
+            'renderUrl'   => '/categories/api-lists',
+            'deleteUrl'   => '/categories/api-delete',
+            'editUrl'     => '/categories/api-save',
+            'addUrl'      => '/categories/add',
+            'viewUrl'     => '/categories/view',
+            'can_search'  => true,
+            'tableFields' => [
+                ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
+                ['field' => '\'name\'', 'title' => '\'分组\'', 'minWidth' => 280, 'fixed' => '\'left\'', 'unresize' => true, 'edit' => '\'text\''],
+                ['field' => '\'zone_name\'', 'title' => '\'空间\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/zones/view/\'+res.zone_id+\'">\'+res.zone_name+\'</a>\')'],
+                ['field' => '\'group_name\'', 'title' => '\'分组\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/groups/view/\'+res.group_id+\'">\'+res.group_name+\'</a>\')'],
+                ['field' => '\'product_count\'', 'title' => '\'产品\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=products">\'+res.product_count+\'</a>\')'],
+                ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
+                ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
+            ],
+            'switchTpls'  => [
+                ['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否'],
+            ],
         ];
-        $categories = $this->paginate($this->Categories);
 
-        $this->set(compact('categories'));
+        $tableParams = ['categories' => $tableParams];
+        $groups       = $this->Categories->Groups->find('list');
+        $this->set(compact('table_fields', 'switch_tpls', 'tableParams','groups'));
     }
 
     /**
@@ -113,5 +127,53 @@ class CategoriesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    //ajax获取list
+    public function apiLists()
+    {
+
+        $this->getTableData(function () {
+            $fields = [
+                'id'         => 'Categories.id',
+                'name'       => 'Categories.name',
+                'is_visible' => 'Categories.is_visible',
+                'sort'       => 'Categories.sort',
+                'group_name' => 'Groups.name',
+                'group_id' => 'Groups.id',
+                'zone_name' => 'Zones.name',
+                'zone_id' => 'Zones.id',
+            ];
+
+            $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
+            $params  = $this->request->$paramFn();
+
+            $where   = [];
+            if (isset($params['search'])) {
+                $params = $params['search'];
+                if (isset($params['id']) && intval($params['id'])) {
+                    $where['Categories.id'] = intval($params['id']);
+                }
+                if (isset($params['name']) && trim($params['name'])) {
+                    $where['Categories.name like'] = '%' . trim($params['name']) . '%';
+                }
+                if (isset($params['zone_id']) && intval($params['zone_id'])) {
+                    $where['Categories.zone_id'] = intval($params['zone_id']);
+                }
+                if (isset($params['is_visible']) && trim($params['is_visible']) == 'on') {
+                    $where['Categories.is_visible'] = 1;
+                }
+            }
+            debug($params);
+            debug($where);
+            $contain = ['Zones','Groups'];
+
+            $order = ['Categories.sort' => 'desc', 'Categories.modified' => 'desc', 'Categories.created' => 'desc', 'Categories.id' => 'desc'];
+            return [$fields, $where, $contain, $order];
+
+        }, null, function ($row) {
+            $row->product_count = $this->Categories->Products->find()->where(['category_id' => $row->id])->count();
+            return $row;
+        });
     }
 }

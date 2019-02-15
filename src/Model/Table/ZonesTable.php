@@ -45,6 +45,9 @@ class ZonesTable extends Table
         $this->hasMany('Groups', [
             'foreignKey' => 'zone_id'
         ]);
+        $this->hasMany('Categories', [
+            'foreignKey' => 'zone_id'
+        ]);
         $this->hasMany('Products', [
             'foreignKey' => 'zone_id'
         ]);
@@ -61,12 +64,6 @@ class ZonesTable extends Table
         $validator
             ->integer('id')
             ->allowEmptyString('id', 'create');
-
-        $validator
-            ->integer('pid')
-            ->requirePresence('pid', 'create')
-            ->allowEmptyString('pid', false)
-            ->add('pid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('name')
@@ -94,8 +91,6 @@ class ZonesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['pid']));
-
         return $rules;
     }
 }

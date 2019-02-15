@@ -14,11 +14,7 @@ use Cake\I18n\Time;
 class QuotesController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
+    //首页列表
     public function index()
     {
         $this->paginate = [
@@ -29,19 +25,13 @@ class QuotesController extends AppController
         $this->set(compact('quotes'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Quote id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+    //浏览详情
     public function view($id = null)
     {
         $quote = $this->Quotes->get($id, [
             'contain' => ['Merchants', 'Products'],
         ]);
-        $quote->product_name = $quote->product->name;
+        $quote->product_name  = $quote->product->name;
         $quote->merchant_name = $quote->merchant->name;
         $this->set('quote', $quote);
     }
@@ -49,36 +39,39 @@ class QuotesController extends AppController
     //新增报价
     public function add()
     {
-        $quote = $this->Quotes->newEntity();
+        $quote  = $this->Quotes->newEntity();
         $params = $this->request->query();
 
         //存在product_id
-        if (isset($params['product_id'])) {            
+        if (isset($params['product_id'])) {
             $product = $this->Quotes->Products
                 ->find()
-                ->select(['id','name'])
+                ->select(['id', 'name'])
                 ->where(['id' => $params['product_id']])
                 ->first();
-            if($product){
-                $quote->product_id = $params['product_id'];
+            if ($product) {
+                $quote->product_id   = $params['product_id'];
                 $quote->product_name = $product->name;
             }
         }
         //存在merchant_id
         if (isset($params['merchant_id'])) {
-            
+
             $merchant = $this->Quotes->Merchants
                 ->find()
-                ->select(['id','name'])
+                ->select(['id', 'name'])
                 ->where(['id' => $params['merchant_id']])
                 ->first();
-            if($product){
-                $quote->merchant_id = $params['merchant_id'];
+            if ($product) {
+                $quote->merchant_id   = $params['merchant_id'];
                 $quote->merchant_name = $merchant->name;
             }
         }
-
-        $this->set(compact('quote'));
+        $autocompleteFields = [
+            ['controller' => 'Products', 'inputElem' => '#product_name', 'idElem' => '#product_id'],
+            ['controller' => 'Merchants', 'inputElem' => '#merchant_name', 'idElem' => '#merchant_id'],
+        ];
+        $this->set(compact('quote', 'autocompleteFields'));
         $this->render('view');
     }
 
@@ -87,15 +80,18 @@ class QuotesController extends AppController
     {
 
         $this->allowMethod(['POST', 'PUT', 'PATCH']);
-        $code    = 0;
-        $msg_arr = ['保存成功', '记录不存在或已删除', '内容填写有误'];
-        if (!$this->request->getData('id')) {
+        $code           = 0;
+        $msg_arr        = ['保存成功', '记录不存在或已删除', '内容填写有误'];
+        $params         = $this->request->getData();
+        $params['type'] = isset($params['type']) ? $params['type'] : 'edit';
+        if (!isset($params['id']) && $params['type'] === 'edit') {
             $data = 1;
             $this->resApi($code, $data, $msg_arr[$data]);
         }
-        $quote = $this->Quotes->find('all')
-            ->where(['id' => $this->request->getData('id')])
-            ->first();
+
+        $quote = (isset($params['id']) && $params['id'] && $params['type'] == 'edit') ? $this->Products->find('all')
+            ->where(['id' => $params['id']])
+            ->first() : $this->Quotes->newEntity();
 
         if (!$quote) {
             $data = 1;
@@ -105,29 +101,21 @@ class QuotesController extends AppController
         
         //详情编辑页面提交请求
         if (isset($params['detail']) && $params['detail']) {
-            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible']:0;
+            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
         }
-        debug($params   );
         $quote = $this->Quotes->patchEntity($quote, $params);
-        debug($quote);
-        $data = $this->Quotes->save($quote) ? 0 : 2;
+        $data  = $this->Quotes->save($quote) ? 0 : 2;
 
         $this->resApi($code, $data, $msg_arr[$data]);
 
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Quote id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+    //前端删除
     public function apiDelete()
     {
         $this->allowMethod(['POST']);
-        $ids = $this->request->getData('ids');
-        $res = count($ids) ? ($this->Products->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
+        $ids     = $this->request->getData('ids');
+        $res     = count($ids) ? ($this->Quotes->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
         $res     = 0;
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
         $this->resApi(0, $res, $msg_arr[$res]);

@@ -23,6 +23,7 @@ use Cake\ORM\Entity;
  * @property string $album
  * @property string|null $filter
  * @property float|null $rating
+ * @property bool $is_visible
  * @property int|null $sort
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime|null $modified
@@ -32,6 +33,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Category $category
  * @property \App\Model\Entity\Quote[] $quotes
  * @property \App\Model\Entity\Attribute[] $attributes
+ * @property \App\Model\Entity\ProductsAttribute[] $products_attributes
+ * @property \App\Model\Entity\Comment[] $comments
  */
 class Product extends Entity
 {
@@ -62,6 +65,7 @@ class Product extends Entity
         'album' => true,
         'filter' => true,
         'rating' => true,
+        'is_visible' => true,
         'sort' => true,
         'created' => true,
         'modified' => true,
@@ -69,6 +73,8 @@ class Product extends Entity
         'group' => true,
         'category' => true,
         'quotes' => true,
-        'attributes' => true
+        'attributes' => true,
+        'products_attributes' => true,
+        'comments' => true
     ];
 }

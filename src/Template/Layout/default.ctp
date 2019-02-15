@@ -187,10 +187,10 @@
                     const field = obj.field
                     if (order[field]) order[field] = null
                     order[field] = obj.type
-                    table.reload('list', {
+                c(obj)
+                    table.reload('list-<?= $table['name']?>', {
                         url: '<?=$table["renderUrl"]?>',
-                        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-                            ,
+                        initSort: obj ,//记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: {
                             order
                         }
@@ -252,13 +252,13 @@
                         }
                     })
                 });
-                <?php if ($table["can_search"]): ?>
+                <?php if (isset($table["can_search"]) && $table["can_search"]): ?>
                 //搜索框提交，数据重载
                 form.on('submit(search-<?= $table['name']?>)', function(data) {
-                    const reload = Object.values(data.field).some((item) => { return item != '' });
+                    // const reload = Object.values(data.field).some((item) => { return item != '' });
 
                     // 执行重载
-                    if (reload) {
+                    // if (reload) {
                         table.reload('list-<?= $table['name']?>', {
                             url: '<?=$table["renderUrl"]?>',
                             page: {
@@ -266,7 +266,7 @@
                             },
                             where: data.field
                         });
-                    }
+                    // }
                     return false;
                 });
                 <?php endif?>

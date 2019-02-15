@@ -13,8 +13,10 @@ use Cake\ORM\Entity;
  * @property float $price_hong
  * @property float $price_water
  * @property string|null $remark
+ * @property bool $is_visible
  * @property int|null $sort
  * @property \Cake\I18n\FrozenDate|null $modified
+ * @property int|null $record
  *
  * @property \App\Model\Entity\Merchant $merchant
  * @property \App\Model\Entity\Product $product
@@ -38,8 +40,10 @@ class Quote extends Entity
         'price_hong' => true,
         'price_water' => true,
         'remark' => true,
+        'is_visible' => true,
         'sort' => true,
         'modified' => true,
+        'record' => true,
         'merchant' => true,
         'product' => true
     ];

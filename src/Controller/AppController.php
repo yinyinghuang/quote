@@ -93,6 +93,31 @@ class AppController extends Controller
         //$this->loadComponent('Security');
     }
 
+    //前台自动填充
+    public function apiAutocomplete()
+    {
+        $controllerSqlParam = [
+            'Products' => ['keywordField' => 'name','selectFields' => ['id','name']],
+            'Merchants' => ['keywordField' => 'name','selectFields' => ['id','name']],
+        ];
+        $data = [];
+        $params = $this->request->query();
+        $controller = $params['c'];
+        $keywords = $params['keywords'];
+        $sqlParam = $controllerSqlParam[$controller];
+
+        $data = $code = 0;
+        $type = 'success';
+        $content = $this->$controller
+            ->find()
+            ->select($sqlParam['selectFields'])
+            ->where([$sqlParam['keywordField'] . ' like' => '%'.$keywords .'%'])
+            ->toArray();
+
+        $this->resApi($code, $data, $type,['type' => $type, 'content' => $content]);
+
+    }
+
     protected function getTableData($sqlFn, $checkFn = null, $mapFn = null)
     {
         is_callable($checkFn) && $checkFn();
@@ -109,13 +134,13 @@ class AppController extends Controller
         $order = [$controller . '.sort' => 'desc', $controller . '.modified' => 'desc', $controller . '.id' => 'desc', $controller . '.created' => 'desc'];
 
         list($fields, $where, $contain, $order) = $sqlFn();
-
+debug([$fields, $where, $contain, $order]);
         if (isset($params['order']) && is_array($params['order'])) {
             foreach ($params['order'] as $key => $value) {
                 $order = [$controller . '.' . $key => $value] + $order;
             }
         }
-        
+       
         $data = $mapFn ? $this->$controller->find('all', [
             'contain'    => $contain,
             'fields'     => $fields,
@@ -133,13 +158,12 @@ class AppController extends Controller
             'order'      => $order,
 
         ]);
-
         $count = $this->$controller->find('all', [
             'contain'    => $contain,
             'conditions' => $where,
         ])->count();
 
-        $this->resApi(0, $data, '加载完成', ['count' => $count]);
+        // $this->resApi(0, $data, '加载完成', ['count' => $count]);
     }
 
     protected function resApi($code, $data, $msg, $extra = [])

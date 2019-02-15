@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property string|null $website
  * @property string|null $intro
  * @property string|null $address
+ * @property bool $is_visible
  * @property int|null $sort
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -49,6 +50,7 @@ class Merchant extends Entity
         'website' => true,
         'intro' => true,
         'address' => true,
+        'is_visible' => true,
         'sort' => true,
         'created' => true,
         'modified' => true,

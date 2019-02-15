@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\MerchantsTable|\Cake\ORM\Association\BelongsTo $Merchants
  * @property \App\Model\Table\DistrictsTable|\Cake\ORM\Association\BelongsTo $Districts
+ * @property |\Cake\ORM\Association\BelongsTo $Areas
  *
  * @method \App\Model\Entity\MerchantLocation get($primaryKey, $options = [])
  * @method \App\Model\Entity\MerchantLocation newEntity($data = null, array $options = [])
@@ -50,6 +51,9 @@ class MerchantLocationsTable extends Table
             'foreignKey' => 'district_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Areas', [
+            'foreignKey' => 'area_id'
+        ]);
     }
 
     /**
@@ -65,12 +69,6 @@ class MerchantLocationsTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->integer('pid')
-            ->requirePresence('pid', 'create')
-            ->allowEmptyString('pid', false)
-            ->add('pid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
             ->scalar('openhour')
             ->maxLength('openhour', 255)
             ->allowEmptyString('openhour');
@@ -84,6 +82,11 @@ class MerchantLocationsTable extends Table
             ->scalar('address')
             ->maxLength('address', 255)
             ->allowEmptyString('address');
+
+        $validator
+            ->boolean('is_visible')
+            ->requirePresence('is_visible', 'create')
+            ->allowEmptyString('is_visible', false);
 
         $validator
             ->scalar('latitude')
@@ -110,9 +113,9 @@ class MerchantLocationsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['pid']));
         $rules->add($rules->existsIn(['merchant_id'], 'Merchants'));
         $rules->add($rules->existsIn(['district_id'], 'Districts'));
+        $rules->add($rules->existsIn(['area_id'], 'Areas'));
 
         return $rules;
     }

@@ -29,7 +29,9 @@ class ProductsTableTest extends TestCase
         'app.Groups',
         'app.Categories',
         'app.Quotes',
-        'app.Attributes'
+        'app.Attributes',
+        'app.ProductsAttributes',
+        'app.Comments'
     ];
 
     /**

@@ -24,7 +24,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">前台可见</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="is_visible" value="1" lay-skin="switch" lay-text="是|否" <?php if (!($quote->is_visible===0)): ?>checked
+                    <input type="checkbox" name="is_visible" value="1" lay-skin="switch" lay-text="是|否" <?php if (!($quote->is_visible===false)): ?>checked
                 <?php endif?>>
                 </div>
             </div>
@@ -56,7 +56,7 @@
         <div class="layui-form-item">            
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <textarea class="layui-textarea" id="remark">  
+                <textarea class="layui-textarea" id="remark" name="remark">  
                   <?=$quote->remark?>
                 </textarea>
             </div>            
@@ -73,30 +73,30 @@
 <script>
 layui.config({
     base: "/vendor/layui/lay/modules/"
-}).use(['form', 'layedit'], function() {
+}).use(['form', 'layedit','autocomplete'], function() {
     var $ = layui.jquery,
         form = layui.form,
         layer = layui.layer,
+        autocomplete = layui.autocomplete,
         layedit = layui.layedit,
         token = '<?=$token?>';
 
     var remark = layedit.build('remark');
     //监听提交
-    form.on('submit(save)', function(data) {
-        // $('#save').attr('disabled',true) 
+    form.on('submit(save)', function(data) { 
+        $('#save').attr('disabled',true) 
         ajax($,{
             token,
             url: '/quotes/api-save',
             type: 'post',
-            data: data.field,
+            data: Object.assign(data.field,{remark:layedit.getContent(remark)}),
             success: (res) => { 
                 //若出现错误或者保存完成，重载页面
                 if(res.code || res.data === 0){                    
-                    // pageReload()
+                    pageReload()
                 }else{
                     $('#save').attr('disabled',false)
                 }
-                
             },
             fail:() =>{
             }
@@ -105,6 +105,25 @@ layui.config({
 
         return false
     });
+    <?php if (isset($autocompleteFields)): ?>
+    <?php foreach ($autocompleteFields as $autocomplete): ?>
+    autocomplete.render({
+        elem: $('<?= $autocomplete['inputElem']?>')[0],
+        url: '/<?= $autocomplete['controller']?>/api-autocomplete?c=<?= $autocomplete['controller']?>',
+        template_val: '{{d.name}}',
+        template_txt: '{{d.name}} <span class=\'layui-badge layui-bg-gray\'>{{d.id}}</span>',
+        onselect: function (resp) {
+            $('<?= $autocomplete['idElem']?>').val(resp.id);
+        },
+        onMatchNone:function(){
+            $('<?= $autocomplete['idElem']?>').val(null);
+        }
+    })
+    <?php endforeach ?>    
+    <?php endif ?>
+    
+    
+    
 });
 
 </script>

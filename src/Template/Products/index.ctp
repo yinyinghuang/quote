@@ -1,10 +1,4 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Area[]|\Cake\Collection\CollectionInterface $areas
- */
-?>
-
+<?php?>
 <div class="demoTable">
   <form class="layui-form">
     <div class="layui-form-item">
@@ -68,6 +62,12 @@
           <input type="checkbox" name="search[is_hot]" lay-skin="switch" lay-text="是|否">
         </div>
       </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">可见</label>
+        <div class="layui-input-block">
+          <input type="checkbox" name="search[is_visible]" lay-skin="switch" lay-text="是|否">
+        </div>
+      </div>
     </div>
     <div class="layui-form-item">
       <div class="layui-input-block">
@@ -76,7 +76,5 @@
     </div>
   </form>
 </div>
-
-
 <?= $this->element('table',$tableParams['products'])?>
 

@@ -44,6 +44,10 @@ class CategoriesTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->belongsTo('Zones', [
+            'foreignKey' => 'zone_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Groups', [
             'foreignKey' => 'group_id',
             'joinType' => 'INNER'

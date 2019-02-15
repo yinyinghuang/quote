@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\ZonesTable|\Cake\ORM\Association\BelongsTo $Zones
  * @property \App\Model\Table\GroupsTable|\Cake\ORM\Association\BelongsTo $Groups
  * @property \App\Model\Table\CategoriesTable|\Cake\ORM\Association\BelongsTo $Categories
+ * @property \App\Model\Table\CommentsTable|\Cake\ORM\Association\HasMany $Comments
  * @property \App\Model\Table\QuotesTable|\Cake\ORM\Association\HasMany $Quotes
  * @property \App\Model\Table\AttributesTable|\Cake\ORM\Association\BelongsToMany $Attributes
  *
@@ -57,18 +58,13 @@ class ProductsTable extends Table
             'foreignKey' => 'category_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('Comments', [
+            'foreignKey' => 'product_id'
+        ]);
         $this->hasMany('Quotes', [
             'foreignKey' => 'product_id'
         ]);
-        $this->belongsToMany('Attributes', [
-            'foreignKey' => 'product_id',
-            'targetForeignKey' => 'category_attribute_id',
-            'joinTable' => 'products_attributes'
-        ]);
         $this->hasMany('ProductsAttributes', [
-            'foreignKey' => 'product_id'
-        ]);
-        $this->hasMany('Comments', [
             'foreignKey' => 'product_id'
         ]);
     }
@@ -86,13 +82,10 @@ class ProductsTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->integer('pid')
-            ->allowEmptyString('pid');
-
-        $validator
             ->scalar('brand')
             ->maxLength('brand', 255)
-            ->allowEmptyString('brand');
+            ->requirePresence('brand', 'create')
+            ->allowEmptyString('brand', false);
 
         $validator
             ->scalar('name')
@@ -134,6 +127,7 @@ class ProductsTable extends Table
         $validator
             ->scalar('album')
             ->maxLength('album', 255)
+            ->requirePresence('album', 'create')
             ->allowEmptyString('album');
 
         $validator
@@ -143,6 +137,11 @@ class ProductsTable extends Table
         $validator
             ->decimal('rating')
             ->allowEmptyString('rating');
+
+        $validator
+            ->boolean('is_visible')
+            ->requirePresence('is_visible', 'create')
+            ->allowEmptyString('is_visible', false);
 
         $validator
             ->allowEmptyString('sort');
@@ -159,7 +158,6 @@ class ProductsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['pid']));
         $rules->add($rules->existsIn(['zone_id'], 'Zones'));
         $rules->add($rules->existsIn(['group_id'], 'Groups'));
         $rules->add($rules->existsIn(['category_id'], 'Categories'));

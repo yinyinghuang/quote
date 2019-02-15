@@ -24,11 +24,13 @@ class MerchantLocationsFixture extends TestFixture
         'openhour' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '营业时间', 'precision' => null, 'fixed' => null],
         'contact' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '电话', 'precision' => null, 'fixed' => null],
         'address' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '地址', 'precision' => null, 'fixed' => null],
+        'is_visible' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => 'ǰ???Ƿ???ʾ??0??????ʾ??1????ʾ', 'precision' => null],
         'latitude' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '维度', 'precision' => null, 'fixed' => null],
         'longtitude' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '经度', 'precision' => null, 'fixed' => null],
         'sort' => ['type' => 'smallinteger', 'length' => 6, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '排序', 'precision' => null],
         'created' => ['type' => 'timestamp', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'timestamp', 'length' => null, 'null' => false, 'default' => '0000-00-00 00:00:00', 'comment' => '', 'precision' => null],
+        'area_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
             'district_key' => ['type' => 'index', 'columns' => ['district_id'], 'length' => []],
         ],
@@ -59,11 +61,13 @@ class MerchantLocationsFixture extends TestFixture
                 'openhour' => 'Lorem ipsum dolor sit amet',
                 'contact' => 'Lorem ipsum dolor sit amet',
                 'address' => 'Lorem ipsum dolor sit amet',
+                'is_visible' => 1,
                 'latitude' => 'Lorem ipsum dolor sit amet',
                 'longtitude' => 'Lorem ipsum dolor sit amet',
                 'sort' => 1,
-                'created' => 1548120701,
-                'modified' => 1548120701
+                'created' => 1550196214,
+                'modified' => 1550196214,
+                'area_id' => 1
             ],
         ];
         parent::init();

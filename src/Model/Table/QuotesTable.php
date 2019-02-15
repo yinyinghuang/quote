@@ -65,27 +65,30 @@ class QuotesTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->integer('pid')
-            ->requirePresence('pid', 'create')
-            ->allowEmptyString('pid', false)
-            ->add('pid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
             ->decimal('price_hong')
             ->requirePresence('price_hong', 'create')
-            ->allowEmptyString('price_hong', false);
+            ->allowEmptyString('price_hong');
 
         $validator
             ->decimal('price_water')
             ->requirePresence('price_water', 'create')
-            ->allowEmptyString('price_water', false);
+            ->allowEmptyString('price_water');
 
         $validator
             ->scalar('remark')
             ->allowEmptyString('remark');
 
         $validator
+            ->boolean('is_visible')
+            ->requirePresence('is_visible', 'create')
+            ->allowEmptyString('is_visible', false);
+
+        $validator
             ->allowEmptyString('sort');
+
+        $validator
+            ->integer('record')
+            ->allowEmptyString('record');
 
         return $validator;
     }
@@ -99,7 +102,6 @@ class QuotesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['pid']));
         $rules->add($rules->existsIn(['merchant_id'], 'Merchants'));
         $rules->add($rules->existsIn(['product_id'], 'Products'));
 

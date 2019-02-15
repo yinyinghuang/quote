@@ -1,6 +1,6 @@
 layui.define(['jquery', 'laytpl', 'layer'], function (e) {
     "use strict";
-    layui.link('/vendor/layui/css/modules/autocomplete.css');
+    layui.link('/webroot/vendor/layui/css/modules/autocomplete.css');
     var hint = layui.hint(),
         $ = layui.jquery,
         laytpl = layui.laytpl,
@@ -106,6 +106,7 @@ layui.define(['jquery', 'laytpl', 'layer'], function (e) {
             _dom = _container.find('dl'),
             _list = [];
 
+        typeof(resp)!='undefined' && resp.length === 0 && _config.onMatchNone(); 
         layui.each(resp, function (i, e) {
             _list.push(laytpl(_config.layout).render({index: i, text: laytpl(_config.template_txt).render(e)}));
         });

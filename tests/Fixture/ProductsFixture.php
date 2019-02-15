@@ -34,6 +34,7 @@ class ProductsFixture extends TestFixture
         'album' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'ͼƬ', 'precision' => null, 'fixed' => null],
         'filter' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'ɸѡ', 'precision' => null],
         'rating' => ['type' => 'decimal', 'length' => 4, 'precision' => 1, 'unsigned' => false, 'null' => true, 'default' => '0.0', 'comment' => ''],
+        'is_visible' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
         'sort' => ['type' => 'smallinteger', 'length' => 6, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
         'created' => ['type' => 'timestamp', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'timestamp', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
@@ -80,9 +81,10 @@ class ProductsFixture extends TestFixture
                 'album' => 'Lorem ipsum dolor sit amet',
                 'filter' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'rating' => 1.5,
+                'is_visible' => 1,
                 'sort' => 1,
-                'created' => 1548120701,
-                'modified' => 1548120701
+                'created' => 1550196225,
+                'modified' => 1550196225
             ],
         ];
         parent::init();

@@ -63,12 +63,6 @@ class MerchantsTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->integer('pid')
-            ->requirePresence('pid', 'create')
-            ->allowEmptyString('pid', false)
-            ->add('pid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
@@ -119,6 +113,11 @@ class MerchantsTable extends Table
             ->allowEmptyString('address');
 
         $validator
+            ->boolean('is_visible')
+            ->requirePresence('is_visible', 'create')
+            ->allowEmptyString('is_visible', false);
+
+        $validator
             ->allowEmptyString('sort');
 
         return $validator;
@@ -134,7 +133,6 @@ class MerchantsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->isUnique(['pid']));
 
         return $rules;
     }

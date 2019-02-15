@@ -13,11 +13,13 @@ use Cake\ORM\Entity;
  * @property string|null $openhour
  * @property string|null $contact
  * @property string|null $address
+ * @property bool $is_visible
  * @property string|null $latitude
  * @property string|null $longtitude
  * @property int|null $sort
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property int|null $area_id
  *
  * @property \App\Model\Entity\Merchant $merchant
  * @property \App\Model\Entity\District $district
@@ -41,11 +43,13 @@ class MerchantLocation extends Entity
         'openhour' => true,
         'contact' => true,
         'address' => true,
+        'is_visible' => true,
         'latitude' => true,
         'longtitude' => true,
         'sort' => true,
         'created' => true,
         'modified' => true,
+        'area_id' => true,
         'merchant' => true,
         'district' => true
     ];

@@ -98,7 +98,7 @@ class ProductsController extends AppController
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
                 ['field' => '\'modified\'', 'title' => '\'更新时间\'', 'minWidth' => 200, 'unresize' => true, 'sort' => true],
             ],
-            'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否'],],
+            'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否']],
         ];
         //产品评论
         $product->commentCount = $this->Products->Comments->find()->where(['product_id' => $product->id])->count();
@@ -115,7 +115,7 @@ class ProductsController extends AppController
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
                 ['field' => '\'created\'', 'title' => '\'评论时间\'', 'unresize' => true],
             ],
-            'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否'],],
+            'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否']],
         ];
 
         $zones      = $this->Products->Zones->find('list');
@@ -237,13 +237,12 @@ class ProductsController extends AppController
 
         $params         = $this->request->getData();
         $params['type'] = isset($params['type']) ? $params['type'] : 'edit';
-
-        if (!$params['id'] && $params['type'] === 'edit') {
+        if (!isset($params['id']) && $params['type'] === 'edit') {
             $data = 1;
             $this->resApi($code, $data, $msg_arr[$data]);
         }
 
-        $product = ($params['id'] && $params['type'] == 'edit') ? $this->Products->find('all')
+        $product = (isset($params['id']) && $params['id'] && $params['type'] == 'edit') ? $this->Products->find('all')
             ->where(['id' => $params['id']])
             ->first() : $this->Products->newEntity();
 
@@ -255,9 +254,9 @@ class ProductsController extends AppController
         unset($params['search']);
         //详情编辑情提交请求
         if (isset($params['detail']) && $params['detail']) {
-            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible']:0;
-            $params['is_new'] = isset($params['is_new']) ? $params['is_new']:0;
-            $params['is_hot'] = isset($params['is_hot']) ? $params['is_hot']:0;
+            $params['is_visible']                       = isset($params['is_visible']) ? $params['is_visible'] : 0;
+            $params['is_new']                           = isset($params['is_new']) ? $params['is_new'] : 0;
+            $params['is_hot']                           = isset($params['is_hot']) ? $params['is_hot'] : 0;
             isset($params['filter']) ? $product->filter = implode(',', $params['filter']) . ',' : $product->filter = null;
 
         }
@@ -507,7 +506,7 @@ class ProductsController extends AppController
         }
     }
 
-    //ajax获取产品list
+    //ajax获取list
     public function apiLists()
     {
 
@@ -569,6 +568,9 @@ class ProductsController extends AppController
                 }
                 if (isset($params['is_hot']) && trim($params['is_hot']) == 'on') {
                     $where['Products.is_hot'] = 1;
+                }
+                if (isset($params['is_visible']) && trim($params['is_visible']) == 'on') {
+                    $where['Products.is_visible'] = 1;
                 }
             }
 
@@ -673,4 +675,5 @@ class ProductsController extends AppController
         $data['category']['list'] = $this->Products->Categories->find('list')->where($where_c);
         $this->resApi(0, $data, $msg_arr[0]);
     }
+
 }
