@@ -15,7 +15,7 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-
+use Cake\Utility\Inflector;
 /**
  * Application Controller
  *
@@ -28,6 +28,44 @@ class AppController extends Controller
 {
 
     protected $defaultLimit = 10;
+    protected $category_select = [
+            'search'  => false,
+            'label'   => '分类',
+            'selects' => [
+                'zone'     => [
+                    'label'    => '空间',
+                    'zone_id'  => null,
+                    'disabled' => false,
+                ],
+                'group'    => [
+                    'label'    => '分组',
+                    'group_id' => null,
+                    'disabled' => false,
+                ],
+                'category' => [
+                    'label'       => '分类',
+                    'category_id' => null,
+                    'disabled'    => false,
+                ],
+            ],
+        ];
+    protected $district_select = [
+            'search'  => false,
+            'label'   => '地区',
+            'selects' => [
+                'area'     => [
+                    'label'    => '区',
+                    'area_id'  => null,
+                    'disabled' => false,
+                ],
+                'district' => [
+                    'label'       => '区域',
+                    'district_id' => null,
+                    'disabled'    => false,
+                ],
+            ],
+
+        ];
     /**
      * Initialization hook method.
      *
@@ -99,6 +137,7 @@ class AppController extends Controller
         $controllerSqlParam = [
             'Products' => ['keywordField' => 'name','selectFields' => ['id','name']],
             'Merchants' => ['keywordField' => 'name','selectFields' => ['id','name']],
+            'Zones' => ['keywordField' => 'name','selectFields' => ['id','name']],
         ];
         $data = [];
         $params = $this->request->query();
@@ -184,4 +223,21 @@ class AppController extends Controller
 
         !in_array($this->request->getMethod(), $methods) && $this->resApi(1, 0, '访问出错');
     }
+    //获取联动选框模板参数
+    protected function getCasecadeTplParam($type,$selects=[],$search=false){
+        $params = $this->$type;
+        $params['search'] = $search;
+        //选框参数自定义
+        foreach ($selects as $name => $select) {
+            $params['selects'][$name] = array_merge($params['selects'][$name],$select);
+        }
+        //填充未定义选框选项为默认
+        foreach ($params['selects'] as $name => $value) {
+            if (!isset($params['selects'][$name]['options'])) {
+                $model = ucwords(Inflector::pluralize($name));
+                $params['selects'][$name]['options'] = $this->loadModel($model)->find('list');
+            }
+        }
+        return $params;
+    }    
 }

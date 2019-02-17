@@ -25,6 +25,9 @@ class CategoriesAttributesController extends AppController
         ];
         $categoriesAttributes = $this->paginate($this->CategoriesAttributes);
 
+        $autocompleteFields = [
+            ['controller' => 'Categories', 'inputElem' => '#product_name', 'idElem' => '#product_id'],
+        ];
         $this->set(compact('categoriesAttributes'));
     }
 
@@ -110,5 +113,55 @@ class CategoriesAttributesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    //ajax获取list
+    public function apiLists()
+    {
+
+        $this->getTableData(function () {
+            $fields = [
+                'id'         => 'CategoriesAttributes.id',
+                'name'       => 'Attributes.name',
+                'attribute_id'       => 'Attributes.id',
+                'attribute_name'       => 'Attributes.name',
+                'is_visible' => 'CategoriesAttributes.is_visible',
+                'is_filter' => 'CategoriesAttributes.is_filter',
+                'sort'       => 'CategoriesAttributes.sort',
+                'category_name' => 'Categories.name',
+                'category_id' => 'Categories.id',
+            ];
+
+            $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
+            $params  = $this->request->$paramFn();
+
+            $where   = [];
+            if (isset($params['search'])) {
+                $params = $params['search'];
+                if (isset($params['id']) && intval($params['id'])) {
+                    $where['CategoriesAttributes.id'] = intval($params['id']);
+                }
+                if (isset($params['attribute_name']) && trim($params['attribute_name'])) {
+                    $where['Attributes.attribute_name like'] = '%' . trim($params['attribute_name']) . '%';
+                }
+                if (isset($params['category_id']) && intval($params['category_id'])) {
+                    $where['CategoriesAttributes.category_id'] = intval($params['category_id']);
+                }     
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1,0])) {
+                    $where['CategoriesAttributes.is_visible'] = $params['is_visible'];
+                }     
+                if (isset($params['is_filter']) && in_array($params['is_filter'], [1,0])) {
+                    $where['CategoriesAttributes.is_filter'] = $params['is_filter'];
+                }     
+                if (isset($params['fiter_type']) && in_array($params['fiter_type'], [1,2])) {
+                    $where['CategoriesAttributes.fiter_type'] = $params['fiter_type'];
+                }
+            }
+            $contain = ['Categories','Attributes'];
+
+            $order = ['CategoriesAttributes.sort' => 'desc','CategoriesAttributes.id' => 'desc'];
+            return [$fields, $where, $contain, $order];
+
+        });
     }
 }

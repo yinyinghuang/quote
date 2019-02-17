@@ -52,172 +52,18 @@
     </div>
 <?php if (!$zone->isNew()): ?>
     <!-- 空间分组 -->
-    <div class="layui-tab-item zone_group<?php if (isset($active) && $active=='groups'): ?> layui-show<?php endif ?>">
-        <div class="demoTable">
-          <form class="layui-form">
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">ID</label>
-                <div class="layui-input-block">
-                  <input type="number" name="search[id]" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">名称</label>
-                <div class="layui-input-block">
-                  <input type="text" name="search[name]" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">可见</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="search[is_visible]" lay-skin="switch" lay-text="是|否">
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-input-block">
-                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="search-groups">搜索</button>
-              </div>
-            </div>
-          </form>
-        </div>
+    <div class="layui-tab-item zone_group<?php if (isset($active) && $active=='groups'): ?> layui-show<?php endif ?>">        
+        <?= $this->element('group_search',['category_select' => $searchTpl['group']['category_select']])?>
         <?= $this->element('table',$tableParams['groups'])?>
     </div>
     <!-- 空间分类 -->
     <div class="layui-tab-item zone_category<?php if (isset($active) && $active=='categories'): ?> layui-show<?php endif ?>"">
-        <div class="demoTable">
-          <form class="layui-form">
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">ID</label>
-                <div class="layui-input-block">
-                  <input type="number" name="search[id]" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">名称</label>
-                <div class="layui-input-block">
-                  <input type="text" name="search[name]" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">分组</label>
-                <div class="layui-input-block">
-                  <select name="search[group_id]">
-                    <option value="">请选择分组</option>
-                    <?php foreach ($groups as $key => $value): ?>
-                    <option value="<?=$key?>"><?=$value?></option>
-                    <?php endforeach?>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">可见</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="search[is_visible]" lay-skin="switch" lay-text="是|否">
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-input-block">
-                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="search-categories">搜索</button>
-              </div>
-            </div>
-          </form>
-        </div>
+        <?= $this->element('category_search',['category_select' => $searchTpl['category']['category_select']])?>
         <?= $this->element('table',$tableParams['categories'])?>
     </div>
     <!-- 空间产品 -->
     <div class="layui-tab-item zone_product<?php if (isset($active) && $active=='products'): ?> layui-show<?php endif ?>"">
-        <div class="demoTable">
-          <form class="layui-form">
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">ID</label>
-                <div class="layui-input-block">
-                  <input type="number" name="search[id]" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">名称</label>
-                <div class="layui-input-block">
-                  <input type="text" name="search[name]" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">品牌</label>
-                <div class="layui-input-block">
-                  <input type="text" name="search[brand]" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">行货价格</label>
-                <div class="layui-input-inline" style="width: 100px;">
-                  <input type="text" name="search[price_hong_min]" placeholder="$" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid">-</div>
-                <div class="layui-input-inline" style="width: 100px;">
-                  <input type="text" name="search[price_hong_max]" placeholder="$" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">水货价格</label>
-                <div class="layui-input-inline" style="width: 100px;">
-                  <input type="text" name="search[price_water_min]" placeholder="$" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid">-</div>
-                <div class="layui-input-inline" style="width: 100px;">
-                  <input type="text" name="search[price_water_max]" placeholder="$" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-            </div>     
-            <div class="layui-form-item">       
-                <div class="layui-inline">
-                  <label class="layui-form-label">分类</label>
-                  <div class="layui-input-block">
-                    <select name="search[category_id]">
-                      <option value="">请选择分类</option>
-                      <?php foreach ($categories as $key => $value): ?>
-                      <option value="<?=$key?>"><?=$value?></option>
-                      <?php endforeach?>
-                    </select>
-                  </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">新品</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="search[is_new]" lay-skin="switch" lay-text="是|否">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">热门</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="search[is_hot]" lay-skin="switch" lay-text="是|否">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">可见</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="search[is_visible]" lay-skin="switch" lay-text="是|否">
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-input-block">
-                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="search-products">搜索</button>
-              </div>
-            </div>
-          </form>
-        </div>
+        <?= $this->element('product_search',['category_select' => $searchTpl['product']['category_select']])?>
         <?= $this->element('table',$tableParams['products'])?>
     </div>
 <?php endif ?>

@@ -1,177 +1,117 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Category $category
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Category'), ['action' => 'edit', $category->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Category'), ['action' => 'delete', $category->id], ['confirm' => __('Are you sure you want to delete # {0}?', $category->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Categories'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Category'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Groups'), ['controller' => 'Groups', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Group'), ['controller' => 'Groups', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Products'), ['controller' => 'Products', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Product'), ['controller' => 'Products', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Attributes'), ['controller' => 'Attributes', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Attribute'), ['controller' => 'Attributes', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Brands'), ['controller' => 'Brands', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Brand'), ['controller' => 'Brands', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="categories view large-9 medium-8 columns content">
-    <h3><?= h($category->name) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Group') ?></th>
-            <td><?= $category->has('group') ? $this->Html->link($category->group->name, ['controller' => 'Groups', 'action' => 'view', $category->group->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Name') ?></th>
-            <td><?= h($category->name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($category->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Pid') ?></th>
-            <td><?= $this->Number->format($category->pid) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Sort') ?></th>
-            <td><?= $this->Number->format($category->sort) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($category->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($category->modified) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Is Visible') ?></th>
-            <td><?= $category->is_visible ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Attributes') ?></h4>
-        <?php if (!empty($category->attributes)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Name') ?></th>
-                <th scope="col"><?= __('Is Visible') ?></th>
-                <th scope="col"><?= __('Sort') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($category->attributes as $attributes): ?>
-            <tr>
-                <td><?= h($attributes->id) ?></td>
-                <td><?= h($attributes->name) ?></td>
-                <td><?= h($attributes->is_visible) ?></td>
-                <td><?= h($attributes->sort) ?></td>
-                <td><?= h($attributes->created) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Attributes', 'action' => 'view', $attributes->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Attributes', 'action' => 'edit', $attributes->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Attributes', 'action' => 'delete', $attributes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attributes->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
+<?php?>
+<div class="layui-tab">
+  <ul class="layui-tab-title">
+    <li<?php if (!isset($active) || !$active): ?> class="layui-this"<?php endif ?>>分类详情</li>
+    <?php if (!$category->isNew()): ?>     
+    <li<?php if (isset($active) && $active=='products'): ?> class="layui-this"<?php endif ?>>分类产品<span class="layui-badge"><?=$category->productCount?></span></li>    
+    <li<?php if (isset($active) && $active=='attributes'): ?> class="layui-this"<?php endif ?>>分类属性<span class="layui-badge"><?=$category->attributeCount?></span></li>  
+    <?php endif ?>
+  </ul>
+  <div class="layui-tab-content">
+    <!-- 分类详情 -->
+    <div class="layui-tab-item category_info<?php if (!isset($active) || !$active): ?> layui-show<?php endif ?>">
+        <form class="layui-form" action="" id="zoneDetail" enctype="multipart/form-data">
+            <?php if ($category->isNew()): ?>
+            <input type="hidden" name="type" value="add">
+            <?php endif ?>
+            <input type="hidden" name="detail" value="1">
+            <input type="hidden" name="id" value="<?= $category->id?>">   
+            <div class="layui-step-content-item category_info">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">空间名称</label>
+                    <div class="layui-input-block">
+                        <a href="/zones/view/<?= $category->zone->id?>" class="layui-form-label" style="text-align: left;"><?= $category->zone->name?></a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">分组名称</label>
+                    <div class="layui-input-block">
+                        <a href="/groups/view/<?= $category->group->id?>" class="layui-form-label" style="text-align: left;"><?= $category->group->name?></a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">分类名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" autocomplete="off" placeholder="请输入空间名称" class="layui-input" value="<?= $category->name?>">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">前台可见</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="is_visible" value="1" lay-skin="switch" lay-text="是|否" <?php if (!($category->is_visible===false)): ?>checked
+                        <?php endif?>>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sort" autocomplete="off" class="layui-input" value="<?=$category->sort?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit="" lay-filter="save" id="save">保存</button>
+                    </div>
+                  </div>
+                
+            </div>
+        </form>
     </div>
-    <div class="related">
-        <h4><?= __('Related Brands') ?></h4>
-        <?php if (!empty($category->brands)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Brand') ?></th>
-                <th scope="col"><?= __('Is Visible') ?></th>
-                <th scope="col"><?= __('Sort') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($category->brands as $brands): ?>
-            <tr>
-                <td><?= h($brands->brand) ?></td>
-                <td><?= h($brands->is_visible) ?></td>
-                <td><?= h($brands->sort) ?></td>
-                <td><?= h($brands->created) ?></td>
-                <td><?= h($brands->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Brands', 'action' => 'view', $brands->brand]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Brands', 'action' => 'edit', $brands->brand]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Brands', 'action' => 'delete', $brands->brand], ['confirm' => __('Are you sure you want to delete # {0}?', $brands->brand)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
+<?php if (!$category->isNew()): ?>
+    <!-- 分类产品 -->
+    <div class="layui-tab-item category_product<?php if (isset($active) && $active=='products'): ?> layui-show<?php endif ?>"">
+        <?= $this->element('product_search',['category_select' => $searchTpl['product']['category_select']])?>
+        <?= $this->element('table',$tableParams['products'])?>
     </div>
-    <div class="related">
-        <h4><?= __('Related Products') ?></h4>
-        <?php if (!empty($category->products)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Pid') ?></th>
-                <th scope="col"><?= __('Zone Id') ?></th>
-                <th scope="col"><?= __('Group Id') ?></th>
-                <th scope="col"><?= __('Category Id') ?></th>
-                <th scope="col"><?= __('Brand') ?></th>
-                <th scope="col"><?= __('Name') ?></th>
-                <th scope="col"><?= __('Is New') ?></th>
-                <th scope="col"><?= __('Is Hot') ?></th>
-                <th scope="col"><?= __('Price Hong Min') ?></th>
-                <th scope="col"><?= __('Price Hong Max') ?></th>
-                <th scope="col"><?= __('Price Water Min') ?></th>
-                <th scope="col"><?= __('Price Water Max') ?></th>
-                <th scope="col"><?= __('Caption') ?></th>
-                <th scope="col"><?= __('Album') ?></th>
-                <th scope="col"><?= __('Filter') ?></th>
-                <th scope="col"><?= __('Rating') ?></th>
-                <th scope="col"><?= __('Sort') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($category->products as $products): ?>
-            <tr>
-                <td><?= h($products->id) ?></td>
-                <td><?= h($products->pid) ?></td>
-                <td><?= h($products->zone_id) ?></td>
-                <td><?= h($products->group_id) ?></td>
-                <td><?= h($products->category_id) ?></td>
-                <td><?= h($products->brand) ?></td>
-                <td><?= h($products->name) ?></td>
-                <td><?= h($products->is_new) ?></td>
-                <td><?= h($products->is_hot) ?></td>
-                <td><?= h($products->price_hong_min) ?></td>
-                <td><?= h($products->price_hong_max) ?></td>
-                <td><?= h($products->price_water_min) ?></td>
-                <td><?= h($products->price_water_max) ?></td>
-                <td><?= h($products->caption) ?></td>
-                <td><?= h($products->album) ?></td>
-                <td><?= h($products->filter) ?></td>
-                <td><?= h($products->rating) ?></td>
-                <td><?= h($products->sort) ?></td>
-                <td><?= h($products->created) ?></td>
-                <td><?= h($products->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Products', 'action' => 'view', $products->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Products', 'action' => 'edit', $products->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Products', 'action' => 'delete', $products->id], ['confirm' => __('Are you sure you want to delete # {0}?', $products->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
+    <!-- 分类属性 -->
+    <div class="layui-tab-item category_attribute<?php if (isset($active) && $active=='attributes'): ?> layui-show<?php endif ?>"">
+        <?= $this->element('attribute_search',['category_id' => $category->id])?>
+        <?= $this->element('table',$tableParams['attributes'])?>
     </div>
+<?php endif ?>
+  </div>
 </div>
+
+<?php $this->start('script')?>
+<script>
+layui.config({
+    base: "/vendor/layui/lay/modules/"
+}).use(['form', 'autocomplete'], function() {
+    var $ = layui.jquery,
+        form = layui.form,
+        layer = layui.layer,
+        token = '<?=$token?>';    
+    //监听提交
+    form.on('submit(save)', function(data) { 
+        $('#save').attr('disabled',true) 
+        ajax($,{
+            token,
+            url: '/categories/api-save',
+            type: 'post',
+            data: data.field,
+            success: (res) => { 
+                //若出现错误或者保存完成，重载页面
+                if(res.code || res.data === 0){                    
+                    pageReload()
+                }else{
+                    $('#save').attr('disabled',false)
+                }
+            },
+            fail:() =>{
+            }
+
+        })
+
+        return false
+    });
+    
+    
+    
+});
+
+</script>
+<?php $this->end('script')?>

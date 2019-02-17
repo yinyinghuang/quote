@@ -55,14 +55,15 @@ class CategoriesTable extends Table
         $this->hasMany('Products', [
             'foreignKey' => 'category_id'
         ]);
-        $this->belongsToMany('Attributes', [
+        $this->hasMany('Attributes', [
             'foreignKey' => 'category_id',
-            'targetForeignKey' => 'attribute_id',
-            'joinTable' => 'categories_attributes'
+        ]);
+        $this->hasMany('CategoriesAttributes', [
+            'foreignKey' => 'category_id',
         ]);
         $this->belongsToMany('Brands', [
             'foreignKey' => 'category_id',
-            'targetForeignKey' => 'brand_id',
+            'targetForeignKey' => 'brand',
             'joinTable' => 'categories_brands'
         ]);
     }

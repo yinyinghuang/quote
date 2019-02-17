@@ -105,25 +105,6 @@ layui.config({
 
         return false
     });
-    <?php if (isset($autocompleteFields)): ?>
-    <?php foreach ($autocompleteFields as $autocomplete): ?>
-    autocomplete.render({
-        elem: $('<?= $autocomplete['inputElem']?>')[0],
-        url: '/<?= $autocomplete['controller']?>/api-autocomplete?c=<?= $autocomplete['controller']?>',
-        template_val: '{{d.name}}',
-        template_txt: '{{d.name}} <span class=\'layui-badge layui-bg-gray\'>{{d.id}}</span>',
-        onselect: function (resp) {
-            $('<?= $autocomplete['idElem']?>').val(resp.id);
-        },
-        onMatchNone:function(){
-            $('<?= $autocomplete['idElem']?>').val(null);
-        }
-    })
-    <?php endforeach ?>    
-    <?php endif ?>
-    
-    
-    
 });
 
 </script>

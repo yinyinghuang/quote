@@ -38,18 +38,47 @@ class GroupsController extends AppController
             ],
         ];
 
-        $tableParams = ['groups' => $tableParams];
-        $zones       = $this->Groups->Zones->find('list');
-        $this->set(compact('table_fields', 'switch_tpls', 'tableParams','zones'));
+        $tableParams     = ['groups' => $tableParams];
+        $category_select = $this->getCasecadeTplParam('category_select', [
+            'group'    => [
+                'disabled' => true,
+                'options'  => [],
+            ],
+            'category' => [
+                'disabled' => true,
+                'options'  => [],
+            ],
+        ], true);
+        $this->set(compact('table_fields', 'switch_tpls', 'tableParams', 'category_select'));
     }
 
     //浏览详情
     public function view($id = null)
     {
         $group = $this->Groups->find()->where(['Groups.id' => $id])->contain(['Zones'])->first();
+        $zones      = $this->Groups->Zones->find('list')->where(['id' => $group->zone_id]);
+        $groups     = $this->Groups->find('list')->where(['id' => $group->id]);
+        $categories = $this->Groups->Categories->find('list')->where(['group_id' => $group->id]);
+        
         //分类
-        $group->categoryCount = $this->Groups->Categories->find()->where(['group_id' => $group->id])->count();        
-        $categoryTableParams    = [
+        $group->categoryCount                     = $this->Groups->Categories->find()->where(['group_id' => $group->id])->count();
+        $searchTpl['category']['category_select'] = $this->getCasecadeTplParam('category_select',[
+            'zone'     => [
+                'zone_id'  => $group->zone_id,
+                'disabled' => true,
+                'options'  => $zones,
+            ],
+            'group'    => [
+                'group_id' =>$group->id,
+                'disabled' => true,
+                'options' => $groups,
+            ],
+            'category' => [
+                'disabled' => true,
+                'options'  => [],
+            ],
+        ], true);
+        $categoryTableParams = [
             'name'        => 'categories',
             'renderUrl'   => '/categories/api-lists?search[group_id]=' . $group->id,
             'deleteUrl'   => '/categories/api-delete',
@@ -59,16 +88,31 @@ class GroupsController extends AppController
             'can_search'  => true,
             'tableFields' => [
                 ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
-                ['field' => '\'name\'', 'title' => '\'分类\'', 'unresize' => true, 'edit' => '\'text\'', 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'">\'+res.name+\'</a>\')'],
+                ['field' => '\'name\'', 'title' => '\'分类\'', 'unresize' => true, 'edit' => '\'text\''],
                 ['field' => '\'product_count\'', 'title' => '\'产品数\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=products">\'+res.product_count+\'</a>\')'],
                 ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
             ],
             'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否']],
-        ];        
+        ];
         //产品
         $group->productCount = $this->Groups->Products->find()->where(['group_id' => $group->id])->count();
-        $productTableParams    = [
+        $searchTpl['product']['category_select'] = $this->getCasecadeTplParam('category_select',[
+            'zone'     => [
+                'zone_id'  => $group->zone_id,
+                'disabled' => true,
+                'options'  => $zones,
+            ],
+            'group'    => [
+                'group_id' =>$group->id,
+                'disabled' => true,
+                'options' => $groups,
+            ],
+            'category' => [
+                'options'  => $categories,
+            ],
+        ], true);
+        $productTableParams  = [
             'name'        => 'products',
             'renderUrl'   => '/products/api-lists?search[group_id]=' . $group->id,
             'deleteUrl'   => '/products/api-delete',
@@ -92,31 +136,20 @@ class GroupsController extends AppController
                 ['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否'],
             ],
         ];
-        $categories       = $this->Groups->Categories->find('list')->where(['group_id' => $group->id]);
+        $categories  = $this->Groups->Categories->find('list')->where(['group_id' => $group->id]);
         $tableParams = ['categories' => $categoryTableParams, 'products' => $productTableParams];
-        $active = $this->request->query('active');
-        $this->set(compact('group', 'tableParams','active','categories'));
+        $active      = $this->request->query('active');
+        $this->set(compact('group', 'tableParams', 'active', 'searchTpl'));
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
+    //添加
     public function add()
     {
         $group = $this->Groups->newEntity();
-        if ($this->request->is('post')) {
-            $group = $this->Groups->patchEntity($group, $this->request->getData());
-            if ($this->Groups->save($group)) {
-                $this->Flash->success(__('The group has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The group could not be saved. Please, try again.'));
-        }
-        $zones = $this->Groups->Zones->find('list', ['limit' => 200]);
-        $this->set(compact('group', 'zones'));
+        $params = $this->request->query('zone_id');
+        $autocompleteFields = [['controller' => 'Zones', 'inputElem' => '#zone_name', 'idElem' => '#zone_id'],];
+        $this->set(compact('group','autocompleteFields'));
+        $this->render('view');
     }
 
     //ajax修改产品
@@ -125,7 +158,7 @@ class GroupsController extends AppController
 
         $this->allowMethod(['POST', 'PUT', 'PATCH']);
         $code    = 0;
-        $msg_arr = ['保存成功', '参数gid缺失', '记录不存在或已删除', '内容填写有误'];
+        $msg_arr = ['保存成功', '参数gid缺失', '记录不存在或已删除', '内容填写有误','参数zid缺失'];
 
         $params         = $this->request->getData();
         $params['type'] = isset($params['type']) ? $params['type'] : 'edit';
@@ -141,14 +174,16 @@ class GroupsController extends AppController
             $data = 2;
             $this->resApi($code, $data, $msg_arr[$data]);
         }
-
         //详情编辑情提交请求
         if (isset($params['detail']) && $params['detail']) {
-            $params['is_visible']                       = isset($params['is_visible']) ? $params['is_visible'] : 0;
+            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
         }
-
         $group = $this->Groups->patchEntity($group, $params);
-        $data    = $this->Groups->save($group) ? 0 : 3;
+        if (!$group->zone_id) {
+            $data = 4;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+        $data  = $this->Groups->save($group) ? 0 : 3;debug($group);
         //内容填写错误导致记录无法更新
         if ($data === 3) {
             $this->resApi($code, $data, $msg_arr[$data]);
@@ -161,7 +196,7 @@ class GroupsController extends AppController
     //ajax删除空间
     public function apiDelete()
     {
-        $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中','暂不支持删除'];
+        $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中', '暂不支持删除'];
         $this->allowMethod(['POST']);
         $data = 3;
         $this->resApi(0, $data, $msg_arr[$data]);
@@ -177,14 +212,14 @@ class GroupsController extends AppController
                 'name'       => 'Groups.name',
                 'is_visible' => 'Groups.is_visible',
                 'sort'       => 'Groups.sort',
-                'zone_name' => 'Zones.name',
-                'zone_id' => 'Zones.id',
+                'zone_name'  => 'Zones.name',
+                'zone_id'    => 'Zones.id',
             ];
 
             $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
             $params  = $this->request->$paramFn();
 
-            $where   = [];
+            $where = [];
             if (isset($params['search'])) {
                 $params = $params['search'];
                 if (isset($params['id']) && intval($params['id'])) {
@@ -196,11 +231,11 @@ class GroupsController extends AppController
                 if (isset($params['zone_id']) && intval($params['zone_id'])) {
                     $where['Groups.zone_id'] = intval($params['zone_id']);
                 }
-                if (isset($params['is_visible']) && trim($params['is_visible']) == 'on') {
-                    $where['Groups.is_visible'] = 1;
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1, 0])) {
+                    $where['Groups.is_visible'] = $params['is_visible'];
                 }
             }
-            
+
             $contain = ['Zones'];
 
             $order = ['Groups.sort' => 'desc', 'Groups.modified' => 'desc', 'Groups.created' => 'desc', 'Groups.id' => 'desc'];
@@ -208,7 +243,7 @@ class GroupsController extends AppController
 
         }, null, function ($row) {
             $row->category_count = $this->Groups->Categories->find()->where(['group_id' => $row->id])->count();
-            $row->product_count = $this->Groups->Products->find()->where(['group_id' => $row->id])->count();
+            $row->product_count  = $this->Groups->Products->find()->where(['group_id' => $row->id])->count();
             return $row;
         });
     }

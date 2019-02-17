@@ -44,19 +44,26 @@ class ProductsController extends AppController
             ],
         ];
 
-        $tableParams = ['products' => $tableParams];
-        $zones       = $this->Products->Zones->find('list');
-        $groups      = $this->Products->Groups->find('list');
-        $categories  = $this->Products->Categories->find('list');
-
-        $this->set(compact('table_fields', 'switch_tpls', 'zones', 'groups', 'categories', 'tableParams'));
+        $tableParams     = ['products' => $tableParams];
+        $category_select = $this->getCasecadeTplParam('category_select',[],true);
+        $this->set(compact('table_fields', 'switch_tpls', 'tableParams', 'category_select'));
     }
 
     //浏览产品详情
     public function view($id = null)
     {
         $product = $this->Products->get($id);
-
+        $product->category_select = $this->getCasecadeTplParam('category_select',[
+            'zone'     => [
+                'zone_id'  => $product->zone_id,
+            ],
+            'group'    => [
+                'group_id' => $product->group_id,
+            ],
+            'category' => [
+                'category_id' => $product->category_id,
+            ],
+        ]);
         $albumDir        = $this->getAlbumDir($id);
         $product->albums = [];
 
@@ -100,6 +107,7 @@ class ProductsController extends AppController
             ],
             'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否']],
         ];
+        $district_select =$this->getCasecadeTplParam('district_select',[],true);
         //产品评论
         $product->commentCount = $this->Products->Comments->find()->where(['product_id' => $product->id])->count();
         $commentTableParams    = [
@@ -118,15 +126,9 @@ class ProductsController extends AppController
             'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否']],
         ];
 
-        $zones      = $this->Products->Zones->find('list');
-        $groups     = $this->Products->Groups->find('list');
-        $categories = $this->Products->Categories->find('list');
-        $areas      = $this->loadModel('Areas')->find('list');
-        $districts  = $this->loadModel('Districts')->find('list');
-
         $tableParams = ['quotes' => $quoteTableParams, 'comments' => $commentTableParams];
 
-        $this->set(compact('product', 'zones', 'groups', 'categories', 'product_attributes', 'cateAttrs', 'cateAttrFilterOptions', 'tableParams', 'areas', 'districts'));
+        $this->set(compact('product', 'category_select', 'product_attributes', 'cateAttrs', 'cateAttrFilterOptions', 'tableParams', 'district_select'));
     }
 
     //获取产品图片文件夹
@@ -199,14 +201,10 @@ class ProductsController extends AppController
     public function add()
     {
         $product         = $this->Products->newEntity();
+        $product->category_select = $this->getCasecadeTplParam('category_select');
         $product->albums = $product->filter = [];
-
-        $zones      = $this->Products->Zones->find('list');
-        $groups     = $this->Products->Groups->find('list');
-        $categories = $this->Products->Categories->find('list');
-
-        $is_new = true;
-        $this->set(compact('product', 'zones', 'groups', 'categories', 'is_new'));
+        
+        $this->set(compact('product'));
         $this->render('view');
 
     }
@@ -563,14 +561,14 @@ class ProductsController extends AppController
                 } elseif (isset($params['zone_id']) && intval($params['zone_id'])) {
                     $where['Products.zone_id'] = intval($params['zone_id']);
                 }
-                if (isset($params['is_new']) && trim($params['is_new']) == 'on') {
-                    $where['Products.is_new'] = 1;
+                if (isset($params['is_new']) && in_array($params['is_new'], [1, 0])) {
+                    $where['Products.is_new'] = $params['is_new'];
                 }
-                if (isset($params['is_hot']) && trim($params['is_hot']) == 'on') {
-                    $where['Products.is_hot'] = 1;
+                if (isset($params['is_hot']) && in_array($params['is_hot'], [1, 0])) {
+                    $where['Products.is_hot'] = $params['is_hot'];
                 }
-                if (isset($params['is_visible']) && trim($params['is_visible']) == 'on') {
-                    $where['Products.is_visible'] = 1;
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1, 0])) {
+                    $where['Products.is_visible'] = $params['is_visible'];
                 }
             }
 
@@ -613,6 +611,7 @@ class ProductsController extends AppController
                 'list'     => [],
             ],
         ];
+
         $data[$params['type']]['selected'] = $params['pid'];
         $data['zone']['list']              = $this->Products->Zones->find('list');
         $where_g                           = $where_c                           = [];
@@ -655,7 +654,7 @@ class ProductsController extends AppController
                     $data['zone']['selected']  = $category->zone_id;
                 } else {
 
-                    $data['zone']['selected']                               = $params['origin']['zone'];
+                    $data['zone']['selected']                               =  $params['origin']['zone'];
                     $data['zone']['selected'] && $data['group']['selected'] = $params['origin']['group'];
                 }
 

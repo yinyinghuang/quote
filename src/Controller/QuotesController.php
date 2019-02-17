@@ -160,6 +160,9 @@ class QuotesController extends AppController
                 if (isset($params['price_water_max']) && floatval($params['price_water_max'])) {
                     $where['Quotes.price_water <'] = floatval($params['price_water_max']);
                 }
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1,0])) {
+                    $where['Quotes.is_visible'] = $params['is_visible'];
+                }
                 if (isset($params['district_id']) && intval($params['district_id'])) {
                     $merchants_id = $this->Quotes->Merchants->MerchantLocations->find('all', [
                         'conditions' => ['MerchantLocations.district_id' => $params['district_id']],

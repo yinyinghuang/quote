@@ -68,12 +68,6 @@ class GroupsTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->integer('pid')
-            ->requirePresence('pid', 'create')
-            ->allowEmptyString('pid', false)
-            ->add('pid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
@@ -99,7 +93,6 @@ class GroupsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['pid']));
         $rules->add($rules->existsIn(['zone_id'], 'Zones'));
 
         return $rules;

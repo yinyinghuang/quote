@@ -77,10 +77,11 @@
     <script src="/js/common.js"></script>
     <script>
     //JavaScript代码区域
-    layui.use(['element', 'table', 'form'], function() {
+    layui.use(['element', 'table', 'form','autocomplete'], function() {
         var element = layui.element;
         var table = layui.table,
             form = layui.form,
+            autocomplete = layui.autocomplete,
             token = '<?=$token?>',
             order = {},
             $ = layui.$;
@@ -283,14 +284,14 @@
                 
                 form.on('select(' + type + ')', function(data) {
                     layer.msg('加载中');
+                    var formItem = $(this).parents('.layui-form-item');
                     let originIdObj = {}
                     //加载过程中，禁止点击选框
                     selectObj.select.forEach((type) => {
-                        $("#" + type).prop('disabled', true)
-                        originIdObj[type] = $("#" + type).val()
+                        var submitElem = formItem.find("." + type).eq(0)
+                        // submitElem.prop('disabled', true)
+                        originIdObj[type] = submitElem.val()
                     });
-
-                    form.render('select');
                     ajax($, {
                         url: selectObj.url,
                         type: 'post',
@@ -319,7 +320,8 @@
                                             obj.list[option] +
                                             "</option>";
                                     })
-                                    $("#" + key).html('<option value=""></option>' + optionstring).prop('disabled', false);
+                                    var selectElem = formItem.find("." + key).eq(0);
+                                    selectElem.html('<option value=""></option>' + optionstring).prop('disabled', selectElem.attr('disabled'));
                                 })
                                 form.render('select'); //这个很重要
                                 
@@ -331,9 +333,24 @@
                 });
             })
         })
-
+        <?php if (isset($autocompleteFields)): ?>
+        //自动填充           
+        <?php foreach ($autocompleteFields as $autocomplete): ?>
+        autocomplete.render({
+            elem: $('<?= $autocomplete['inputElem']?>')[0],
+            url: '/<?= $autocomplete['controller']?>/api-autocomplete?c=<?= $autocomplete['controller']?>',
+            template_val: '{{d.name}}',
+            template_txt: '{{d.name}} <span class=\'layui-badge layui-bg-gray\'>{{d.id}}</span>',
+            onselect: function (resp) {
+                $('<?= $autocomplete['idElem']?>').val(resp.id);
+            },
+            onMatchNone:function(){
+                $('<?= $autocomplete['idElem']?>').val(null);
+            }
+        })
+        <?php endforeach ?>    
+        <?php endif ?>
     });
-
     </script>
     <?=$this->fetch('script')?>
 </body>

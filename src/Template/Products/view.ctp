@@ -60,7 +60,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <?=$this->element('category_select')?>
+                            <div class="layui-form-item">
+                              <label class="layui-form-label">分类</label>      
+                              <?= $this->element('casecade_select',$product->category_select)?>
+                            </div>
                             <div class="layui-form-item layui-form-text">
                                 <label class="layui-form-label">产品描述</label>
                                 <div class="layui-input-block">
@@ -211,7 +214,18 @@
                         </div>
                     </div>
                 </div>
-                <?=$this->element('area_select', ['search' => true])?>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">地区</label>      
+                  <?= $this->element('casecade_select',$district_select)?>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">可见</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="search[is_visible]" value="1" title="是">
+                        <input type="radio" name="search[is_visible]" value="0" title="否">
+                        <input type="radio" name="search[is_visible]" value="2" title="不限">
+                    </div>
+                </div>
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button class="layui-btn layui-btn-sm" lay-submit lay-filter="search-quotes">搜索</button>
