@@ -77,7 +77,9 @@
     <script src="/js/common.js"></script>
     <script>
     //JavaScript代码区域
-    layui.use(['element', 'table', 'form','autocomplete'], function() {
+    layui.config({
+        base: "/vendor/layui/lay/modules/"
+    }).use(['element', 'table', 'form','autocomplete'], function() {
         var element = layui.element;
         var table = layui.table,
             form = layui.form,
@@ -85,7 +87,7 @@
             token = '<?=$token?>',
             order = {},
             $ = layui.$;
-
+c(table)
         //表格js
         <?php if (isset($tableParams)): ?>
             <?php foreach ($tableParams as $table): ?>
@@ -147,7 +149,7 @@
                                 layer.msg('未选中');
                             }
                             break;
-                        <?php if (isset($table["addUrl"])): ?>
+                        <?php if (isset($table["addUrl"]) && $table["addUrl"]): ?>
                         case 'addData-<?= $table['name']?>':
                             window.location.href = '<?=$table["addUrl"]?>';
                             break;    

@@ -29,7 +29,7 @@ class CategoriesController extends AppController
                 ['field' => '\'zone_name\'', 'title' => '\'空间\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/zones/view/\'+res.zone_id+\'">\'+res.zone_name+\'</a>\')'],
                 ['field' => '\'group_name\'', 'title' => '\'分组\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/groups/view/\'+res.group_id+\'">\'+res.group_name+\'</a>\')'],
                 ['field' => '\'product_count\'', 'title' => '\'产品\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=products">\'+res.product_count+\'</a>\')'],
-                ['field' => '\'attribute_count\'', 'title' => '\'属性\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=attributes">\'+res.attribute_count+\'</a>\')'],
+                ['field' => '\'attribute_count\'', 'title' => '\'属性\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=categories-attributes">\'+res.attribute_count+\'</a>\')'],
                 ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
             ],
@@ -38,46 +38,62 @@ class CategoriesController extends AppController
             ],
         ];
 
-        $tableParams = ['categories' => $tableParams];
-        $zones       = $this->Categories->Zones->find('list');
-        $groups      = $this->Categories->Groups->find('list');
-        $categories  = $this->Categories->find('list');
-        $category_select = $this->getCasecadeTplParam('category_select',[ 
-            'category' =>[
+        $tableParams     = ['categories' => $tableParams];
+        $zones           = $this->Categories->Zones->find('list');
+        $groups          = $this->Categories->Groups->find('list');
+        $categories      = $this->Categories->find('list');
+        $category_select = $this->getCasecadeTplParam('category_select', [
+            'category' => [
                 'disabled' => true,
-                'options' => [],
+                'options'  => [],
             ],
-        ],true);
+        ], true);
         $this->set(compact('table_fields', 'switch_tpls', 'tableParams', 'category_select'));
     }
+
     //浏览详情
     public function view($id = null)
     {
-        $category = $this->Categories->find()->where(['Categories.id' => $id])->contain(['Zones','Groups'])->first();
+        $category = $this->Categories->find()->where(['Categories.id' => $id])->contain(['Zones', 'Groups'])->first();
 
-        $zones      = $this->Categories->Zones->find('list')->where(['id' => $category->zone_id]);
-        $groups     = $this->Categories->Groups->find('list')->where(['id' => $category->group_id]);
-        $categories = $this->Categories->find('list')->where(['id' => $category->id]);        
-        //产品
-        $category->productCount = $this->Categories->Products->find()->where(['category_id' => $category->id])->count();
-        $searchTpl['product']['category_select'] = $this->getCasecadeTplParam('category_select',[
+        $zones           = $this->Categories->Zones->find('list')->where(['id' => $category->zone_id]);
+        $groups          = $this->Categories->Groups->find('list')->where(['id' => $category->group_id]);
+        $categories      = $this->Categories->find('list')->where(['id' => $category->id]);
+        $category->category_select = $this->getCasecadeTplParam('category_select', [
             'zone'     => [
                 'zone_id'  => $category->zone_id,
                 'disabled' => true,
                 'options'  => $zones,
             ],
             'group'    => [
-                'group_id' =>$category->group_id,
+                'group_id' => $category->group_id,
                 'disabled' => true,
-                'options' => $groups,
+                'options'  => $groups,
             ],
             'category' => [
-                'category_id' =>$category->id,
+                'show' => false,
+            ],
+        ]);
+        //产品
+        $category->productCount                  = $this->Categories->Products->find()->where(['category_id' => $category->id])->count();
+        $searchTpl['product']['category_select'] = $this->getCasecadeTplParam('category_select', [
+            'zone'     => [
+                'zone_id'  => $category->zone_id,
                 'disabled' => true,
-                'options'  => $categories,
+                'options'  => $zones,
+            ],
+            'group'    => [
+                'group_id' => $category->group_id,
+                'disabled' => true,
+                'options'  => $groups,
+            ],
+            'category' => [
+                'category_id' => $category->id,
+                'disabled'    => true,
+                'options'     => $categories,
             ],
         ], true);
-        $productTableParams  = [
+        $productTableParams = [
             'name'        => 'products',
             'renderUrl'   => '/products/api-lists?search[category_id]=' . $category->id,
             'deleteUrl'   => '/products/api-delete',
@@ -87,7 +103,7 @@ class CategoriesController extends AppController
             'can_search'  => true,
             'tableFields' => [
                 ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
-                ['field' => '\'name\'', 'title' => '\'产品\'', 'minWidth' => 280, 'fixed' => '\'left\'', 'unresize' => true],
+                ['field' => '\'name\'', 'title' => '\'产品\'', 'minWidth' => 280, 'fixed' => '\'left\'', 'unresize' => true, 'edit' => '\'text\''],
                 ['field' => '\'brand\'', 'title' => '\'品牌\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/brands/view/\'+res.brand+\'">\'+res.brand+\'</a>\')'],
                 ['field' => '\'is_new\'', 'title' => '\'新品\'', 'unresize' => true, 'templet' => '\'#switchTpl_1\''],
                 ['field' => '\'is_hot\'', 'title' => '\'热门\'', 'unresize' => true, 'templet' => '\'#switchTpl_2\''],
@@ -102,8 +118,8 @@ class CategoriesController extends AppController
         ];
         //分类属性
         $category->attributeCount = $this->Categories->CategoriesAttributes->find()->where(['category_id' => $category->id])->count();
-        $attributeTableParams  = [
-            'name'        => 'attributes',
+        $attributeTableParams     = [
+            'name'        => 'categories-attributes',
             'renderUrl'   => '/categories-attributes/api-lists?search[category_id]=' . $category->id,
             'deleteUrl'   => '/categories-attributes/api-delete',
             'editUrl'     => '/categories-attributes/api-save',
@@ -112,7 +128,7 @@ class CategoriesController extends AppController
             'can_search'  => true,
             'tableFields' => [
                 ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
-                ['field' => '\'name\'', 'title' => '\'属性\'','fixed' => '\'left\'', 'unresize' => true],                
+                ['field' => '\'name\'', 'title' => '\'属性\'', 'fixed' => '\'left\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/attributes/view/\'+res.attribute_id+\'">\'+res.attribute_name+\'</a>\')'],
                 ['field' => '\'is_filter\'', 'title' => '\'筛选项\'', 'unresize' => true, 'templet' => '\'#switchTpl_4\''],
                 ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
@@ -122,80 +138,120 @@ class CategoriesController extends AppController
                 ['id' => 'switchTpl_4', 'name' => 'is_filter', 'text' => '是|否'],
             ],
         ];
-        $tableParams = ['products' => $productTableParams, 'attributes' => $attributeTableParams];
+        $tableParams = ['products' => $productTableParams, 'categories-attributes' => $attributeTableParams];
         $active      = $this->request->query('active');
-        $this->set(compact('category', 'tableParams', 'active', 'searchTpl','autocompleteFields'));
+        $this->set(compact('category', 'tableParams', 'active', 'searchTpl','category_select'));
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
+    //添加
     public function add()
     {
         $category = $this->Categories->newEntity();
-        if ($this->request->is('post')) {
-            $category = $this->Categories->patchEntity($category, $this->request->getData());
-            
-            if ($this->Categories->save($category)) {
-                $this->Flash->success(__('The category has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+        $params   = $this->request->query();
+        $zone_id  = $group_id  = null;
+        if (isset($params['group_id']) && $params['group_id']) {
+            $group = $this->Categories->Groups->find()->where(['id' => $params['group_id']])->first();
+            if ($group) {
+                $zone_id  = $group->zone_id;
+                $group_id = $group->id;
             }
-            $this->Flash->error(__('The category could not be saved. Please, try again.'));
+        } elseif (isset($params['zone_id']) && $params['zone_id']) {
+            $zone = $this->Categories->Zones->find()->where(['id' => $params['zone_id']])->first();
+            if ($zone) {
+                $zone_id = $zone->id;
+            }
         }
-        $groups = $this->Categories->Groups->find('list', ['limit' => 200]);
-        $attributes = $this->Categories->Attributes->find('list', ['limit' => 200]);
-        $brands = $this->Categories->Brands->find('list', ['limit' => 200]);
-        $this->set(compact('category', 'groups', 'attributes', 'brands'));
+        $category->category_select = $this->getCasecadeTplParam('category_select', [
+            'zone'     => [
+                'zone_id' => $zone_id,
+            ],
+            'group'    => [
+                'group_id' => $group_id,
+            ],
+            'category' => [
+                'show' => false,
+            ],
+        ], false);
+
+        $this->set(compact('category'));
+        $this->render('view');
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Category id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
+    //ajax修改
+    public function apiSave()
     {
-        $category = $this->Categories->get($id, [
-            'contain' => ['Attributes', 'Brands']
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $category = $this->Categories->patchEntity($category, $this->request->getData());
-            if ($this->Categories->save($category)) {
-                $this->Flash->success(__('The category has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The category could not be saved. Please, try again.'));
+        $this->allowMethod(['POST', 'PUT', 'PATCH']);
+        $code    = 0;
+        $msg_arr = ['保存成功', '参数cid缺失', '记录不存在或已删除', '内容填写有误', '参数zid/gid缺失'];
+
+        $params         = $this->request->getData();
+        $params['type'] = isset($params['type']) ? $params['type'] : 'edit';
+        if (!isset($params['id']) && $params['type'] === 'edit') {
+            $data = 1;
+            $this->resApi($code, $data, $msg_arr[$data]);
         }
-        $groups = $this->Categories->Groups->find('list', ['limit' => 200]);
-        $attributes = $this->Categories->Attributes->find('list', ['limit' => 200]);
-        $brands = $this->Categories->Brands->find('list', ['limit' => 200]);
-        $this->set(compact('category', 'groups', 'attributes', 'brands'));
+
+        $category = (isset($params['id']) && $params['id'] && $params['type'] == 'edit') ? $this->Categories->find('all')
+            ->where(['id' => $params['id']])
+            ->first() : $this->Categories->newEntity();
+        if (!$category) {
+            $data = 2;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+        //详情编辑情提交请求
+        if (isset($params['detail']) && $params['detail']) {
+            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
+        }
+        $category = $this->Categories->patchEntity($category, $params);
+        if (!$category->zone_id||!$category->group_id) {
+            $data = 4;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+        if (!$category->pid) {
+            $category->pid = $this->getPid();
+        }
+        $data = $this->Categories->save($category) ? 0 : 3;
+
+        //内容填写错误导致记录无法更新
+        if ($data === 3) {
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+
+        $this->resApi($code, $data, $msg_arr[$data]);
+
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Category id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+    //ajax删除空间
+    public function apiDelete()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $category = $this->Categories->get($id);
-        if ($this->Categories->delete($category)) {
-            $this->Flash->success(__('The category has been deleted.'));
-        } else {
-            $this->Flash->error(__('The category could not be deleted. Please, try again.'));
-        }
+        $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中', '暂不支持删除'];
+        $this->allowMethod(['POST']);
 
-        return $this->redirect(['action' => 'index']);
+        // $ids = $this->request->getData('ids');
+        // if (count($ids) == 0) {
+        //     $data = 2;
+        //     $this->resApi(0, $data, $msg_arr[$res]);
+        // }
+        // //更新categories表
+        // $this->Categories->deleteAll(['id in' => $ids]);
+        // //更新categories_attributes/category_attribute_filters
+        // $category_attribute_ids = $this->Categories->CategoriesAttributes->find()->where(['category_id in' => $ids])->extract('id')->toArray();
+        // if (count($category_attribute_ids)) {
+        //     $this->loadModel('CategoryAttributeFilters')->deleteAll(['category_attribute_id in' => $category_attribute_ids]);
+        //     $this->Categories->CategoriesAttributes->deleteAll(['id in' => $category_attribute_ids]);
+        // }
+        // //更新categories_brands表
+        // $this->Categories->CategoriesBrands->deleteAll(['category_id in' => $ids]);
+        // //更新products/products_attributes
+        // $product_ids = $this->Categories->Products->find()->where(['category_id in' => $ids])->extract('id')->toArray();
+        // if (count($product_ids)) {
+        //     $this->loadModel('ProductsAttribtues')->deleteAll(['product_id in' => $product_ids]);
+        //     $this->Categories->Products->deleteAll(['id in' => $product_ids]);
+        // }
+
+        $data = 3;
+        $this->resApi(0, $data, $msg_arr[$data]);
     }
 
     //ajax获取list
@@ -209,15 +265,15 @@ class CategoriesController extends AppController
                 'is_visible' => 'Categories.is_visible',
                 'sort'       => 'Categories.sort',
                 'group_name' => 'Groups.name',
-                'group_id' => 'Groups.id',
-                'zone_name' => 'Zones.name',
-                'zone_id' => 'Zones.id',
+                'group_id'   => 'Groups.id',
+                'zone_name'  => 'Zones.name',
+                'zone_id'    => 'Zones.id',
             ];
 
             $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
             $params  = $this->request->$paramFn();
 
-            $where   = [];
+            $where = [];
             if (isset($params['search'])) {
                 $params = $params['search'];
                 if (isset($params['id']) && intval($params['id'])) {
@@ -231,18 +287,18 @@ class CategoriesController extends AppController
                 }
                 if (isset($params['group_id']) && intval($params['group_id'])) {
                     $where['Categories.group_id'] = intval($params['group_id']);
-                }       
-                if (isset($params['is_visible']) && in_array($params['is_visible'], [1,0])) {
+                }
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1, 0])) {
                     $where['Categories.is_visible'] = $params['is_visible'];
                 }
             }
-            $contain = ['Zones','Groups'];
+            $contain = ['Zones', 'Groups'];
 
             $order = ['Categories.sort' => 'desc', 'Categories.modified' => 'desc', 'Categories.created' => 'desc', 'Categories.id' => 'desc'];
             return [$fields, $where, $contain, $order];
 
         }, null, function ($row) {
-            $row->product_count = $this->Categories->Products->find()->where(['category_id' => $row->id])->count();
+            $row->product_count   = $this->Categories->Products->find()->where(['category_id' => $row->id])->count();
             $row->attribute_count = $this->Categories->CategoriesAttributes->find()->where(['category_id' => $row->id])->count();
             return $row;
         });

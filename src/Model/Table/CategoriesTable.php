@@ -114,6 +114,7 @@ class CategoriesTable extends Table
     {
         $rules->add($rules->isUnique(['pid']));
         $rules->add($rules->existsIn(['group_id'], 'Groups'));
+        $rules->add($rules->existsIn(['zone_id'], 'Zones'));
 
         return $rules;
     }

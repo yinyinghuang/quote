@@ -57,12 +57,12 @@
         <?= $this->element('table',$tableParams['groups'])?>
     </div>
     <!-- 空间分类 -->
-    <div class="layui-tab-item zone_category<?php if (isset($active) && $active=='categories'): ?> layui-show<?php endif ?>"">
+    <div class="layui-tab-item zone_category<?php if (isset($active) && $active=='categories'): ?> layui-show<?php endif ?>">
         <?= $this->element('category_search',['category_select' => $searchTpl['category']['category_select']])?>
         <?= $this->element('table',$tableParams['categories'])?>
     </div>
     <!-- 空间产品 -->
-    <div class="layui-tab-item zone_product<?php if (isset($active) && $active=='products'): ?> layui-show<?php endif ?>"">
+    <div class="layui-tab-item zone_product<?php if (isset($active) && $active=='products'): ?> layui-show<?php endif ?>">
         <?= $this->element('product_search',['category_select' => $searchTpl['product']['category_select']])?>
         <?= $this->element('table',$tableParams['products'])?>
     </div>

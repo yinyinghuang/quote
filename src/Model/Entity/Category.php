@@ -34,6 +34,7 @@ class Category extends Entity
      */
     protected $_accessible = [
         'pid' => true,
+        'zone_id' => true,
         'group_id' => true,
         'name' => true,
         'is_visible' => true,

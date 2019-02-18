@@ -20,14 +20,9 @@
                 
                 <div class="layui-form-item">
                     <label class="layui-form-label">空间名称</label>
+
                     <div class="layui-input-block">
-                        <?php if ($group->isNew()): ?>
-                        <input type="hidden" name="zone_id" id="zone_id">    
-                        <input type="text" id="zone_name" autocomplete="off" class="layui-input">  
-                        <?php else: ?>
-                        <a href="/zones/view/<?= $group->zone->id?>" class="layui-form-label" style="text-align: left;"><?= $group->zone->name?></a>
-                        <?php endif ?>
-                        
+                        <?= $this->element('casecade_select',$group->category_select)?>                        
                     </div>
                 </div>
                 <div class="layui-form-item">

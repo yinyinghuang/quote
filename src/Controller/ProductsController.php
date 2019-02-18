@@ -179,9 +179,8 @@ class ProductsController extends AppController
         ])
             ->extract('cateAttrId')
             ->toArray();
-
         //属性筛选值
-        $cateAttrFilterOptions = $this->loadModel('CategoryAttributeFilters')->find('all', [
+        $cateAttrFilterOptions = empty($cateFilterAttrs) ? []:$this->loadModel('CategoryAttributeFilters')->find('all', [
             'conditions' => [
                 'category_attribute_id in ' => $cateFilterAttrs,
             ],
@@ -192,7 +191,8 @@ class ProductsController extends AppController
             ],
             'order'      => ['sort desc'],
         ])
-            ->groupBy('cateAttrId');
+            ->groupBy('cateAttrId')
+            ->toArray();
 
         return [$cateAttrs, $cateAttrFilterOptions];
     }
@@ -201,7 +201,38 @@ class ProductsController extends AppController
     public function add()
     {
         $product         = $this->Products->newEntity();
-        $product->category_select = $this->getCasecadeTplParam('category_select');
+        $zone_id  = $group_id  = $category_id  = null;
+        $params   = $this->request->query();
+        if (isset($params['category_id']) && $params['category_id']) {
+            $category = $this->Products->Categories->find()->where(['id' => $params['category_id']])->first();
+            if ($category) {
+                $zone_id  = $category->zone_id;
+                $group_id  = $category->group_id;
+                $category_id = $category->id;
+            }
+        } elseif (isset($params['group_id']) && $params['group_id']) {
+            $group = $this->Products->Groups->find()->where(['id' => $params['group_id']])->first();
+            if ($group) {
+                $zone_id = $group->zone_id;
+                $group_id = $group->id;
+            }
+        } elseif (isset($params['zone_id']) && $params['zone_id']) {
+            $zone = $this->Products->Zones->find()->where(['id' => $params['zone_id']])->first();
+            if ($zone) {
+                $zone_id = $zone->id;
+            }
+        }
+        $product->category_select = $this->getCasecadeTplParam('category_select', [
+            'zone'     => [
+                'zone_id' => $zone_id,
+            ],
+            'group'    => [
+                'group_id' => $group_id,
+            ],
+            'category' => [
+                'category_id' => $category_id,
+            ],
+        ]);
         $product->albums = $product->filter = [];
         
         $this->set(compact('product'));
@@ -259,7 +290,10 @@ class ProductsController extends AppController
 
         }
         unset($params['filter']);
-
+        
+        if (!$product->pid) {
+            $product->pid = $this->getPid();
+        }
         $product = $this->Products->patchEntity($product, $params);
         $data    = $this->Products->save($product) ? 0 : 3;
 

@@ -36,16 +36,19 @@ class AppController extends Controller
                     'label'    => '空间',
                     'zone_id'  => null,
                     'disabled' => false,
+                    'show' => true,
                 ],
                 'group'    => [
                     'label'    => '分组',
                     'group_id' => null,
                     'disabled' => false,
+                    'show' => true,
                 ],
                 'category' => [
                     'label'       => '分类',
                     'category_id' => null,
                     'disabled'    => false,
+                    'show' => true,
                 ],
             ],
         ];
@@ -103,6 +106,7 @@ class AppController extends Controller
                     ['url' => '/zones', 'name' => '空间', 'tabs' => ['Zones']],
                     ['url' => '/groups', 'name' => '分组', 'tabs' => ['Groups']],
                     ['url' => '/categories', 'name' => '分类', 'tabs' => ['Categories']],
+                    ['url' => '/attributes', 'name' => '属性', 'tabs' => ['Attributes']],
                 ],
             ], [
                 'url'      => 'javascript:;',
@@ -134,23 +138,24 @@ class AppController extends Controller
     //前台自动填充
     public function apiAutocomplete()
     {
-        $controllerSqlParam = [
-            'Products' => ['keywordField' => 'name','selectFields' => ['id','name']],
-            'Merchants' => ['keywordField' => 'name','selectFields' => ['id','name']],
-            'Zones' => ['keywordField' => 'name','selectFields' => ['id','name']],
-        ];
+        // $controllerSqlParam = [
+        //     'Products' => ['keywordField' => 'name','selectFields' => ['id','name']],
+        //     'Merchants' => ['keywordField' => 'name','selectFields' => ['id','name']],
+        //     'Zones' => ['keywordField' => 'name','selectFields' => ['id','name']],
+        //     'Attributes' => ['keywordField' => 'name','selectFields' => ['id','name']],
+        // ];
         $data = [];
         $params = $this->request->query();
         $controller = $params['c'];
         $keywords = $params['keywords'];
-        $sqlParam = $controllerSqlParam[$controller];
+        // $sqlParam = $controllerSqlParam[$controller];
 
         $data = $code = 0;
         $type = 'success';
         $content = $this->$controller
             ->find()
-            ->select($sqlParam['selectFields'])
-            ->where([$sqlParam['keywordField'] . ' like' => '%'.$keywords .'%'])
+            ->select(['id','name'])
+            ->where(['name like' => '%'.$keywords .'%'])
             ->toArray();
 
         $this->resApi($code, $data, $type,['type' => $type, 'content' => $content]);
@@ -239,5 +244,12 @@ class AppController extends Controller
             }
         }
         return $params;
-    }    
+    }   
+    protected function getPid()
+    {
+        $controller = $this->request->controller;
+        $entity = $this->$controller->find()->where(['pid <' =>0])->select(['pid'])->order(['pid' => 'asc'])->first();
+        
+        return $entity?$entity->pid-1:-1;
+    } 
 }

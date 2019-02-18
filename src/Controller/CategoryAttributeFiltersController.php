@@ -12,101 +12,103 @@ use App\Controller\AppController;
  */
 class CategoryAttributeFiltersController extends AppController
 {
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
+    
+    //ajax删除产品
+    public function apiDelete()
     {
-        $this->paginate = [
-            'contain' => ['CategoryAttributes']
-        ];
-        $categoryAttributeFilters = $this->paginate($this->CategoryAttributeFilters);
+        $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
+        $this->allowMethod(['POST']);
+        $ids = $this->request->getData('ids');
 
-        $this->set(compact('categoryAttributeFilters'));
+        if (count($ids) == 0) {
+            $data = 2;
+            $this->resApi(0, $data, $msg_arr[$res]);
+        }
+
+        //删除产品相关属性值
+        $this->CategoryAttributeFilters->deleteAll(['id in' => $ids]);
+        $data = 0;
+        $this->resApi(0, $data, $msg_arr[$data]);
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Category Attribute Filter id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
+    //ajax修改
+    public function apiSave()
     {
-        $categoryAttributeFilter = $this->CategoryAttributeFilters->get($id, [
-            'contain' => ['CategoryAttributes']
-        ]);
+        $this->allowMethod(['POST', 'PUT', 'PATCH']);
+        $code    = 0;
+        $msg_arr = ['保存成功', '参数cafid缺失', '记录不存在或已删除', '内容填写有误', '参数caid缺失'];
 
-        $this->set('categoryAttributeFilter', $categoryAttributeFilter);
+        $params         = $this->request->getData();
+        $params['type'] = isset($params['type']) ? $params['type'] : 'edit';
+        if (!isset($params['id']) && $params['type'] === 'edit') {
+            $data = 1;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+
+        $filter = (isset($params['id']) && $params['id'] && $params['type'] == 'edit') ? $this->CategoryAttributeFilters->find('all')
+            ->where(['id' => $params['id']])
+            ->first() : $this->CategoryAttributeFilters->newEntity();
+        if (!$filter) {
+            $data = 2;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+        //详情编辑情提交请求
+        if (isset($params['detail']) && $params['detail']) {
+            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
+        }
+        $filter = $this->CategoryAttributeFilters->patchEntity($filter, $params);
+        if (!$filter->category_attribute_id) {
+            $data = 4;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+        
+        $data = $this->CategoryAttributeFilters->save($filter) ? 0 : 3;
+
+        //内容填写错误导致记录无法更新
+        if ($data === 3) {
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+
+        $this->resApi($code, $data, $msg_arr[$data]);
+
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
+    //ajax获取list
+    public function apiLists()
     {
-        $categoryAttributeFilter = $this->CategoryAttributeFilters->newEntity();
-        if ($this->request->is('post')) {
-            $categoryAttributeFilter = $this->CategoryAttributeFilters->patchEntity($categoryAttributeFilter, $this->request->getData());
-            if ($this->CategoryAttributeFilters->save($categoryAttributeFilter)) {
-                $this->Flash->success(__('The category attribute filter has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        $this->getTableData(function () {
+            $fields = [
+                'id'             => 'CategoryAttributeFilters.id',
+                'filter'           => 'CategoryAttributeFilters.filter',
+                'is_visible'     => 'CategoryAttributeFilters.is_visible',
+                'sort'           => 'CategoryAttributeFilters.sort',
+            ];
+
+            $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
+            $params  = $this->request->$paramFn();
+
+            $where = [];
+            if (isset($params['search'])) {
+                $params = $params['search'];
+                if (isset($params['id']) && intval($params['id'])) {
+                    $where['CategoryAttributeFilters.id'] = intval($params['id']);
+                }
+                if (isset($params['filter']) && trim($params['filter'])) {
+                    $where['CategoryAttributeFilters.filter like'] = '%' . trim($params['filter']) . '%';
+                }
+                if (isset($params['category_attribute_id']) && intval($params['category_attribute_id'])) {
+                    $where['CategoryAttributeFilters.category_attribute_id'] = intval($params['category_attribute_id']);
+                }
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1, 0])) {
+                    $where['CategoryAttributeFilters.is_visible'] = $params['is_visible'];
+                }
             }
-            $this->Flash->error(__('The category attribute filter could not be saved. Please, try again.'));
-        }
-        $categoryAttributes = $this->CategoryAttributeFilters->CategoryAttributes->find('list', ['limit' => 200]);
-        $this->set(compact('categoryAttributeFilter', 'categoryAttributes'));
-    }
+            $contain = [];
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Category Attribute Filter id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $categoryAttributeFilter = $this->CategoryAttributeFilters->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $categoryAttributeFilter = $this->CategoryAttributeFilters->patchEntity($categoryAttributeFilter, $this->request->getData());
-            if ($this->CategoryAttributeFilters->save($categoryAttributeFilter)) {
-                $this->Flash->success(__('The category attribute filter has been saved.'));
+            $order = ['CategoryAttributeFilters.sort' => 'desc', 'CategoryAttributeFilters.id' => 'desc'];
+            return [$fields, $where, $contain, $order];
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The category attribute filter could not be saved. Please, try again.'));
-        }
-        $categoryAttributes = $this->CategoryAttributeFilters->CategoryAttributes->find('list', ['limit' => 200]);
-        $this->set(compact('categoryAttributeFilter', 'categoryAttributes'));
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Category Attribute Filter id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $categoryAttributeFilter = $this->CategoryAttributeFilters->get($id);
-        if ($this->CategoryAttributeFilters->delete($categoryAttributeFilter)) {
-            $this->Flash->success(__('The category attribute filter has been deleted.'));
-        } else {
-            $this->Flash->error(__('The category attribute filter could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
+        });
     }
 }

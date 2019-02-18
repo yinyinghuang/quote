@@ -4,7 +4,7 @@
 <script type="text/html" id="toolbar-<?= $name?>">
   <div class="layui-btn-container">
     <button class="layui-btn layui-btn-sm" lay-event="deleteData-<?= $name?>" lay-filter="deleteBtn-<?= $name?>">删除</button>
-    <?php if (isset($addUrl)): ?>
+    <?php if (isset($addUrl) ||isset($add)): ?>
     <button class="layui-btn layui-btn-sm" lay-event="addData-<?= $name?>" lay-filter="addBtn-<?= $name?>">新增</button>	
     <?php endif ?>
     

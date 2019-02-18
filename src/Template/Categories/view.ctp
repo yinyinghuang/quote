@@ -4,7 +4,7 @@
     <li<?php if (!isset($active) || !$active): ?> class="layui-this"<?php endif ?>>分类详情</li>
     <?php if (!$category->isNew()): ?>     
     <li<?php if (isset($active) && $active=='products'): ?> class="layui-this"<?php endif ?>>分类产品<span class="layui-badge"><?=$category->productCount?></span></li>    
-    <li<?php if (isset($active) && $active=='attributes'): ?> class="layui-this"<?php endif ?>>分类属性<span class="layui-badge"><?=$category->attributeCount?></span></li>  
+    <li<?php if (isset($active) && $active=='categories-attributes'): ?> class="layui-this"<?php endif ?>>分类属性<span class="layui-badge"><?=$category->attributeCount?></span></li>  
     <?php endif ?>
   </ul>
   <div class="layui-tab-content">
@@ -20,13 +20,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">空间名称</label>
                     <div class="layui-input-block">
-                        <a href="/zones/view/<?= $category->zone->id?>" class="layui-form-label" style="text-align: left;"><?= $category->zone->name?></a>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">分组名称</label>
-                    <div class="layui-input-block">
-                        <a href="/groups/view/<?= $category->group->id?>" class="layui-form-label" style="text-align: left;"><?= $category->group->name?></a>
+                        <?= $this->element('casecade_select',$category->category_select)?>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -68,9 +62,9 @@
         <?= $this->element('table',$tableParams['products'])?>
     </div>
     <!-- 分类属性 -->
-    <div class="layui-tab-item category_attribute<?php if (isset($active) && $active=='attributes'): ?> layui-show<?php endif ?>"">
-        <?= $this->element('attribute_search',['category_id' => $category->id])?>
-        <?= $this->element('table',$tableParams['attributes'])?>
+    <div class="layui-tab-item category_attribute<?php if (isset($active) && $active=='categories-attributes'): ?> layui-show<?php endif ?>"">
+        <?= $this->element('category_attribute_search',['category_id' => $category->id])?>
+        <?= $this->element('table',$tableParams['categories-attributes'])?>
     </div>
 <?php endif ?>
   </div>
@@ -105,12 +99,8 @@ layui.config({
             }
 
         })
-
         return false
     });
-    
-    
-    
 });
 
 </script>

@@ -37,7 +37,7 @@ class CategoryAttributeFiltersTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('CategoryAttributes', [
+        $this->belongsTo('CategoriesAttributes', [
             'foreignKey' => 'category_attribute_id',
             'joinType' => 'INNER'
         ]);
@@ -88,7 +88,7 @@ class CategoryAttributeFiltersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['pid']));
-        $rules->add($rules->existsIn(['category_attribute_id'], 'CategoryAttributes'));
+        $rules->add($rules->existsIn(['category_attribute_id'], 'CategoriesAttributes'));
 
         return $rules;
     }
