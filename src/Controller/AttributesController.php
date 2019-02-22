@@ -87,7 +87,11 @@ class AttributesController extends AppController
 
         //内容填写错误导致记录无法更新
         if ($data === 3) {
-            $this->resApi($code, $data, $msg_arr[$data]);
+            $msgs = [];
+            foreach ($attribute->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] =$name.':'.implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
         }
 
         $this->resApi($code, $data, $msg_arr[$data]);
@@ -113,8 +117,8 @@ class AttributesController extends AppController
         //     $this->loadModel('CategoryAttributeFilters')->deleteAll(['category_attribute_id in' => $category_attribute_ids]);
         //     $this->Attributes->CategoriesAttributes->deleteAll(['id in' => $category_attribute_ids]);
         // }
-        $data = 3;
-        $this->resApi(0, $data, $msg_arr[$data]);
+        $data = ['code' =>3];
+        $this->resApi(0, $data, $msg_arr[3]);
     }
 
     //ajax获取list

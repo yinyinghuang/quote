@@ -26,9 +26,10 @@ class Area extends Entity
      * @var array
      */
     protected $_accessible = [
-        'pid' => true,
-        'name' => true,
-        'sort' => true,
-        'districts' => true
+        'pid'        => true,
+        'name'       => true,
+        'is_visible' => true,
+        'sort'       => true,
+        'districts'  => true,
     ];
 }

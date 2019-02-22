@@ -36,11 +36,17 @@ class CategoriesBrandsTable extends Table
         parent::initialize($config);
 
         $this->setTable('categories_brands');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
 
         $this->belongsTo('Categories', [
             'foreignKey' => 'category_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Brands', [
+            'foreignKey' => 'brand',
             'joinType' => 'INNER'
         ]);
     }
@@ -53,6 +59,10 @@ class CategoriesBrandsTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+        $validator
+            ->integer('id')
+            ->allowEmptyString('id', 'create');
+            
         $validator
             ->scalar('brand')
             ->maxLength('brand', 255)

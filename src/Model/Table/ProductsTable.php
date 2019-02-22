@@ -127,7 +127,6 @@ class ProductsTable extends Table
         $validator
             ->scalar('album')
             ->maxLength('album', 255)
-            ->requirePresence('album', 'create')
             ->allowEmptyString('album');
 
         $validator

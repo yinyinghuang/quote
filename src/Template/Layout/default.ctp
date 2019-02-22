@@ -65,6 +65,17 @@
         <div class="layui-body">
             <!-- 内容主体区域 -->
             <div style="padding: 15px;">
+                <div class="breadcrumb" style="margin-bottom: 20px">                     
+                    <span class="layui-breadcrumb">
+                        <?php foreach ($breadcrumbs as $breadcrumb): ?>
+                            <?php if ($breadcrumb['href']): ?>
+                                <a href="<?= $breadcrumb['href']?>"><?= $breadcrumb['title']?></a> 
+                            <?php else: ?>
+                                <a><cite><?= $breadcrumb['title']?></cite></a>
+                            <?php endif ?>   
+                        <?php endforeach ?>
+                    </span>
+                </div>
                 <?=$this->fetch('content')?>
             </div>
         </div>
@@ -85,12 +96,12 @@
             form = layui.form,
             autocomplete = layui.autocomplete,
             token = '<?=$token?>',
-            order = {},
             $ = layui.$;
-c(table)
+
         //表格js
         <?php if (isset($tableParams)): ?>
             <?php foreach ($tableParams as $table): ?>
+
                 //方法级渲染
                 table.render({
                     elem: '#LAY_table-<?= $table['name']?>',
@@ -118,16 +129,27 @@ c(table)
                 //头工具栏事件
                 table.on('toolbar(LAY_table-<?= $table['name']?>)', function(obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
+                    var delIndex = '<?= isset($table['delIndex']) ? $table['delIndex']:"id"?>'
                     switch (obj.event) {
                         case 'deleteData-<?= $table['name']?>':
                             var data = checkStatus.data;
+                            
+                            let origin_ids =[]; 
+                            let new_ids =[]; 
                             let ids = [];
-                            data.forEach((each) => ids.push(each.id))
+                            data.forEach((each) => {
+                                each.is_new ? new_ids.push(each[delIndex]):origin_ids.push(each[delIndex]);
+                                ids.push(each[delIndex])
+
+                            })
 
                             if (ids.length) {
                                 layer.confirm('真的删除行么', function(index) {
+                                    var key = 'list-<?= $table['name']?>'
+                                    var tableData = table.cache[key]
+
                                     layer.close(index);
-                                    ajax($, {
+                                    origin_ids.length && ajax($, {
                                         url: '<?=$table["deleteUrl"]?>',
                                         type: 'post',
                                         data: {
@@ -135,14 +157,33 @@ c(table)
                                         },
                                         token,
                                         success: (res) => {
-                                            if (res.data !== 2) {
+                                            if(res.code){
                                                 pageReload()
+                                            }else{
+                                                if(res.data.code===0){
+                                                    tableData = tableData.filter((row) => {
+                                                        return !res.data[delIndex].some((id) => id==row[delIndex])
+                                                    })
+                                                    c(tableData)
+                                                    table.reload(key,{
+                                                        data:tableData,
+                                                        url:null
+                                                    })
+                                                }
+                                                layer.msg(res.msg)
                                             }
                                         },
                                         fail: (res) => {
 
                                         }
                                     })
+                                    tableData = tableData.filter((row) => {
+                                        return !new_ids.some((id) => id==row[delIndex])
+                                    })
+                                    table.reload(key,{
+                                        data:tableData,
+                                        url:null
+                                    }) 
                                 });
                                 return false
                             } else {
@@ -160,6 +201,7 @@ c(table)
 
                 //监听行工具事件
                 table.on('tool(LAY_table-<?= $table['name']?>)', function(obj) {
+                    var delIndex = '<?= isset($table['delIndex']) ? $table['delIndex']:"id"?>'
                     var data = obj.data;
                     if (obj.event === 'del-<?= $table['name']?>') {
                         layer.confirm('真的删除行么', function(index) {
@@ -168,11 +210,11 @@ c(table)
                                 url: '<?=$table["deleteUrl"]?>',
                                 type: 'post',
                                 data: {
-                                    ids: [data.id]
+                                    ids: [data[delIndex]]
                                 },
                                 token,
                                 success: (res) => {
-                                    if (res.data === 0) {
+                                    if (res.data.code === 0) {
                                         obj.del();
                                     }
                                 },
@@ -187,33 +229,27 @@ c(table)
 
                 //监听排序事件
                 table.on('sort(LAY_table-<?= $table['name']?>)', function(obj) {
-                    const field = obj.field
-                    if (order[field]) order[field] = null
-                    order[field] = obj.type
-                c(obj)
                     table.reload('list-<?= $table['name']?>', {
                         url: '<?=$table["renderUrl"]?>',
                         initSort: obj ,//记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: {
-                            order
+                            ['order['+obj.field+']']:obj.type
                         }
                     });
                 });
 
-
+                <?php if(isset($table['edit'])):?>
                 //监听单元格编辑
                 table.on('edit(LAY_table-<?= $table['name']?>)', function(obj) {
-                    var value = obj.value //得到修改后的值
-                        ,
-                        data = obj.data //得到所在行所有键值
-                        ,
-                        field = obj.field; //得到字段
-                    console.log(obj)
+                    var delIndex = '<?= isset($table['delIndex']) ? $table['delIndex']:"id"?>'
+                    var value = obj.value, //得到修改后的值                        
+                        data = obj.data, //得到所在行所有键值                        
+                        field = obj.field; //得到字段                    
                     ajax($, {
                         url: '<?=$table["editUrl"]?>',
                         type: 'post',
                         data: {
-                            id: data.id,
+                            id: data[delIndex],
                             [obj.field]: obj.value
                         },
                         token,
@@ -227,16 +263,16 @@ c(table)
 
                         }
                     })
-                });
-
+                }); 
                 //监听switch操作
                 form.on('switch(rowSwitch-<?= $table['name']?>)', function(obj) {
+                    var delIndex = '<?= isset($table['delIndex']) ? $table['delIndex']:"id"?>'
                     obj.elem.disabled = true
                     ajax($, {
                         url: '<?=$table["editUrl"]?>',
                         type: 'post',
                         data: {
-                            id: this.value,
+                            [delIndex]: this.value,
                             [this.name]: obj.elem.checked ? 1 : 0
                         },
                         token,
@@ -254,7 +290,9 @@ c(table)
 
                         }
                     })
-                });
+                });    
+                <?php endif?>
+
                 <?php if (isset($table["can_search"]) && $table["can_search"]): ?>
                 //搜索框提交，数据重载
                 form.on('submit(search-<?= $table['name']?>)', function(data) {
@@ -285,7 +323,6 @@ c(table)
             selectObj.select.forEach((type) => {
                 
                 form.on('select(' + type + ')', function(data) {
-                    layer.msg('加载中');
                     var formItem = $(this).parents('.layui-form-item');
                     let originIdObj = {}
                     //加载过程中，禁止点击选框

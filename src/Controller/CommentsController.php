@@ -180,7 +180,7 @@ class CommentsController extends AppController
         }, function () {
             $msg_arr = ['加载完成', '访问参数无pdt_id'];
             if (!$this->request->getQuery('product_id')) {
-                $this->resApi(0, 1, $msg_arr[1]);
+                $this->resApi(0, [], $msg_arr[1]);
             }
         }, function ($row) {
             $row->modified = (new Time($row->modified))->i18nFormat('yyyy-MM-dd HH:mm:ss');

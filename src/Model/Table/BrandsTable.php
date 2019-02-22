@@ -40,11 +40,9 @@ class BrandsTable extends Table
         $this->setPrimaryKey('brand');
 
         $this->addBehavior('Timestamp');
-
-        $this->belongsToMany('Categories', [
-            'foreignKey' => 'brand_id',
-            'targetForeignKey' => 'category_id',
-            'joinTable' => 'categories_brands'
+        
+        $this->hasMany('CategoriesBrands', [
+            'foreignKey' => 'brand',
         ]);
     }
 

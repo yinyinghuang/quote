@@ -13,97 +13,139 @@ use App\Controller\AppController;
 class BrandsController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
+    //首页
     public function index()
     {
-        $brands = $this->paginate($this->Brands);
+        $tableParams = [
+            'name'        => 'brands',
+            'renderUrl'   => '/brands/api-lists',
+            'deleteUrl'   => '/brands/api-delete',
+            'editUrl'     => '/brands/api-save',
+            'addUrl'      => '/brands/add',
+            'can_search'  => true,
+            'delIndex'    => 'brand',
+            'tableFields' => [
+                ['field' => '\'brand\'', 'title' => '\'品牌名\'', 'minWidth' => 280, 'fixed' => '\'left\'', 'unresize' => true, 'edit' => true],
+                ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
+                ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
+            ],
+            'switchTpls'  => [
+                ['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否'],
+            ],
+        ];
 
-        $this->set(compact('brands'));
+        $tableParams = ['brands' => $tableParams];
+        $this->set(compact('table_fields', 'switch_tpls', 'tableParams'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Brand id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+    //浏览
     public function view($id = null)
     {
-        $brand = $this->Brands->get($id, [
-            'contain' => ['Categories']
-        ]);
+        $brand = $this->Brands->get($id);
 
         $this->set('brand', $brand);
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
+    //添加
     public function add()
     {
         $brand = $this->Brands->newEntity();
-        if ($this->request->is('post')) {
-            $brand = $this->Brands->patchEntity($brand, $this->request->getData());
-            if ($this->Brands->save($brand)) {
-                $this->Flash->success(__('The brand has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The brand could not be saved. Please, try again.'));
-        }
-        $categories = $this->Brands->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('brand', 'categories'));
+        $this->set(compact('brand', 'categories', 'products'));
+        $this->render('view');
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Brand id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
+    //ajax修改
+    public function apiSave()
     {
-        $brand = $this->Brands->get($id, [
-            'contain' => ['Categories']
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $brand = $this->Brands->patchEntity($brand, $this->request->getData());
-            if ($this->Brands->save($brand)) {
-                $this->Flash->success(__('The brand has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The brand could not be saved. Please, try again.'));
+        $this->allowMethod(['POST', 'PUT', 'PATCH']);
+        $code    = 0;
+        $msg_arr = ['保存成功', '参数bid缺失', '记录不存在或已删除', '属性名已存在'];
+
+        $params         = $this->request->getData();
+        $params['type'] = isset($params['type']) ? $params['type'] : 'edit';
+        if (!isset($params['brand']) && $params['type'] === 'edit') {
+            $data = 1;
+            $this->resApi($code, $data, $msg_arr[$data]);
         }
-        $categories = $this->Brands->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('brand', 'categories'));
+
+        $brand = (isset($params['brand']) && $params['brand'] && $params['type'] == 'edit') ? $this->Brands->find('all')
+            ->where(['id' => $params['brand']])
+            ->first() : $this->Brands->newEntity();
+        if (!$brand) {
+            $data = 2;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+        //详情编辑情提交请求
+        if (isset($params['detail']) && $params['detail']) {
+            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
+        }
+        $brand = $this->Brands->patchEntity($brand, $params);
+
+        $data = $this->Brands->save($brand) ? 0 : 3;
+
+        //内容填写错误导致记录无法更新
+        if ($data === 3) {
+            $msgs = [];
+            foreach ($brand->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] = $name . ':' . implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
+        }
+
+        $this->resApi($code, $data, $msg_arr[$data]);
+
+    }
+    //ajax删除
+    public function apiDelete()
+    {
+        $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
+        $this->allowMethod(['POST']);
+        $ids = $this->request->getData('ids');
+
+        if (count($ids) == 0) {
+            $data = ['code' => 2];
+            $this->resApi(0, $data, $msg_arr[2]);
+        }
+
+        //删除产品相关属性值
+        
+        $this->Brands->deleteAll(['brand in' => $ids]);
+        $this->Brands->CategoriesBrands->deleteAll(['brand in' => $ids]);
+
+        $data = ['code' => 0, 'brand' => $ids];
+        $this->resApi(0, $data, $msg_arr[0]);
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Brand id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+    //ajax获取list
+    public function apiLists()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $brand = $this->Brands->get($id);
-        if ($this->Brands->delete($brand)) {
-            $this->Flash->success(__('The brand has been deleted.'));
-        } else {
-            $this->Flash->error(__('The brand could not be deleted. Please, try again.'));
-        }
 
-        return $this->redirect(['action' => 'index']);
+        $this->getTableData(function () {
+            $fields = [
+                'brand'      => 'Brands.brand',
+                'is_visible' => 'Brands.is_visible',
+                'sort'       => 'Brands.sort',
+            ];
+
+            $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
+            $params  = $this->request->$paramFn();
+
+            $where = [];
+            if (isset($params['search'])) {
+                $params = $params['search'];
+                if (isset($params['brand']) && trim($params['brand'])) {
+                    $where['Brands.brand like'] = '%' . trim($params['brand']) . '%';
+                }
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1, 0])) {
+                    $where['Brands.is_visible'] = $params['is_visible'];
+                }
+            }
+            $contain = [];
+
+            $order = ['Brands.sort' => 'desc', 'Brands.modified' => 'desc', 'Brands.created' => 'desc', 'Brands.brand' => 'desc'];
+            return [$fields, $where, $contain, $order];
+
+        });
     }
 }

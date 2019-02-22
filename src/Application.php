@@ -36,7 +36,6 @@ class Application extends BaseApplication
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
-
         if (PHP_SAPI === 'cli') {
             try {
                 $this->addPlugin('Bake');
@@ -54,6 +53,7 @@ class Application extends BaseApplication
         if (Configure::read('debug')) {
             $this->addPlugin(\DebugKit\Plugin::class);
         }
+        $this->addPlugin('Api', ['routes' => true, 'autoload' => true]);
     }
 
     /**

@@ -14,12 +14,17 @@
 <?php foreach ($switchTpls as $switchTpl): ?>
 <script type="text/html" id="<?=$switchTpl['id']?>">
   <!-- 这里的 checked 的状态只是演示 -->
-  <input type="checkbox" name="<?=$switchTpl['name']?>" value="{{d.id}}" lay-skin="switch" lay-text="<?=$switchTpl['text']?>" lay-filter="rowSwitch-<?= $name?>" {{ d.<?=$switchTpl['name']?> == true ? 'checked' : '' }}>
+  <input type="checkbox" name="<?=$switchTpl['name']?>" value="{{d.<?= isset($delIndex) ? $delIndex:'id'?>}}" lay-skin="switch" lay-text="<?=$switchTpl['text']?>" lay-filter="rowSwitch-<?= $name?>" {{ d.<?=$switchTpl['name']?> == true ? 'checked' : '' }}>
 </script>
 <?php endforeach?>
 <script type="text/html" id="bar-<?= $name?>">
   <?php if (isset($viewUrl)): ?>
-    <a class="layui-btn layui-btn-xs" href="<?= $viewUrl?>/{{d.id}}" >查看/编辑</a>
+    <?php if ($viewUrl =='javascript:;'): ?>
+    <a class="layui-btn layui-btn-xs" href="javascript:;" lay-event="view-<?= $name?>">查看/编辑</a>
+    <?php else: ?>
+    <a class="layui-btn layui-btn-xs" href="<?= $viewUrl?>/{{d.id}}">查看/编辑</a>  
+    <?php endif ?>
   <?php endif ?>  
+
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del-<?= $name?>">删除</a>
 </script>

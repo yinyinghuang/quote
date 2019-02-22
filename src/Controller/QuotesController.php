@@ -98,7 +98,7 @@ class QuotesController extends AppController
             $this->resApi($code, $data, $msg_arr[$data]);
         }
         $params = $this->request->getData();
-        
+
         //详情编辑页面提交请求
         if (isset($params['detail']) && $params['detail']) {
             $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
@@ -114,11 +114,11 @@ class QuotesController extends AppController
     public function apiDelete()
     {
         $this->allowMethod(['POST']);
-        $ids     = $this->request->getData('ids');
-        $res     = count($ids) ? ($this->Quotes->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
-        $res     = 0;
+        $ids  = $this->request->getData('ids');
+        $code = count($ids) ? ($this->Quotes->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
+
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
-        $this->resApi(0, $res, $msg_arr[$res]);
+        $this->resApi(0, compact('code', 'ids'), $msg_arr[$res]);
     }
 
     //ajax获取产品list
@@ -132,14 +132,18 @@ class QuotesController extends AppController
                 'price_water'   => 'Quotes.price_water',
                 'merchant_name' => 'Merchants.name',
                 'merchant_id'   => 'Merchants.id',
+                'product_name'  => 'Products.name',
+                'product_id'    => 'Products.id',
                 'modified'      => 'Quotes.modified',
                 'sort'          => 'Quotes.sort',
+                'is_visible'    => 'Quotes.is_visible',
             ];
 
-            $contain = ['Merchants'];
-            $where   = ['Quotes.product_id' => $this->request->getQuery('product_id')];
-            $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
-            $params  = $this->request->$paramFn();
+            $contain                                                                = ['Merchants','Products'];
+            $this->request->getQuery('product_id') && $where['Quotes.product_id']   = $this->request->getQuery('product_id');
+            $this->request->getQuery('merchant_id') && $where['Quotes.merchant_id'] = $this->request->getQuery('merchant_id');
+            $paramFn                                                                = $this->request->is('get') ? 'getQuery' : 'getData';
+            $params                                                                 = $this->request->$paramFn();
             if (isset($params['search'])) {
                 $params = $params['search'];
                 if (isset($params['id']) && intval($params['id'])) {
@@ -160,7 +164,7 @@ class QuotesController extends AppController
                 if (isset($params['price_water_max']) && floatval($params['price_water_max'])) {
                     $where['Quotes.price_water <'] = floatval($params['price_water_max']);
                 }
-                if (isset($params['is_visible']) && in_array($params['is_visible'], [1,0])) {
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1, 0])) {
                     $where['Quotes.is_visible'] = $params['is_visible'];
                 }
                 if (isset($params['district_id']) && intval($params['district_id'])) {
@@ -190,9 +194,9 @@ class QuotesController extends AppController
 
             return [$fields, $where, $contain, $order];
         }, function () {
-            $msg_arr = ['加载完成', '访问参数无pdt_id'];
-            if (!$this->request->getQuery('product_id')) {
-                $this->resApi(0, 1, $msg_arr[1]);
+            $msg_arr = ['加载完成', '访问参数无pid或mid'];
+            if (!($this->request->getQuery('product_id') || $this->request->getQuery('merchant_id'))) {
+                $this->resApi(0, [], $msg_arr[1]);
             }
         }, function ($row) {
             $row->modified = (new Time($row->modified))->i18nFormat('yyyy-MM-dd HH:mm:ss');

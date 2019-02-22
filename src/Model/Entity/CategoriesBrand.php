@@ -25,6 +25,8 @@ class CategoriesBrand extends Entity
      * @var array
      */
     protected $_accessible = [
+        'is_visible' => true,
+        'sort' => true,
         'category_id' => true,
         'brand' => true,
         'created' => true,

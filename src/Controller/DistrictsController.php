@@ -12,101 +12,126 @@ use App\Controller\AppController;
  */
 class DistrictsController extends AppController
 {
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Areas']
-        ];
-        $districts = $this->paginate($this->Districts);
-
-        $this->set(compact('districts'));
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id District id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $district = $this->Districts->get($id, [
-            'contain' => ['Areas', 'MerchantLocations']
-        ]);
-
-        $this->set('district', $district);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
+    //添加
     public function add()
     {
         $district = $this->Districts->newEntity();
-        if ($this->request->is('post')) {
-            $district = $this->Districts->patchEntity($district, $this->request->getData());
-            if ($this->Districts->save($district)) {
-                $this->Flash->success(__('The district has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        $params  = $this->request->query();
+        $area_id = null;
+        if (isset($params['area_id']) && $params['area_id']) {
+            $area = $this->Districts->Areas->find()->where(['id' => $params['area_id']])->first();
+            if ($area) {
+                $area_id = $area->id;
             }
-            $this->Flash->error(__('The district could not be saved. Please, try again.'));
         }
-        $areas = $this->Districts->Areas->find('list', ['limit' => 200]);
-        $this->set(compact('district', 'areas'));
+        $district->district_select = $this->getCasecadeTplParam('district_select', [
+            'area'     => [
+                'area_id' => $area_id,
+                'disabled' => true,
+            ],
+            'district' => [
+                'show'    => false,
+                'options' => [],
+            ],
+        ], false);
+        $this->set(compact('district'));
+        $this->render('view');
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id District id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
+    //ajax修改
+    public function apiSave()
     {
-        $district = $this->Districts->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $district = $this->Districts->patchEntity($district, $this->request->getData());
-            if ($this->Districts->save($district)) {
-                $this->Flash->success(__('The district has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The district could not be saved. Please, try again.'));
+        $this->allowMethod(['POST', 'PUT', 'PATCH']);
+        $code    = 0;
+        $msg_arr = ['保存成功', '参数aid缺失', '记录不存在或已删除', '内容填写有误'];
+
+        $params         = $this->request->getData();
+        $params['type'] = isset($params['type']) ? $params['type'] : 'edit';
+        if (!isset($params['id']) && $params['type'] === 'edit') {
+            $data = 1;
+            $this->resApi($code, $data, $msg_arr[$data]);
         }
-        $areas = $this->Districts->Areas->find('list', ['limit' => 200]);
-        $this->set(compact('district', 'areas'));
+
+        $district = (isset($params['id']) && $params['id'] && $params['type'] == 'edit') ? $this->Districts->find('all')
+            ->where(['id' => $params['id']])
+            ->first() : $this->Districts->newEntity();
+        if (!$district) {
+            $data = 2;
+            $this->resApi($code, $data, $msg_arr[$data]);
+        }
+        //详情编辑情提交请求
+        if (isset($params['detail']) && $params['detail']) {
+            $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
+        }
+        $district = $this->Districts->patchEntity($district, $params);
+
+        if (!$district->pid) {
+            $district->pid = $this->getPid();
+        }
+        $data = $this->Districts->save($district) ? 0 : 3;
+
+        //内容填写错误导致记录无法更新
+        if ($data === 3) {
+            $msgs = [];
+            foreach ($district->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] = $name . ':' . implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
+        }
+
+        $this->resApi($code, $data, $msg_arr[$data]);
+
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id District id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+    //ajax删除
+    public function apiDelete()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $district = $this->Districts->get($id);
-        if ($this->Districts->delete($district)) {
-            $this->Flash->success(__('The district has been deleted.'));
-        } else {
-            $this->Flash->error(__('The district could not be deleted. Please, try again.'));
-        }
+        $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中', '暂不支持删除'];
+        $this->allowMethod(['POST']);
+        $data = ['code' => 3];
+        $this->resApi(0, $data, $msg_arr[3]);
+    }
 
-        return $this->redirect(['action' => 'index']);
+    //ajax获取list
+    public function apiLists()
+    {
+
+        $this->getTableData(function () {
+            $fields = [
+                'id'         => 'Districts.id',
+                'name'       => 'Districts.name',
+                'is_visible' => 'Districts.is_visible',
+                'sort'       => 'Districts.sort',
+                'area_name'  => 'Areas.name',
+                'area_id'    => 'Areas.id',
+            ];
+
+            $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
+            $params  = $this->request->$paramFn();
+
+            $where = [];
+            if (isset($params['search'])) {
+                $params = $params['search'];
+                if (isset($params['area_id']) && intval($params['area_id'])) {
+                    $where['Districts.area_id'] = intval($params['area_id']);
+                }
+                if (isset($params['id']) && intval($params['id'])) {
+                    $where['Districts.id'] = intval($params['id']);
+                }
+                if (isset($params['name']) && trim($params['name'])) {
+                    $where['Districts.name like'] = '%' . trim($params['name']) . '%';
+                }
+                if (isset($params['is_visible']) && in_array($params['is_visible'], [1, 0])) {
+                    $where['Districts.is_visible'] = $params['is_visible'];
+                }
+            }
+            $contain = ['Areas'];
+
+            $order = ['Districts.sort' => 'desc', 'Districts.id' => 'desc'];
+            return [$fields, $where, $contain, $order];
+
+        });
     }
 }

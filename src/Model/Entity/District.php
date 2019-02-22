@@ -28,11 +28,12 @@ class District extends Entity
      * @var array
      */
     protected $_accessible = [
-        'pid' => true,
-        'area_id' => true,
-        'name' => true,
-        'sort' => true,
-        'area' => true,
-        'merchant_locations' => true
+        'pid'                => true,
+        'area_id'            => true,
+        'name'               => true,
+        'sort'               => true,
+        'area'               => true,
+        'is_visible'         => true,
+        'merchant_locations' => true,
     ];
 }

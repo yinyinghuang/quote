@@ -44,7 +44,9 @@ use Cake\Routing\Route\DashedRoute;
  *
  */
 Router::defaultRouteClass(DashedRoute::class);
-
+Router::scope('/api', ['plugin' => 'Api'], function ($routes) {
+    // $routes->connect('/', ['controller' => 'Products']);
+});
 Router::scope('/', function (RouteBuilder $routes) {
     // Register scoped middleware for in scopes.
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([

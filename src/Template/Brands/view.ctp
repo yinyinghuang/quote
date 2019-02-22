@@ -1,77 +1,74 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Brand $brand
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Brand'), ['action' => 'edit', $brand->brand]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Brand'), ['action' => 'delete', $brand->brand], ['confirm' => __('Are you sure you want to delete # {0}?', $brand->brand)]) ?> </li>
-        <li><?= $this->Html->link(__('List Brands'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Brand'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Categories'), ['controller' => 'Categories', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Category'), ['controller' => 'Categories', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="brands view large-9 medium-8 columns content">
-    <h3><?= h($brand->brand) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Brand') ?></th>
-            <td><?= h($brand->brand) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Sort') ?></th>
-            <td><?= $this->Number->format($brand->sort) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($brand->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($brand->modified) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Is Visible') ?></th>
-            <td><?= $brand->is_visible ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Categories') ?></h4>
-        <?php if (!empty($brand->categories)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Pid') ?></th>
-                <th scope="col"><?= __('Group Id') ?></th>
-                <th scope="col"><?= __('Name') ?></th>
-                <th scope="col"><?= __('Is Visible') ?></th>
-                <th scope="col"><?= __('Sort') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($brand->categories as $categories): ?>
-            <tr>
-                <td><?= h($categories->id) ?></td>
-                <td><?= h($categories->pid) ?></td>
-                <td><?= h($categories->group_id) ?></td>
-                <td><?= h($categories->name) ?></td>
-                <td><?= h($categories->is_visible) ?></td>
-                <td><?= h($categories->sort) ?></td>
-                <td><?= h($categories->created) ?></td>
-                <td><?= h($categories->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Categories', 'action' => 'view', $categories->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Categories', 'action' => 'edit', $categories->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Categories', 'action' => 'delete', $categories->id], ['confirm' => __('Are you sure you want to delete # {0}?', $categories->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
+<?php?>
+<form class="layui-form" action="" id="zoneDetail" enctype="multipart/form-data">
+    <?php if ($brand->isNew()): ?>
+    <input type="hidden" name="type" value="add">
+    <?php endif ?>
+    <input type="hidden" name="detail" value="1">
+    <input type="hidden" name="id" value="<?= $brand->id?>">   
+    <div class="layui-step-content-item brand_info">
+        <div class="layui-form-item">
+            <label class="layui-form-label">品牌名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="brand" autocomplete="off" placeholder="请输入品牌名称" class="layui-input" value="<?= $brand->brand?>" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">前台可见</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="is_visible" value="1" lay-skin="switch" lay-text="是|否" <?php if (!($brand->is_visible===false)): ?>checked
+                <?php endif?>>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sort" autocomplete="off" class="layui-input" value="<?=$brand->sort?>">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit="" lay-filter="save" id="save">保存</button>
+            </div>
+        </div>
     </div>
-</div>
+</form>
+
+<?php $this->start('script')?>
+<script>
+layui.config({
+    base: "/vendor/layui/lay/modules/"
+}).use(['form', 'autocomplete'], function() {
+    var $ = layui.jquery,
+        form = layui.form,
+        layer = layui.layer,
+        token = '<?=$token?>';    
+    //监听提交
+    form.on('submit(save)', function(data) { 
+        // $('#save').attr('disabled',true) 
+        ajax($,{
+            token,
+            url: '/brands/api-save',
+            type: 'post',
+            data: data.field,
+            success: (res) => { 
+                //若出现错误或者保存完成，重载页面
+                if(res.code || res.data === 0){                    
+                    pageReload()
+                }else{
+                    $('#save').attr('disabled',false)
+                }
+            },
+            fail:() =>{
+            }
+
+        })
+        return false
+    });
+});
+
+</script>
+<?php $this->end('script')?>

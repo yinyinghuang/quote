@@ -21,14 +21,14 @@ class CategoryAttributeFiltersController extends AppController
         $ids = $this->request->getData('ids');
 
         if (count($ids) == 0) {
-            $data = 2;
-            $this->resApi(0, $data, $msg_arr[$res]);
+            $code = 2;
+            $this->resApi(0, compact('code'), $msg_arr[$code]);
         }
 
         //删除产品相关属性值
         $this->CategoryAttributeFilters->deleteAll(['id in' => $ids]);
-        $data = 0;
-        $this->resApi(0, $data, $msg_arr[$data]);
+        $code = 0;
+        $this->resApi(0, compact('code','ids'),  $msg_arr[$code]);
     }
 
     //ajax修改
@@ -66,7 +66,11 @@ class CategoryAttributeFiltersController extends AppController
 
         //内容填写错误导致记录无法更新
         if ($data === 3) {
-            $this->resApi($code, $data, $msg_arr[$data]);
+            $msgs = [];
+            foreach ($filter->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] =$name.':'.implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
         }
 
         $this->resApi($code, $data, $msg_arr[$data]);

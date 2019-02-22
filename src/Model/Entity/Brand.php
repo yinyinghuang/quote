@@ -27,6 +27,7 @@ class Brand extends Entity
      * @var array
      */
     protected $_accessible = [
+        'brand' => true,
         'is_visible' => true,
         'sort' => true,
         'created' => true,

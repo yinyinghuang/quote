@@ -38,6 +38,9 @@ class CategoriesAttributesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->hasMany('CategoryAttributeFilters', [
+            'foreignKey' => 'category_attribute_id'
+        ]);
         $this->belongsTo('Categories', [
             'foreignKey' => 'category_id',
             'joinType' => 'INNER'
@@ -62,7 +65,7 @@ class CategoriesAttributesTable extends Table
 
         $validator
             ->requirePresence('level', 'create')
-            ->allowEmptyString('level', false);
+            ->allowEmptyString('level');
 
         $validator
             ->scalar('unit')

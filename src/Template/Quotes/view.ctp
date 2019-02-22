@@ -65,7 +65,7 @@
             <div class="layui-input-block">
               <button class="layui-btn" lay-submit="" lay-filter="save" id="save">保存</button>
             </div>
-          </div>
+        </div>
         
     </div>
 </form>

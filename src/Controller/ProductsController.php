@@ -299,13 +299,16 @@ class ProductsController extends AppController
 
         //内容填写错误导致记录无法更新
         if ($data === 3) {
-
-            $this->resApi($code, $data, $msg_arr[$data]);
+            $msgs = [];
+            foreach ($product->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] =$name.':'.implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
         }
         //详情编辑页面提交请求
         if (isset($params['detail']) && $params['detail']) {
 
-            //保存图片
+            //商户图片被修改
             if (isset($params['albums']) && is_array($params['albums']) && !empty($params['albums']) && !isset($params['albums']['error'])) {
                 $albumArr = $this->saveAlbums($params['albums'], $product->id);
 
@@ -388,13 +391,6 @@ class ProductsController extends AppController
         return $albumArr;
     }
 
-    //获取6位随机字符串
-    private function generateRandomStr()
-    {
-        $strs = "QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm";
-        $name = substr(str_shuffle($strs), mt_rand(0, strlen($strs) - 7), 6);
-        return $name;
-    }
 
     //为产品图片加水印及保存缩略图
     private function watermarkPrint($idtf, $path)
@@ -456,10 +452,10 @@ class ProductsController extends AppController
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
         $this->allowMethod(['POST']);
         $ids = $this->request->getData('ids');
-
+        
         if (count($ids) == 0) {
-            $data = 2;
-            $this->resApi(0, $data, $msg_arr[$res]);
+            $code = 2;
+            $this->resApi(0, compact('code'), $msg_arr[$code]);
         }
 
         //删除产品图片本地文件
@@ -474,16 +470,16 @@ class ProductsController extends AppController
             }
         }
 
-        $data = count($ids) ? ($this->Products->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
-        if ($data != 0) {
-            $this->resApi(0, $data, $msg_arr[$res]);
+        $code = count($ids) ? ($this->Products->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
+        if ($code != 0) {
+            $this->resApi(0,compact('code'), $msg_arr[$code]);
         }
 
         //删除属性值
         $this->Products->ProductsAttributes->deleteAll(['product_id in' => $ids]);
-        $data = 0;
+        $code = 0;
 
-        $this->resApi(0, $data, $msg_arr[$data]);
+        $this->resApi(0,compact('code','ids'), $msg_arr[$data['code']]);
     }
 
     //ajax删除产品图片

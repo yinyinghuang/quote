@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/Home/index/index",
+    "pages/Home/product/list",
+    "pages/Home/product_list/product_list",
+    "pages/Home/category_filter/category_filter",
+    "pages/Home/category_filter_option/category_filter_option",
+    "pages/Home/category_list/category_list",
+    "pages/Home/merchant_detail/merchant_detail",
+    "pages/Home/product_comment_add/product_comment_add",
+    "pages/Home/product_comment_list/product_comment_list",
+    "pages/Home/product_detail/product_detail",
+    "pages/Home/product_search/product_search",
+    "pages/My/index/index",
+    "pages/login/login"
+  ],
+  "window": {
+    "navigationBarTitleText": "报价"
+  },
+  "tabBar": {
+    "color": "#000",
+    "selectedColor": "#fb7060",
+    "list": [
+      {
+        "pagePath": "pages/Home/index/index",
+        "text": "首页",
+        "iconPath": "static/images/icon/home.png",
+        "selectedIconPath": "static/images/icon-red/home.png"
+      },
+      {
+        "pagePath": "pages/My/index/index",
+        "text": "个人中心",
+        "iconPath": "static/images/icon/home.png",
+        "selectedIconPath": "static/images/icon-red/home.png"
+      }
+    ]
+  }
+}

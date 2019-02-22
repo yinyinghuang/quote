@@ -30,6 +30,7 @@ class CategoriesController extends AppController
                 ['field' => '\'group_name\'', 'title' => '\'分组\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/groups/view/\'+res.group_id+\'">\'+res.group_name+\'</a>\')'],
                 ['field' => '\'product_count\'', 'title' => '\'产品\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=products">\'+res.product_count+\'</a>\')'],
                 ['field' => '\'attribute_count\'', 'title' => '\'属性\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=categories-attributes">\'+res.attribute_count+\'</a>\')'],
+                ['field' => '\'brand_count\'', 'title' => '\'品牌\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/categories/view/\'+res.id+\'?active=categories-brands">\'+res.brand_count+\'</a>\')'],
                 ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
             ],
@@ -138,7 +139,28 @@ class CategoriesController extends AppController
                 ['id' => 'switchTpl_4', 'name' => 'is_filter', 'text' => '是|否'],
             ],
         ];
-        $tableParams = ['products' => $productTableParams, 'categories-attributes' => $attributeTableParams];
+
+        //分类属性
+        $category->brandCount = $this->Categories->CategoriesBrands->find()->where(['category_id' => $category->id])->count();
+        $brandTableParams     = [
+            'name'        => 'categories-brands',
+            'renderUrl'   => '/categories-brands/api-lists?category_id='.$category->id.'&search[category_id]=' . $category->id,
+            'deleteUrl'   => '/categories-brands/api-delete',
+            'editUrl'     => '/categories-brands/api-save?category_id=' . $category->id,
+            'addUrl'      => '/categories-brands/add?category_id=' . $category->id,
+            'viewUrl'     => '/categories-brands/view',
+            'can_search'  => true,
+            'tableFields' => [
+                ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
+                ['field' => '\'brand\'', 'title' => '\'品牌\'', 'fixed' => '\'left\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/brands/view/\'+res.brand+\'">\'+res.brand+\'</a>\')'],
+                ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_5\''],
+                ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
+            ],
+            'switchTpls'  => [
+                ['id' => 'switchTpl_5', 'name' => 'is_visible', 'text' => '是|否'],
+            ],
+        ];
+        $tableParams = ['products' => $productTableParams, 'categories-attributes' => $attributeTableParams, 'categories-brands' => $brandTableParams];
         $active      = $this->request->query('active');
         $this->set(compact('category', 'tableParams', 'active', 'searchTpl','category_select'));
     }
@@ -215,7 +237,11 @@ class CategoriesController extends AppController
 
         //内容填写错误导致记录无法更新
         if ($data === 3) {
-            $this->resApi($code, $data, $msg_arr[$data]);
+            $msgs = [];
+            foreach ($category->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] =$name.':'.implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
         }
 
         $this->resApi($code, $data, $msg_arr[$data]);
@@ -250,7 +276,7 @@ class CategoriesController extends AppController
         //     $this->Categories->Products->deleteAll(['id in' => $product_ids]);
         // }
 
-        $data = 3;
+        $data = ['code' =>3];
         $this->resApi(0, $data, $msg_arr[$data]);
     }
 
@@ -300,6 +326,7 @@ class CategoriesController extends AppController
         }, null, function ($row) {
             $row->product_count   = $this->Categories->Products->find()->where(['category_id' => $row->id])->count();
             $row->attribute_count = $this->Categories->CategoriesAttributes->find()->where(['category_id' => $row->id])->count();
+            $row->brand_count = $this->Categories->CategoriesBrands->find()->where(['category_id' => $row->id])->count();
             return $row;
         });
     }

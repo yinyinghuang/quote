@@ -5,6 +5,7 @@
     <?php if (!$category->isNew()): ?>     
     <li<?php if (isset($active) && $active=='products'): ?> class="layui-this"<?php endif ?>>分类产品<span class="layui-badge"><?=$category->productCount?></span></li>    
     <li<?php if (isset($active) && $active=='categories-attributes'): ?> class="layui-this"<?php endif ?>>分类属性<span class="layui-badge"><?=$category->attributeCount?></span></li>  
+    <li<?php if (isset($active) && $active=='categories-brands'): ?> class="layui-this"<?php endif ?>>分类品牌<span class="layui-badge"><?=$category->brandCount?></span></li>  
     <?php endif ?>
   </ul>
   <div class="layui-tab-content">
@@ -57,7 +58,7 @@
     </div>
 <?php if (!$category->isNew()): ?>
     <!-- 分类产品 -->
-    <div class="layui-tab-item category_product<?php if (isset($active) && $active=='products'): ?> layui-show<?php endif ?>"">
+    <div class="layui-tab-item category_product<?php if (isset($active) && $active=='products'): ?> layui-show<?php endif ?>">
         <?= $this->element('product_search',['category_select' => $searchTpl['product']['category_select']])?>
         <?= $this->element('table',$tableParams['products'])?>
     </div>
@@ -65,6 +66,11 @@
     <div class="layui-tab-item category_attribute<?php if (isset($active) && $active=='categories-attributes'): ?> layui-show<?php endif ?>"">
         <?= $this->element('category_attribute_search',['category_id' => $category->id])?>
         <?= $this->element('table',$tableParams['categories-attributes'])?>
+    </div>
+    <!-- 分类品牌 -->
+    <div class="layui-tab-item category_brand<?php if (isset($active) && $active=='categories-brands'): ?> layui-show<?php endif ?>"">
+        <?= $this->element('category_brand_search',['category_id' => $category->id])?>
+        <?= $this->element('table',$tableParams['categories-brands'])?>
     </div>
 <?php endif ?>
   </div>

@@ -217,7 +217,11 @@ class GroupsController extends AppController
         
         //内容填写错误导致记录无法更新
         if ($data === 3) {
-            $this->resApi($code, $data, $msg_arr[$data]);
+            $msgs = [];
+            foreach ($group->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] =$name.':'.implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
         }
 
         $this->resApi($code, $data, $msg_arr[$data]);
@@ -230,7 +234,7 @@ class GroupsController extends AppController
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中', '暂不支持删除'];
         $this->allowMethod(['POST']);
         
-        $data = 3;
+        $data = ['code' =>3];
         $this->resApi(0, $data, $msg_arr[$data]);
     }
 

@@ -9,7 +9,7 @@
  */
 const pageReload = () => setTimeout(() => {window.location.reload()},1000)
 const ajax = ($,requestHandler) => {
-
+    layer.msg('加载中');
     $.ajax({
         headers: {
             'X-CSRF-Token': requestHandler.token
