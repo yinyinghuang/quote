@@ -203,4 +203,5 @@ Type::build('timestamp')
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
 
 
-Plugin::load('Api', ['bootstrap' => false, 'routes' => true]);
+
+// Plugin::load('Api', ['bootstrap' => false, 'routes' => true]);

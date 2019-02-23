@@ -19,9 +19,8 @@ class ProductsController extends AppController
      */
     public function index()
     {
-        $products = $this->paginate($this->Products);
-
-        $this->set(compact('products'));
+        debug($this->Products->find('list')->limit(10)->toArray());
+        $this->resApi(0,0,'1111111111');
     }
 
     /**

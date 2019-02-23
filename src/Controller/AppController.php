@@ -123,13 +123,13 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
-        $this->loadComponent('Auth', [
-            'loginRedirect' => [
-                'controller' => 'Products',
-                'action' => 'index'
-            ],
-            'unauthorizedRedirect' => $this->referer()
-        ]);
+        // $this->loadComponent('Auth', [
+        //     'loginRedirect' => [
+        //         'controller' => 'Products',
+        //         'action' => 'index'
+        //     ],
+        //     'unauthorizedRedirect' => $this->referer()
+        // ]);
 
         $Navs  = $this->navs;
         $token = $this->request->getParam('_csrfToken');
