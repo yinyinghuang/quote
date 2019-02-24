@@ -1,4 +1,4 @@
-<?php?>
+
 
 <div class="layui-tab">
     <ul class="layui-tab-title">

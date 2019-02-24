@@ -1,4 +1,4 @@
-<?php?>
+
 <form class="layui-form" action="" id="quoteDetail" enctype="multipart/form-data">
     <?php if ($quote->isNew()): ?>
     <input type="hidden" name="type" value="add">

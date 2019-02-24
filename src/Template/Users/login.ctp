@@ -1,4 +1,4 @@
-<?php?>
+
 <!-- File: src/Template/Users/login.ctp -->
 <?php $this->layout = 'login';?>
 <div class="container full-height">

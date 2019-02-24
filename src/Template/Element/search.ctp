@@ -1,4 +1,4 @@
-<?php?>
+
 <div class="search_box">
   <form class="layui-form">
 <?php foreach ($search['form_item'] as $formItem): ?>

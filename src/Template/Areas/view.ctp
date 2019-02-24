@@ -1,4 +1,4 @@
-<?php?>
+
 <div class="layui-tab">
   <ul class="layui-tab-title">
     <li<?php if (!isset($active) || !$active): ?> class="layui-this"<?php endif ?>>地区详情</li>

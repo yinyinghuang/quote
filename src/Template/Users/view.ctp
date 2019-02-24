@@ -1,4 +1,4 @@
-<?php?>
+
 <form class="layui-form" action="" id="zoneDetail" enctype="multipart/form-data">
     <?php if ($user->isNew()): ?>
     <input type="hidden" name="type" value="add">

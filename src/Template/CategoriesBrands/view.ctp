@@ -1,4 +1,4 @@
-<?php?>
+
 <form class="layui-form" action="" id="detail" enctype="multipart/form-data">
     <?php if ($brand->isNew()): ?>
     <input type="hidden" name="type" value="add">

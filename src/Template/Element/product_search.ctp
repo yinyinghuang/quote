@@ -1,4 +1,4 @@
-<?php?>
+
 <div class="demoTable">
   <form class="layui-form">
     <div class="layui-form-item">
