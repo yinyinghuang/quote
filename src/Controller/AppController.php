@@ -17,7 +17,6 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Utility\Inflector;
-
 /**
  * Application Controller
  *
@@ -240,7 +239,7 @@ class AppController extends Controller
             'order'      => $order,
 
         ];
-        $data  = $mapFn ? $this->$controller->find('all', $sql)->map($mapFn) : $this->$controller->find('all', $sql);
+        $data  = $mapFn ? $this->$controller->find('all', $sql)->map($mapFn)->toArray() : $this->$controller->find('all', $sql)->toArray();
         $count = $this->$controller->find('all', [
             'contain'    => $contain,
             'conditions' => $where,
@@ -258,7 +257,7 @@ class AppController extends Controller
             'msg'  => $msg,
         ] + $extra;
 
-        $this->response->withStringBody(json_encode($res));
+        $this->response->withBody(json_encode($res));
         die($this->response);
     }
 
