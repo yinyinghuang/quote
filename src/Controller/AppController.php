@@ -144,9 +144,9 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {
 
-        $controller     = $this->request->controller;
-        $action         = $this->request->action;
-        $pass           = $this->request->pass;
+        $controller     = $this->request->getParam('controller');
+        $action         = $this->request->getParam('action');
+        $pass           = $this->request->getParam('pass');
         $breadcrumbsMap = [
             'Products'             => '产品',
             'Merchants'            => '商户',
