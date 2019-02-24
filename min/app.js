@@ -27,6 +27,13 @@ App({
         }
       }
     })
+
+    wx.request({
+      url: 'https://exchange.527hk.cn',
+      success:(res) => {
+        console.log(res)
+      }
+    })
   },
   globalData: {
     userInfo: null
