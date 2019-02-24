@@ -258,7 +258,7 @@ class AppController extends Controller
             'msg'  => $msg,
         ] + $extra;
 
-        $this->response->body(json_encode($res));
+        $this->response->withBody(json_encode($res));
         die($this->response);
     }
 
