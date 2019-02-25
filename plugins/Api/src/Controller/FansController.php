@@ -31,9 +31,13 @@ class FansController extends AppController
             $params = $this->request->getData();
             $fan = $fanTable->patchEntity($fan,$params);
             $fanTable->save($fan);
-            
+            $msgs = [];
+            foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
+                $msgs[] = $name . ':' . implode(',', array_values($error));
+            }
+            $this->resApi($code, $data, implode(';', $msgs));
             $data = $fan->id;
-            $this->ret(0,$fan,'登陆成功');     
+            $this->ret(0,implode(';', $msgs),'登陆成功');     
         }
     }
 
