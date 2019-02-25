@@ -36,8 +36,8 @@ Page({
   getCategoryList:function(){
     const _this = this
     comm.request({
-      url:glbd + 'categories/lists?type=zone',
-      data:comm.requestData(gldb),
+      url:glbd.host + 'categories/lists?type=zone',
+      data:comm.requestData(glbd),
       success:function(res){
         if(res.data.errCode === 0){
           _this.setData({
@@ -58,7 +58,7 @@ Page({
   getRecentViewList: function () {
     const _this = this
     comm.request({
-      url: glbd + 'products/lists?type=recent',
+      url: glbd.host + 'products/lists?type=recent',
       success: function (res) {
         if (res.data.errCode === 0) {
           _this.setData({
@@ -79,7 +79,7 @@ Page({
   getLastProductList: function () {
     const _this = this
     comm.request({
-      url: glbd + 'products/lists?type=last',
+      url: glbd.host + 'products/lists?type=last',
       success: function (res) {
         if (res.data.errCode === 0) {
           _this.setData({
