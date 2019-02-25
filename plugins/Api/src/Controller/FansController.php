@@ -17,7 +17,7 @@ class FansController extends AppController
     public function login()
     {
         $code = $this->request->getData('code');
-        empty($code) ? $this->ret(1,'','缺少code');
+        empty($code) && $this->ret(1,'','缺少code');
 
         $this->sessionKey = $this->getSessionKey($code);
         if(array_key_exists('errcode',$this->sessionKey->json)){
@@ -28,7 +28,8 @@ class FansController extends AppController
             $fanTable = $this->loadModel('Fans');
             $fan = $fanTable->find()->where(['openid' => $openid])->first() 
                 ? : $fanTable->newEntity();
-            $fan = $fanTable->patchEntity($fan,$data);
+            $params = $this->request->getData();
+            $fan = $fanTable->patchEntity($fan,$params);
             $fanTable->save($fan);
             $data = $fan->id;
             $this->ret(0,$data,'登陆成功');     
