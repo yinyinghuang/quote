@@ -17,12 +17,11 @@ class FansController extends AppController
     public function login()
     {
         $code = $this->request->getData('code');
+        empty($code) ? $this->ret(1,'','缺少code');
 
         $this->sessionKey = $this->getSessionKey($code);
-        
         if(array_key_exists('errcode',$this->sessionKey->json)){
-            $this->ret(1,'',$this->sessionKey->json['errmsg']);                  
-            
+            $this->ret(1,'',$this->sessionKey->json['errmsg']); 
         }else{
             $openid = $this->sessionKey->json['openid'];                
                 
@@ -32,7 +31,7 @@ class FansController extends AppController
             $fan = $fanTable->patchEntity($fan,$data);
             $fanTable->save($fan);
             $data = $fan->id;
-            $this->ret(1,$data,'登陆成功');     
+            $this->ret(0,$data,'登陆成功');     
         }
     }
 
