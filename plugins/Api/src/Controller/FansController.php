@@ -31,7 +31,7 @@ class FansController extends AppController
             $params = $this->request->getData();
             $fan = $fanTable->patchEntity($fan,$params);
             $fanTable->save($fan);
-            debug($fan);
+            debug($fan);die;
             $data = $fan->id;
             $this->ret(0,$data,'登陆成功');     
         }
