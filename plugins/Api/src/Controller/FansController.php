@@ -16,7 +16,7 @@ class FansController extends AppController
 
     public function login()
     {
-        $code = $this->request->query('code');
+        $code = $this->request->getData('code');
 
         $this->sessionKey = $this->getSessionKey($code);
         
