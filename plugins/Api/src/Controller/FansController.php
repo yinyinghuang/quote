@@ -33,7 +33,7 @@ class FansController extends AppController
             $fanTable->save($fan);
             debug($fan);die;
             $data = $fan->id;
-            $this->ret(0,$data,'登陆成功');     
+            // $this->ret(0,$data,'登陆成功');     
         }
     }
 
