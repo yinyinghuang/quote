@@ -24,13 +24,14 @@ class FansController extends AppController
             $this->ret(1,'',$this->sessionKey->json['errmsg']); 
         }else{
             $openid = $this->sessionKey->json['openid'];                
-                
+            
             $fanTable = $this->loadModel('Fans');
             $fan = $fanTable->find()->where(['openid' => $openid])->first() 
                 ? : $fanTable->newEntity();
             $params = $this->request->getData();
             $fan = $fanTable->patchEntity($fan,$params);
             $fanTable->save($fan);
+            debug($fan);
             $data = $fan->id;
             $this->ret(0,$data,'登陆成功');     
         }
