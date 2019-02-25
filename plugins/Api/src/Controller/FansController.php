@@ -2,7 +2,7 @@
 namespace Api\Controller;
 
 use Api\Controller\AppController;
-
+use Cake\Http\Client;
 /**
  * Fans Controller
  *

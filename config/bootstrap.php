@@ -202,6 +202,3 @@ Type::build('timestamp')
 //Inflector::rules('uninflected', ['dontinflectme']);
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
 
-
-
-// Plugin::load('Api', ['bootstrap' => false, 'routes' => true]);
