@@ -16,7 +16,7 @@ class FansController extends AppController
 
     public function login()
     {
-        $code = $this->request->getData('code');
+        $code = $this->request->query('code');
 
         $this->sessionKey = $this->getSessionKey($code);
         
@@ -24,41 +24,16 @@ class FansController extends AppController
             $this->ret(1,'',$this->sessionKey->json['errmsg']);                  
             
         }else{
-            debug($this->sessionKey->json['errmsg']);
-            die();
-            $this->sessionKey = $this->sessionKey->json['session_key'];
-
-            require_once(ROOT . DS  .'vendor' . DS . 'wxAes' . DS . 'wxBizDataCrypt.php');
-            $bizDataCrypt = new \wxBizDataCrypt($this->appid, $this->sessionKey);
-            $errCode = $bizDataCrypt->decryptData( $encryptedData, $iv, $data );
-
-            if ($errCode) {
-                $this->wxThrowError('decryptData',$errCode);
-            }else{
-                $data = json_decode($data,true);
+            $openid = $this->sessionKey->json['openid'];                
                 
-                $fanTable = $this->loadModel('Fans');
-                $fan = $fanTable->find()->where(['openId' => $data['openId']])->first() 
-                    ? : $fanTable->newEntity();
-                $fan = $fanTable->patchEntity($fan,$data);
-                if($fanTable->save($fan)){
-                    $response = [
-                        'userInfo' => [
-                            'nickName' => $data['nickName'],
-                            'avatarUrl' => $data['avatarUrl'],
-                            'userId' => $fan->id
-                        ]
-                    ];
-                }else{
-                    $this->wxThrowError('saveUser','failed');
-                }
-            }
-
+            $fanTable = $this->loadModel('Fans');
+            $fan = $fanTable->find()->where(['openid' => $openid])->first() 
+                ? : $fanTable->newEntity();
+            $fan = $fanTable->patchEntity($fan,$data);
+            $fanTable->save($fan);
+            $data = $fan->id;
+            $this->ret(1,$data,'登陆成功');     
         }
-        $this->response->body(json_encode($response));
-        
-        return $this->response;
-        die;
     }
 
 
