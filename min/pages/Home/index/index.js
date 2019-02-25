@@ -1,61 +1,100 @@
 // pages/Home/index/index.js
+let app = getApp()
+let glbd = app.globalData
+const comm = require('../../../common/common.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    category:{},
+    recent:{},
+    last:{}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    //每个页面必须判断用户是否授权
+    app.openSetting(this.initPage)
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 初始化页面
    */
-  onReady: function () {
-
+  initPage:function(){
+    const _this = this
+    _this.getCategoryList()
+    _this.getRecentViewList()
+    _this.getLastProductList()
   },
-
   /**
-   * 生命周期函数--监听页面显示
+   * 获取一级分类
    */
-  onShow: function () {
-
+  getCategoryList:function(){
+    const _this = this
+    comm.request({
+      url:glbd + 'categories/lists?type=zone',
+      data:comm.requestData(gldb),
+      success:function(res){
+        if(res.data.errCode === 0){
+          _this.setData({
+            category:res.data.data
+          })
+        }else{
+          comm.showToast(res.data.errMsg ? res.data.errMsg : '分类获取失败')
+        }
+      },
+      fail:function(){
+        comm.showToast('分类获取失败')
+      }
+    })
   },
-
   /**
-   * 生命周期函数--监听页面隐藏
+   * 获取最近浏览
    */
-  onHide: function () {
-
+  getRecentViewList: function () {
+    const _this = this
+    comm.request({
+      url: glbd + 'products/lists?type=recent',
+      success: function (res) {
+        if (res.data.errCode === 0) {
+          _this.setData({
+            recent: res.data.data
+          })
+        } else {
+          comm.showToast(res.data.errMsg ? res.data.errMsg : '最近浏览获取失败')
+        }
+      },
+      fail: function () {
+        comm.showToast('最近浏览获取失败')
+      }
+    })
   },
-
   /**
-   * 生命周期函数--监听页面卸载
+   * 获取最新更新
    */
-  onUnload: function () {
-
+  getLastProductList: function () {
+    const _this = this
+    comm.request({
+      url: glbd + 'products/lists?type=last',
+      success: function (res) {
+        if (res.data.errCode === 0) {
+          _this.setData({
+            last: res.data.data
+          })
+        } else {
+          comm.showToast(res.data.errMsg ? res.data.errMsg : '最新更新获取失败')
+        }
+      },
+      fail: function () {
+        comm.showToast('最新更新获取失败')
+      }
+    })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
 
   /**
    * 用户点击右上角分享

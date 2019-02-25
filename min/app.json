@@ -15,7 +15,10 @@
     "pages/login/login"
   ],
   "window": {
-    "navigationBarTitleText": "报价"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "首页",
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "color": "#000",

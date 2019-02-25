@@ -5,62 +5,40 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    pb:'../Home/index/index',
+    op:''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    const pb = options.pb
+    let op = ''
+    if (options.op!=='{}'){
+      let option = []
+      for (const [key,value] in JSON.parse(options.op)){
+        option.push(`${key}=${value}`)
+      }
+      op = '?' + option.join('&')
+    }
+    this.setData({
+      pb,
+      op
+    })    
   },
-
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 用户点击授权后
    */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  redirectPb:function(res){
+    const _this = this
+    if (res.detail.errMsg === "getUserInfo:fail auth deny"){
+      return false
+    }else{
+      const fn = _this.data.pb === ('/pages/Home/index/index' || '/pages/My/index/index') ? wx.switchTab:wx.redirectTo
+      fn({
+        url: _this.data.pb+_this.data.op,
+      })
+    }
   }
 })

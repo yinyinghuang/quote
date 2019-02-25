@@ -7,16 +7,14 @@ use App\Controller\AppController as BaseController;
 class AppController extends BaseController
 {
 	
-	protected function resApi($code, $data, $msg, $extra = [])
+	protected function ret($errCode, $data, $errMsg, $extra = [])
 	{
 	    $this->autoRender = false;
 	    $res              = [
-	        'code' => $code,
+	        'errCode' => $errCode,
 	        'data' => $data,
-	        'msg'  => $msg,
+	        'errMsg'  => $errMsg,
 	    ] + $extra;
-
-	    $this->response->body(json_encode($res));
-	    die($this->response);
+	    die(json_encode($res));
 	}
 }

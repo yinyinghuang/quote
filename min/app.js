@@ -1,41 +1,112 @@
 //app.js
+const comm = require('./common/common.js')
 App({
-  onLaunch: function () {
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
-    // 获取用户信息
+  // 判断用户是否授权
+  openSetting:function(_fn = function(){}){
+    const _this = this;
     wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
-            }
+      success:(res) =>{
+        const userInfo = res.authSetting['scope.userInfo']
+        if (userInfo){
+          _this.initPage(_fn)
+        }else{
+          const page = getCurrentPages()[0];
+          wx.redirectTo({
+            url: '../../login/login?pb=/' + page.route + '&op=' + JSON.stringify(page.options),
           })
         }
       }
     })
-
-    wx.request({
-      url: 'https://exchange.527hk.cn',
-      success:(res) => {
-        console.log(res)
+  },
+  //已授权，是否已存在登陆信息
+  initPage:function(_fn = function(){}){
+    const _this= this
+    if(_this.globalData.pKey){
+      typeof(_fn) === 'function' && _fn()
+    }else{
+      _this.login(_fn)
+    }
+  },
+  //登陆后台获取用户信息
+  login:function(_fn = function(){},needInfo=false){
+    const _this = this
+    wx.login({
+      success:(loginRes) =>{
+        if(loginRes.code){
+          _this.globalData.code = loginRes.code
+          if(needInfo || _this.globalData.firstCome){
+            _this.globalData.firstCome = false
+            _this.getUInfo(_fn)
+          }else{
+            _this.getNoStr(_fn)
+          }
+        }else{
+          comm.showToast('获取用户信息失败')
+        }
+      },
+      fail:(res) => {
+        comm.showToast('获取用户信息失败')
       }
     })
   },
+  //刷新用户微信后台信息
+  getUInfo:function(_fn = function(){}){
+    const _this = this
+    wx.getUserInfo({
+      success:(res) => {
+        _this.globalData.islogin = true
+        _this.globalData.userInfo = res.userInfo
+        _this.getNoStr(_fn)
+      },
+      fail:(res) => {
+        _this.globalData.islogin = false
+        comm.showToast('获取用户信息失败')
+        //???????
+      }
+    })
+  },
+  //获取后台用户信息
+  getNoStr:function(_fn = function(){}){
+    const _this = this
+    comm.request({
+      url:_this.globalData.host + 'fans/login',
+      data: comm.requestData(_this.globalData, {
+        user_msg_str: JSON.stringify(_this.globalData.userInfo),
+        code: _this.globalData.code
+      }),
+      method:_this.globalData.method,
+      success:function(res){
+        if(res.data.errCode === 0){
+          _this.globalData.pkey = res.data.data
+          _this.globalData.hasKey = true
+          wx.setStorageSync('local_pkey', res.data.data)
+          _this.saveFormIds()
+          typeof(_fn) === 'function' && _fn()
+        }else{
+          comm.showToast(res.data.errMsg ? res.data.errMsg : '登陆失败')
+        }
+      },
+      fail:function(){
+        comm.showToast('登陆失败')
+      }
+    })
+  },
+  saveFormIds:function(){
+
+  },
+  dealFormIds:function(){
+
+  },
   globalData: {
-    userInfo: null
+    host: 'https://exchange.527hk.cn/api/',
+    hosts:'https://exchange.527hk.cn/',
+    method:'post',
+    islogin:false,
+    hasPkey:false,
+    firstCome:true,
+    pkey:0,
+    code:0,
+    userInfo:null,
+    formIds:''
   }
 })
