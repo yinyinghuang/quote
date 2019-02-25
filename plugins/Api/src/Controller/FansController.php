@@ -28,7 +28,7 @@ class FansController extends AppController
             $fanTable = $this->loadModel('Fans');
             $fan = $fanTable->find()->where(['openid' => $openid])->first() 
                 ? : $fanTable->newEntity();
-            $params = $this->request->getData('user_msg_str');
+            $params = json_decode($this->request->getData('user_msg_str'),true);
             $fan = $fanTable->patchEntity($fan,$params);
             $fanTable->save($fan);
             $msgs = [];
