@@ -21,6 +21,7 @@ class CategoriesController extends AppController
                     ->loadModel('Zones')
                     ->find()
                     ->select(['id','name'])
+                    ->where(['Zones.is_visible'])
                     ->order(['Zones.sort desc','Zones.id desc'])
                     ->toArray();
                 $this->ret(0,$zones,'加载成功');
