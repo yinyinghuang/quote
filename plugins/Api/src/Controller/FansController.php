@@ -25,7 +25,7 @@ class FansController extends AppController
         }else{
             $openid = $this->sessionKey->json['openid'];                
             
-            $fanTable = $this->loadModel('Fans');
+            $fanTable = $this->Fans;
             $fan = $fanTable->find()->where(['openid' => $openid])->first() 
                 ? : $fanTable->newEntity();
             $fan->openid = $openid;
