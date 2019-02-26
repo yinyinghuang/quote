@@ -71,6 +71,7 @@ class FansController extends AppController
         if ($this->request->is('post')) {
             $fan = $this->Fans->patchEntity($fan, $this->request->getData());
             if ($this->Fans->save($fan)) {
+                debug($fan);
                 $this->Flash->success(__('The fan has been saved.'));
 
                 // return $this->redirect(['action' => 'index']);
