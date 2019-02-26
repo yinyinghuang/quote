@@ -24,9 +24,8 @@ class FansController extends AppController
             $this->ret(1,'',$this->sessionKey->json['errmsg']); 
         }else{
             $openid = $this->sessionKey->json['openid'];  
-
             $fan = $this->Fans->find()->where(['openid' => $openid])->first();
-            $this->ret(1,$fan,'登陆成功'); 
+
             if($fan){
                 $this->ret(0,$fan->id,'登陆成功'); 
             }else{
