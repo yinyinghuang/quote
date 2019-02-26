@@ -36,9 +36,9 @@ Page({
   getCategoryList:function(){
     const _this = this
     comm.request({
-      url:glbd.host + 'categories/lists?type=zone',
+      url:glbd.host + 'categories/lists',
       method:glbd.method,
-      data:comm.requestData(glbd),
+      data:comm.requestData(glbd,{type:'zones'}),
       success:function(res){
         if(res.data.errCode === 0){
           _this.setData({
