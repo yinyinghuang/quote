@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * Fan Entity
  *
  * @property int $id
- * @property string $openId
+ * @property string $openid
  * @property string $nickName
  * @property string $avatarUrl
  * @property int $gender
