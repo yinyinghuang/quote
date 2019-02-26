@@ -73,7 +73,7 @@ class FansController extends AppController
             if ($this->Fans->save($fan)) {
                 $this->Flash->success(__('The fan has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                // return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The fan could not be saved. Please, try again.'));
         }
