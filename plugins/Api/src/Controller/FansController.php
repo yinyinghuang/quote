@@ -38,7 +38,7 @@ class FansController extends AppController
                 foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
                     $msgs[] = $name . ':' . implode(',', array_values($error));
                 }
-                $this->ret(0,null,implode(';', $msgs)); 
+                $this->ret(1,$fan,implode(';', $msgs)); 
             }
                 
         }
