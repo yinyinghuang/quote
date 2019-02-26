@@ -17,7 +17,7 @@ class FansFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '粉丝ID', 'precision' => null, 'autoIncrement' => null],
+        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '粉丝ID', 'autoIncrement' => true, 'precision' => null],
         'openid' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => 'openID', 'precision' => null, 'fixed' => null],
         'nickName' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '用户昵称', 'precision' => null, 'fixed' => null],
         'avatarUrl' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '用户头像', 'precision' => null, 'fixed' => null],
@@ -30,6 +30,7 @@ class FansFixture extends TestFixture
         'last_access' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '上次访问时间', 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'openid' => ['type' => 'unique', 'columns' => ['openid'], 'length' => []],
         ],
         '_options' => [
             'engine' => 'MyISAM',
@@ -56,8 +57,8 @@ class FansFixture extends TestFixture
                 'province' => 'Lorem ipsum dolor sit amet',
                 'country' => 'Lorem ipsum dolor sit amet',
                 'language' => 'Lorem ipsum dolor sit amet',
-                'sign_up' => '2019-02-26 02:52:44',
-                'last_access' => '2019-02-26 02:52:44'
+                'sign_up' => '2019-02-26 03:26:26',
+                'last_access' => '2019-02-26 03:26:26'
             ],
         ];
         parent::init();

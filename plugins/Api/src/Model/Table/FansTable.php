@@ -58,8 +58,9 @@ class FansTable extends Table
         $validator
             ->scalar('openid')
             ->maxLength('openid', 50)
-            ->requirePresence('openid', 'create', '22 cannot be empty')
-            ->allowEmptyString('openid', false, 'allowEmptyString cannot be empty');
+            ->requirePresence('openid', 'create')
+            ->allowEmptyString('openid', false)
+            ->add('openid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('nickName')
@@ -106,5 +107,19 @@ class FansTable extends Table
             ->allowEmptyDateTime('last_access');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['openid']));
+
+        return $rules;
     }
 }
