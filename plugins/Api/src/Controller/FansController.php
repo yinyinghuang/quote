@@ -21,7 +21,7 @@ class FansController extends AppController
 
         $this->sessionKey = $this->getSessionKey($code);
         if(array_key_exists('errcode',$this->sessionKey->json)){
-            $this->ret(1,'',$this->sessionKey->json['errmsg']); 
+            $this->ret(2,'',$this->sessionKey->json['errmsg']); 
         }else{
             $openid = $this->sessionKey->json['openid'];  
             $fan = $this->Fans->find()->where(['openid' => $openid])->first();
@@ -40,7 +40,7 @@ class FansController extends AppController
                     foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
                         $msgs[] = $name . ':' . implode(',', array_values($error));
                     }
-                    $this->ret(1,$fan,implode(';', $msgs)); 
+                    $this->ret(3,$fan,implode(';', $msgs)); 
                 }
             }
             
