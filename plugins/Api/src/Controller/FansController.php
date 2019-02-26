@@ -23,23 +23,27 @@ class FansController extends AppController
         if(array_key_exists('errcode',$this->sessionKey->json)){
             $this->ret(1,'',$this->sessionKey->json['errmsg']); 
         }else{
-            $openid = $this->sessionKey->json['openid'];                
-            
-            $fanTable = $this->Fans;
-            $fan = $fanTable->find()->where(['openid' => $openid])->first() 
-                ? : $fanTable->newEntity();
-            $fan->openid = $openid;
-            $params = json_decode($this->request->getData('user_msg_str'),true);
-            $fan = $fanTable->patchEntity($fan,$params);
-            if ($fanTable->save($fan)) {
+            $openid = $this->sessionKey->json['openid'];  
+
+            $fan = $this->Fans->find()->where(['openid' => $openid])->first();
+            if($fan){
                 $this->ret(0,$fan->id,'登陆成功'); 
             }else{
-                $msgs = [];
-                foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
-                    $msgs[] = $name . ':' . implode(',', array_values($error));
+                $fan = $this->Fans->newEntity();
+                $fan->openid = $openid;
+                $params = json_decode($this->request->getData('user_msg_str'),true);
+                $fan = $this->Fans->patchEntity($fan,$params);
+                if ($this->Fans->save($fan)) {
+                    $this->ret(0,$fan->id,'注册成功'); 
+                }else{
+                    $msgs = [];
+                    foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
+                        $msgs[] = $name . ':' . implode(',', array_values($error));
+                    }
+                    $this->ret(1,$fan,implode(';', $msgs)); 
                 }
-                $this->ret(1,$fan,implode(';', $msgs)); 
             }
+            
                 
         }
     }
@@ -55,5 +59,24 @@ class FansController extends AppController
         $response = $http->get($url,$jsonPayload,['type' => 'json']);
         return $response;
         die;                
+    }
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+        $fan = $this->Fans->newEntity();
+        if ($this->request->is('post')) {
+            $fan = $this->Fans->patchEntity($fan, $this->request->getData());
+            if ($this->Fans->save($fan)) {
+                $this->Flash->success(__('The fan has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The fan could not be saved. Please, try again.'));
+        }
+        $this->set(compact('fan'));
     }
 }
