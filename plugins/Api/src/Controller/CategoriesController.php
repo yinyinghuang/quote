@@ -17,7 +17,12 @@ class CategoriesController extends AppController
         $params = $this->request->getData();
         switch ($params['type']) {
             case 'zones':
-                $zones = $this->loadModel('Zones')->find('list')->order(['Zones.sort desc','Zones.id desc']);
+                $zones = $this
+                    ->loadModel('Zones')
+                    ->find()
+                    ->select(['id','name'])
+                    ->order(['Zones.sort desc','Zones.id desc'])
+                    ->toArray();
                 $this->ret(0,$zones,'加载成功');
                 break;
             
