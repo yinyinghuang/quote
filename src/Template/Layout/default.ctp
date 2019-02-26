@@ -238,7 +238,7 @@
                     });
                 });
 
-                <?php if(isset($table['edit'])):?>
+                <?php if(isset($table['editUrl'])):?>
                 //监听单元格编辑
                 table.on('edit(LAY_table-<?= $table['name']?>)', function(obj) {
                     var delIndex = '<?= isset($table['delIndex']) ? $table['delIndex']:"id"?>'
