@@ -58,7 +58,7 @@ class FansTable extends Table
         $validator
             ->scalar('openid')
             ->maxLength('openid', 50)
-            ->requirePresence('openid', 'create', 'requirePresence cannot be empty')
+            ->requirePresence('openid', 'create', '22 cannot be empty')
             ->allowEmptyString('openid', false, 'allowEmptyString cannot be empty');
 
         $validator
