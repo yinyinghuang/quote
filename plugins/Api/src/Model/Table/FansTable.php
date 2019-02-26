@@ -58,9 +58,8 @@ class FansTable extends Table
         $validator
             ->scalar('openid')
             ->maxLength('openid', 50)
-            // ->requirePresence('openid', 'create','sssssssssss')
-            // ->allowEmptyString('openid', false)
-            ->add('openid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->requirePresence('openid', 'create','sssssssssss')
+            ->allowEmptyString('openid', false);
 
         $validator
             ->scalar('nickName')
