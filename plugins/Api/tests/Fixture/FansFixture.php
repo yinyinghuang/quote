@@ -18,7 +18,7 @@ class FansFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '粉丝ID', 'precision' => null, 'autoIncrement' => null],
-        'openId' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => 'openID', 'precision' => null, 'fixed' => null],
+        'openid' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => 'openID', 'precision' => null, 'fixed' => null],
         'nickName' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '用户昵称', 'precision' => null, 'fixed' => null],
         'avatarUrl' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '用户头像', 'precision' => null, 'fixed' => null],
         'gender' => ['type' => 'tinyinteger', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '用户的性别', 'precision' => null],
@@ -48,7 +48,7 @@ class FansFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'openId' => 'Lorem ipsum dolor sit amet',
+                'openid' => 'Lorem ipsum dolor sit amet',
                 'nickName' => 'Lorem ipsum dolor sit amet',
                 'avatarUrl' => 'Lorem ipsum dolor sit amet',
                 'gender' => 1,
@@ -56,8 +56,8 @@ class FansFixture extends TestFixture
                 'province' => 'Lorem ipsum dolor sit amet',
                 'country' => 'Lorem ipsum dolor sit amet',
                 'language' => 'Lorem ipsum dolor sit amet',
-                'sign_up' => '2019-02-26 02:14:16',
-                'last_access' => '2019-02-26 02:14:16'
+                'sign_up' => '2019-02-26 02:52:44',
+                'last_access' => '2019-02-26 02:52:44'
             ],
         ];
         parent::init();
