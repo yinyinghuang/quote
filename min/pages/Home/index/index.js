@@ -37,6 +37,7 @@ Page({
     const _this = this
     comm.request({
       url:glbd.host + 'categories/lists?type=zone',
+      method:glbd.method,
       data:comm.requestData(glbd),
       success:function(res){
         if(res.data.errCode === 0){
@@ -59,6 +60,7 @@ Page({
     const _this = this
     comm.request({
       url: glbd.host + 'products/lists?type=recent',
+      method: glbd.method,
       success: function (res) {
         if (res.data.errCode === 0) {
           _this.setData({
@@ -80,6 +82,7 @@ Page({
     const _this = this
     comm.request({
       url: glbd.host + 'products/lists?type=last',
+      method: glbd.method,
       success: function (res) {
         if (res.data.errCode === 0) {
           _this.setData({

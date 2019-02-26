@@ -33,7 +33,7 @@ class Fan extends Entity
      * @var array
      */
     protected $_accessible = [
-        'openId' => true,
+        'openid' => true,
         'nickName' => true,
         'avatarUrl' => true,
         'gender' => true,
