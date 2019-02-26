@@ -58,22 +58,7 @@ Page({
    */
   getRecentViewList: function () {
     const _this = this
-    comm.request({
-      url: glbd.host + 'products/lists?type=recent',
-      method: glbd.method,
-      success: function (res) {
-        if (res.data.errCode === 0) {
-          _this.setData({
-            recent: res.data.data
-          })
-        } else {
-          comm.showToast(res.data.errMsg ? res.data.errMsg : '最近浏览获取失败')
-        }
-      },
-      fail: function () {
-        comm.showToast('最近浏览获取失败')
-      }
-    })
+    
   },
   /**
    * 获取最新更新
@@ -81,8 +66,9 @@ Page({
   getLastProductList: function () {
     const _this = this
     comm.request({
-      url: glbd.host + 'products/lists?type=last',
+      url: glbd.host + 'products/lists',
       method: glbd.method,
+      data: comm.requestData(glbd, { type: 'last' }),
       success: function (res) {
         if (res.data.errCode === 0) {
           _this.setData({

@@ -20,21 +20,21 @@ class ProductsController extends AppController
         $order   = ['Products.sort desc', 'Products.id desc'];
         $limit   = 20;
 
-        switch ($params['type']) {
-            case 'last':
-                $order = ['Products.modified desc'] + $order;
-                break;
-
-            default:
-
-                break;
+        if(isset($params['type'])){
+            switch ($params['type']) {
+                case 'last':
+                    $order = ['Products.modified desc'] + $order;
+                    break;
+            }
         }
         $products = $this->Products
             ->find()
             ->select($select)
             ->where($where)
+            ->contain($contain)
             ->order($order)
+            ->limit($limit)
             ->toArray();
-        $this->ret(0, $zones, '加载成功');
+        $this->ret(0, $products, '加载成功');
     }
 }
