@@ -37,8 +37,8 @@ class FansController extends AppController
                 // $schema = $this->Fans->getSchema();
                 // $this->ret(1,$fan->extract($schema->columns(), true),'注册成功');
                
-                $data    = $entity->extract($this->getSchema()->columns(), true);
-                $success = $this->Fans->_insert($entity, $data);
+                $data    = $fan->extract($this->getSchema()->columns(), true);
+                $success = $this->Fans->_insert($fan, $data);
                  $this->ret(5, [
                     'checkRule' => $this->Fans->checkRules($fan, 'create'),
                     'data' => $data,
