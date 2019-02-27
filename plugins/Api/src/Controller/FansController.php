@@ -36,21 +36,17 @@ class FansController extends AppController
                 $fan         = $this->Fans->patchEntity($fan, $params);
                 $schema = $this->Fans->getSchema();               
                 $data    = $fan->extract($this->Fans->getSchema()->columns(), true);
-                $success = $this->Fans->_insert($fan, $data);
-                $this->ret(5, [
-                    'checkRule' => $this->Fans->checkRules($fan, 'create'),
-                    'data' => $data,
-                    'success' => $success
-                ], '注册成功');
-                if ($this->Fans->save($fan)) {
-                    $this->ret(0, $fan->id, '注册成功');
-                } else {
-                    $msgs = [];
-                    foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
-                        $msgs[] = $name . ':' . implode(',', array_values($error));
-                    }
-                    $this->ret(3, $fan, implode(';', $msgs));
-                }
+                $fan = $this->Fans->_insert($fan, $data);
+                $this->ret(0, $fan->id, '注册成功');
+                // if ($this->Fans->save($fan)) {
+                //     $this->ret(0, $fan->id, '注册成功');
+                // } else {
+                //     $msgs = [];
+                //     foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
+                //         $msgs[] = $name . ':' . implode(',', array_values($error));
+                //     }
+                //     $this->ret(3, $fan, implode(';', $msgs));
+                // }
             }
         }
     }
