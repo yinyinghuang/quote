@@ -33,6 +33,8 @@ class FansController extends AppController
                 $fan->openid = $openid;
                 $params = json_decode($this->request->getData('user_msg_str'),true);
                 $fan = $this->Fans->patchEntity($fan,$params);
+                $schema = $this->Fans->getSchema();
+                $this->ret(1,$schema,'注册成功'); 
                 if ($this->Fans->save($fan)) {
                     $this->ret(0,$fan->id,'注册成功'); 
                 }else{
@@ -42,9 +44,7 @@ class FansController extends AppController
                     }
                     $this->ret(3,$fan,implode(';', $msgs)); 
                 }
-            }
-            
-                
+            }  
         }
     }
 
