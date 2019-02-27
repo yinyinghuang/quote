@@ -34,16 +34,14 @@ class FansController extends AppController
                 $fan->openid = $openid;
                 $params      = json_decode($this->request->getData('user_msg_str'), true);
                 $fan         = $this->Fans->patchEntity($fan, $params);
-                // $schema = $this->Fans->getSchema();
-                // $this->ret(1,$fan->extract($schema->columns(), true),'注册成功');
-               
-                $data    = $fan->extract($this->Fans->getSchema()->columns(), true);
-                $success = $this->Fans->_insert($fan, $data);
-                 $this->ret(5, [
-                    'checkRule' => $this->Fans->checkRules($fan, 'create'),
-                    'data' => $data,
-                    'success' => $success
-                 ], '注册成功');
+                // $schema = $this->Fans->getSchema();               
+                // $data    = $fan->extract($this->Fans->getSchema()->columns(), true);
+                // $success = $this->Fans->_insert($fan, $data);
+                // $this->ret(5, [
+                //     'checkRule' => $this->Fans->checkRules($fan, 'create'),
+                //     'data' => $data,
+                //     'success' => $success
+                // ], '注册成功');
                 if ($this->Fans->save($fan)) {
                     $this->ret(0, $fan->id, '注册成功');
                 } else {
@@ -79,6 +77,15 @@ class FansController extends AppController
         $schema = $this->Fans->getSchema();
         debug($schema->columns());
         $fan = $this->Fans->newEntity();
+
+        $data    = $fan->extract($this->Fans->getSchema()->columns(), true);
+        $success = $this->Fans->_insert($fan, $data);
+         $this->ret(5, [
+            'checkRule' => $this->Fans->checkRules($fan, 'create'),
+            'data' => $data,
+            'success' => $success
+         ], '注册成功');
+
         if ($this->request->is('post')) {
             $fan = $this->Fans->patchEntity($fan, $this->request->getData());
             if ($this->Fans->save($fan)) {
