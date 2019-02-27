@@ -35,6 +35,7 @@ class FansController extends AppController
                 $fan = $this->Fans->patchEntity($fan,$params);
                 // $schema = $this->Fans->getSchema();
                 // $this->ret(1,$fan->extract($schema->columns(), true),'注册成功'); 
+                $this->ret(5,$this->Fans->checkRules($fan,'create'),'注册成功'); 
                 if ($this->Fans->save($fan)) {
                     $this->ret(0,$fan->id,'注册成功'); 
                 }else{
