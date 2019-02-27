@@ -1,2 +1,69 @@
 <!--pages/Home/index/index.wxml-->
-<text>pages/Home/index/index.wxml</text>
+<view class='container'>
+  <view class='section section-official-account'>
+    <official-account></official-account>
+  </view>
+  <view class='section section-search'>
+    <view class='search-image'><image src='/static/images/icon/home.png'></image></view>
+    <view class='search-text'>请输入商品名称</view>
+  </view>
+  <view class='section section-category flex-row'>
+    <view  wx:for="{{category}}" wx:key="id" data-id="{{item.id}}" bindtap='handlerNavigator' data-url='/pages/Home/category_list' class='category-item flex-colunm'>
+      <image class='category-item-icon' src='/static/images/icon/home.png'></image>
+      <view class='category-item-text'>{{item.name}}</view>
+    </view>
+  </view>
+  <view class='section section-recent' wx:if='{{recent.length}}'>
+    <text class='section-title'>最近浏览</text>
+    <scroll-view class='product-list-recent flex-row' scroll-x>
+      <view wx:for="{{recent}}" wx:key="id" data-id='{{item.id}}' data-url='/pages/Home/product_detail/product_detail' bindtap='handlerNavigator' class='product-item '>
+        <view class='flex-column product-item-container'>
+          <image class='product-item-icon' src='{{item.album}}'></image>
+          <text class='prodcut-item-split'></text>
+          <view class='product-item-text'>{{item.name}}</view>
+        </view>
+      </view>
+      <!-- <view class='product-item-more'>
+        <view></view>
+        <view class='flex-column product-item-container'>查看更多</view>
+        <view></view>
+      </view> -->
+    </scroll-view>
+  </view>
+  <view class='section section-last'>
+    <text class='section-title'>最近更新</text>
+    <view class='product-list-last flex-column'>
+      <view wx:for="{{last}}" wx:key="id" data-id='{{item.id}}' data-url='/pages/Home/product_detail/product_detail' bindtap='handlerNavigator' class='flex-row product-item '>
+        <view class='product-icon'>
+          <image src='/static/images/icon/home.png'></image>
+        </view>
+        <view class='product-info'>
+          <view class='product-item-text'>{{item.name}}</view>
+          <block wx:if='{{ item.price_hong_max===0 && item.price_hong_min===0 && item.price_water_max===0 && item.price_water_min===0}}'>
+            <view class='product-item-price'>暂无报价</view>
+          </block>
+          <block wx:else>
+            <block wx:if='{{item.price_hong_max!==0 || item.price_hong_min!==0}}'>
+              <view class='product-item-price'>
+                HK${{item.price_hong_min?item.price_hong_min:''}}
+                <block wx:if='{{item.price_hong_max && item.price_hong_min}}'>-</block>
+                {{item.price_hong_max?item.price_hong_max:''}}
+                <text class='product-price-label'>行</text>
+              </view>
+            </block>
+            <block wx:if='{{item.price_water_max!==0 || item.price_water_min!==0}}'>
+              <view class='product-item-price'>
+                HK${{item.price_water_min?item.price_water_min:''}}
+                <block wx:if='{{item.price_water_max && item.price_water_min}}'>-</block>
+                {{item.price_water_max?item.price_water_max:''}}
+                <text class='product-price-label'>水</text>
+              </view>
+            </block>
+          </block>
+          
+        </view>   
+      </view>
+    </view>
+  </view>
+</view>
+

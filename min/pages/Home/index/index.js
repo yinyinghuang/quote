@@ -58,6 +58,19 @@ Page({
    */
   getRecentViewList: function () {
     const _this = this
+    _this.setData({
+      recent:[
+        { id: 1, name: '123456789', album: '/static/images/icon/home.png' },
+        { id: 1, name: '123456789', album: '/static/images/icon/home.png' },
+        { id: 1, name: '123456789', album: '/static/images/icon/home.png' },
+        { id: 1, name: '123456789', album: '/static/images/icon/home.png' },
+        {id:1,name:'123456789',album:'/static/images/icon/home.png'},
+        { id: 1, name: '123456789', album: '/static/images/icon/home.png' },
+        { id: 1, name: '123456789', album: '/static/images/icon/home.png' },
+        {id:1,name:'123456789',album:'/static/images/icon/home.png'},
+      
+      ]
+    })
     
   },
   /**
@@ -83,7 +96,9 @@ Page({
       }
     })
   },
-
+  handlerNavigator:function(e){
+    console.log(e)
+  },
 
   /**
    * 用户点击右上角分享

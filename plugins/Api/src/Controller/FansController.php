@@ -38,6 +38,7 @@ class FansController extends AppController
                 $data    = $fan->extract($this->Fans->getSchema()->columns(), true);
                 $fan = $this->Fans->_insert($fan, $data);
                 $this->ret(0, $fan->id, '注册成功');
+                //以下方式保存数据，openid保存失败，原因未知
                 // if ($this->Fans->save($fan)) {
                 //     $this->ret(0, $fan->id, '注册成功');
                 // } else {
@@ -62,36 +63,5 @@ class FansController extends AppController
         $response = $http->get($url, $jsonPayload, ['type' => 'json']);
         return $response;
         die;
-    }
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $schema = $this->Fans->getSchema();
-        debug($schema->columns());
-        $fan = $this->Fans->newEntity();
-
-        $data    = $fan->extract($this->Fans->getSchema()->columns(), true);
-        $success = $this->Fans->_insert($fan, $data);
-         $this->ret(5, [
-            'checkRule' => $this->Fans->checkRules($fan, 'create'),
-            'data' => $data,
-            'success' => $success
-         ], '注册成功');
-
-        if ($this->request->is('post')) {
-            $fan = $this->Fans->patchEntity($fan, $this->request->getData());
-            if ($this->Fans->save($fan)) {
-                debug($fan);
-                $this->Flash->success(__('The fan has been saved.'));
-
-                // return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The fan could not be saved. Please, try again.'));
-        }
-        $this->set(compact('fan'));
     }
 }
