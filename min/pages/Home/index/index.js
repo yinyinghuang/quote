@@ -22,6 +22,13 @@ Page({
   },
 
   /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    _this.getRecentViewList()
+  },
+
+  /**
    * 初始化页面
    */
   initPage:function(){

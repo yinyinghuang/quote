@@ -31,3 +31,24 @@ page {
   margin: auto;
 }
 
+/* 搜索框 */
+.section-search{
+  border: 1px #fff solid;
+  background: #fff;
+  box-shadow:  3rpx 3rpx 5rpx #000;
+  height: 80rpx;
+  line-height: 80rpx;
+  padding-left: 20rpx;
+}
+.search-image,
+.search-text{
+  display: inline;
+  margin-right: 20rpx;
+  color: #adadad
+}
+.search-image image{
+  width: 24rpx;
+  height: 24rpx;
+  vertical-align: middle;
+}
+
