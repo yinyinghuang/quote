@@ -40,6 +40,7 @@ page {
   height: 80rpx;
   line-height: 80rpx;
   padding-left: 20rpx;
+  box-sizing:border-box;
 }
 .search-image,
 .search-text{

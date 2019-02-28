@@ -1,2 +1,20 @@
 <!--pages/Home/product_list/product_list.wxml-->
-<text>pages/Home/product_list/product_list.wxml</text>
+<view class='container'>
+  <view class='section section-search'>
+    <view class='search-image'><image src='/static/images/icon/home.png'></image></view>
+    <view class='search-text'>请输入商品名称</view>
+  </view>
+  <view class='section section-official-account'>
+    <official-account></official-account>
+  </view>  
+  <view class='section section-product-list'>
+    <view class='product-list-header'>
+      <image src='/static/images/icon/home.png' class='product-zone-icon'></image>
+      <text class='product-zone-name'>电脑</text>
+    </view>
+    <view class='product-list-content'>
+    </view>
+  </view>
+
+</view>
+

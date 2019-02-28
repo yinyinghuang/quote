@@ -45,7 +45,7 @@ class CategoriesController extends AppController
                                 ->leftJoinWith('Products')
                                 ->group(['Categories.id']);
                         }])
-                        ->where(['Groups.is_visible' => 1])
+                        ->where(['Groups.is_visible' => 1,'Groups.zone_id' => $params['id']])
                         ->order(['Groups.sort desc','Groups.id desc'])
                         ->toArray();
                     $this->ret(0,compact('zone','groups'),'加载成功');

@@ -1,4 +1,7 @@
 /* pages/Home/category_list/category_list.wxss */
+.section-official-account{
+  /* margin-top: -20rpx; */
+}
 .section-category-list{
   padding-top: 24rpx;
 }
@@ -27,7 +30,19 @@
 .category-group-name,.category-category-item{
   padding: 36rpx 0 20rpx 0;
   border-bottom: 1px solid #e5e5e5;
+  letter-spacing: 85
 }
-.category-category-list{
-
+.category-category-item{
+  justify-content: space-between
+}
+.category-category-info text{
+  padding-right: 15rpx;
+}
+.category-category-info text.category-category-count,
+.category-category-info text.category-category-split{
+  color:#7f7f7f;
+}
+.category-category-arrow{
+  color: #ff7878;
+  font-size: 1.4em
 }
