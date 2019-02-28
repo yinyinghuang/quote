@@ -21,10 +21,36 @@ class CategoriesController extends AppController
                     ->loadModel('Zones')
                     ->find()
                     ->select(['id','name'])
-                    ->where(['Zones.is_visible'])
+                    ->where(['Zones.is_visible' => 1])
                     ->order(['Zones.sort desc','Zones.id desc'])
                     ->toArray();
                 $this->ret(0,$zones,'加载成功');
+                break;
+            case 'zone_children':
+                if (isset($params['id']) && $params['id']) {
+                    $zone = $this->loadModel('Zones')
+                        ->find()
+                        ->select(['id','name'])
+                        ->where(['Zones.is_visible' => 1])
+                        ->first();
+                    if (empty($zone)) $this->ret(2,null,'空间不存在');
+                    $groups = $this->loadModel('Groups')
+                        ->find()
+                        ->select(['Groups.id','Groups.name'])
+                        ->contain(['Categories' => function ($query)
+                        {
+                            return $query->select(['Categories.id','Categories.name'])
+                                ->where(['Categories.is_visible' => 1])
+                                ->order(['Categories.sort desc','Categories.id desc']);
+                        }])
+                        ->where(['Groups.is_visible' => 1])
+                        ->order(['Groups.sort desc','Groups.id desc'])
+                        ->toArray();
+                    $this->ret(0,compact('zone','groups'),'加载成功');
+                }else{
+                    $this->ret(1,null,'参数错误');
+                }
+                
                 break;
             
             default:

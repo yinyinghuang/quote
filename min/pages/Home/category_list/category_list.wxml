@@ -1,2 +1,6 @@
 <!--pages/Home/category_list/category_list.wxml-->
-<text>pages/Home/category_list/category_list.wxml</text>
+<view class='container'>
+  <view class='section section-official-account'>
+    <official-account></official-account>
+  </view>
+</view>

@@ -8,7 +8,7 @@
     <view class='search-text'>请输入商品名称</view>
   </view>
   <view class='section section-category flex-row'>
-    <view  wx:for="{{category}}" wx:key="id" data-id="{{item.id}}" bindtap='handlerNavigator' data-url='/pages/Home/category_list' class='category-item flex-colunm'>
+    <view  wx:for="{{category}}" wx:key="id" data-id="{{item.id}}" bindtap='handlerNavigatorToCateList'  class='category-item flex-colunm'>
       <image class='category-item-icon' src='/static/images/icon/home.png'></image>
       <view class='category-item-text'>{{item.name}}</view>
     </view>
@@ -16,9 +16,9 @@
   <view class='section section-recent' wx:if='{{recent.length}}'>
     <text class='section-title'>最近浏览</text>
     <scroll-view class='product-list-recent flex-row' scroll-x>
-      <view wx:for="{{recent}}" wx:key="id" data-id='{{item.id}}' data-url='/pages/Home/product_detail/product_detail' bindtap='handlerNavigator' class='product-item '>
+      <view wx:for="{{recent}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='product-item '>
         <view class='flex-column product-item-container'>
-          <image class='product-item-icon' src='{{item.album}}'></image>
+          <image class='product-item-icon' src='{{item.album}}' lazy-load binderror='hanlderImageError' data-id='{{index}}'></image>
           <text class='prodcut-item-split'></text>
           <view class='product-item-text'>{{item.name}}</view>
         </view>
@@ -33,9 +33,9 @@
   <view class='section section-last'>
     <text class='section-title'>最近更新</text>
     <view class='product-list-last flex-column'>
-      <view wx:for="{{last}}" wx:key="id" data-id='{{item.id}}' data-url='/pages/Home/product_detail/product_detail' bindtap='handlerNavigator' class='flex-row product-item '>
+      <view wx:for="{{last}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
         <view class='product-icon'>
-          <image src='/static/images/icon/home.png'></image>
+          <image src='{{item.album}}' lazy-load binderror='hanlderImageError' data-id='{{index}}'></image>
         </view>
         <view class='product-info'>
           <view class='product-item-text'>{{item.name}}</view>
