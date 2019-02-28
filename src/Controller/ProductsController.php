@@ -77,7 +77,7 @@ class ProductsController extends AppController
                 ];
             }
         } else {
-            $product->album = [];
+            $product->albums = [];
         }
 
         // 产品属性值

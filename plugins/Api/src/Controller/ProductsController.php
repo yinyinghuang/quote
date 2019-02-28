@@ -34,7 +34,35 @@ class ProductsController extends AppController
             ->contain($contain)
             ->order($order)
             ->limit($limit)
+            ->map(function ($row)
+            {                
+                $row->albums = $this->getProductAlbumUrl($row->id,$row->album);
+                return $row;
+            })
             ->toArray();
         $this->ret(0, $products, '加载成功');
+    }
+
+    private function getProductAlbumUrl($product_id,$product_album)     
+    {
+        $albumDir        = $this->getAlbumDir($product_id);
+        $albums = [];
+        if ($product_album) {
+            foreach (json_decode($product_album,true) as $key => $album) {
+                $albums[] = [
+                    'thumb'  => 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_2.' . $album[1],
+                    'middle' => 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_4.' . $album[1],
+                    'full'   => 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_0.' . $album[1],
+                ];
+            }
+        }
+        return $albums;
+
+    }
+
+    //获取产品图片文件夹
+    private function getAlbumDir($product_id)
+    {
+        return intval($product_id / 1000) . '000' . '/';
     }
 }
