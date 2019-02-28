@@ -1,1 +1,33 @@
 /* pages/Home/category_list/category_list.wxss */
+.section-category-list{
+  padding-top: 24rpx;
+}
+.category-list-header{
+  margin-bottom: 30rpx;
+}
+.category-zone-icon{
+  width: 30rpx;
+  height: 28rpx;
+}
+.category-zone-name{
+  font-size: 1.4em;
+  font-weight: bold;
+  line-height: 30rpx;
+  margin: 30rpx;
+}
+.category-list-content{
+  font-size: 1.4em;
+  line-height: 36rpx;
+  padding: 0 20rpx;
+  background: #fff;
+}
+.category-group{
+  margin-top: 26rpx;
+}
+.category-group-name,.category-category-item{
+  padding: 36rpx 0 20rpx 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.category-category-list{
+
+}

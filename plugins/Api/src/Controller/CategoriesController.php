@@ -14,7 +14,7 @@ class CategoriesController extends AppController
 
     public function lists()
     {
-        $params = $this->request->getData();
+        $params = $this->request->query();
         switch ($params['type']) {
             case 'zones':
                 $zones = $this
@@ -39,9 +39,11 @@ class CategoriesController extends AppController
                         ->select(['Groups.id','Groups.name'])
                         ->contain(['Categories' => function ($query)
                         {
-                            return $query->select(['Categories.id','Categories.group_id','Categories.name'])
+                            return $query->select(['Categories.id','Categories.group_id','Categories.name','product_count' => $query->func()->count('Products.id')])
                                 ->where(['Categories.is_visible' => 1])
-                                ->order(['Categories.sort desc','Categories.id desc']);
+                                ->order(['Categories.sort desc','Categories.id desc'])
+                                ->leftJoinWith('Products')
+                                ->group(['Categories.id']);
                         }])
                         ->where(['Groups.is_visible' => 1])
                         ->order(['Groups.sort desc','Groups.id desc'])

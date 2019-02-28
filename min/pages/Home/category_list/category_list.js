@@ -38,14 +38,21 @@ Page({
         id:zone_id
       },
       success:function(res){
-        this.setData({
-          zone:res.data.zone,
-          groups:res.data.groups
+        let data = res.data.data
+        _this.setData({
+          zone:data.zone,
+          groups:data.groups
         })
       },
       fail:function(res){
         comm.showToast('分类获取失败')
       }
+    })
+  },
+  handlerNavigatorToProductList:function(e){
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: '/pages/Home/product_list/product_list?category_id='+id,
     })
   },
   /**

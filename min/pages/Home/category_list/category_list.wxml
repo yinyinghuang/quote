@@ -9,8 +9,18 @@
   </view>  
   <view class='section section-category-list'>
     <view class='category-list-header'>
-      <image src='/static/images/icon/home.png'></image>
-      <text>电脑</text>
+      <image src='/static/images/icon/home.png' class='category-zone-icon'></image>
+      <text class='category-zone-name'>电脑</text>
+    </view>
+    <view class='category-list-content'>
+      <view class='category-group' wx:for='{{groups}}' wx:key='id' wx:for-item='group'>
+        <view class='category-group-name'>{{group.name}}</view>
+        <view class='category-category-list'>
+          <view class='category-category-item' wx:for='{{group.categories}}' wx:for-item='category' wx:key='id' data-id='{{category.id}}' bindtap='handlerNavigatorToProductList'>
+            {{category.name}}|{{category.product_count}}
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 
