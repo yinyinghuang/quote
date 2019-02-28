@@ -14,7 +14,7 @@ class CategoriesController extends AppController
 
     public function lists()
     {
-        $params = $this->request->query();
+        $params = $this->request->getData();
         switch ($params['type']) {
             case 'zones':
                 $zones = $this
