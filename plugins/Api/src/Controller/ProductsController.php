@@ -36,13 +36,28 @@ class ProductsController extends AppController
             ->limit($limit)
             ->map(function ($row)
             {                
-                $row->albums = $this->getProductAlbumUrl($row->id,$row->album);
+                $row->cover = $this->getProductCover($row->id,$row->album);
                 return $row;
             })
             ->toArray();
         $this->ret(0, $products, '加载成功');
     }
 
+    private function getProductCover($product_id,$product_album)     
+    {
+        
+        $cover = '';
+        if ($product_album) {
+            $albumDir        = $this->getAlbumDir($product_id);
+            $albums = json_decode($product_album,true);
+            if(count($albums)){
+                $album = $albums[0];
+                $cover = 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_2.' . $album[1];
+            }
+        }
+        return $cover;
+
+    }
     private function getProductAlbumUrl($product_id,$product_album)     
     {
         $albumDir        = $this->getAlbumDir($product_id);

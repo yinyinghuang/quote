@@ -37,8 +37,7 @@ class CategoriesController extends AppController
                     $groups = $this->loadModel('Groups')
                         ->find()
                         ->select(['Groups.id','Groups.name'])
-                        ->contain(['Categories' => function ($query)
-                        {
+                        ->contain(['Categories' => function ($query){
                             return $query->select(['Categories.id','Categories.group_id','Categories.name','product_count' => $query->func()->count('Products.id')])
                                 ->where(['Categories.is_visible' => 1])
                                 ->order(['Categories.sort desc','Categories.id desc'])

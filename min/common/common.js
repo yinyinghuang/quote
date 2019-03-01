@@ -28,7 +28,12 @@ function request(requestHandler){
     method:requestHandler.method,
     success:function(res){
       wx.hideLoading()
-      typeof(requestHandler.success) === 'function' && requestHandler.success(res)
+      if(res.data.errCode){
+        showToast(res.data.errMsg)
+      }else{
+        typeof (requestHandler.success) === 'function' && requestHandler.success(res)
+      }
+      
     },
     fail:function(){
       wx.hideLoading()

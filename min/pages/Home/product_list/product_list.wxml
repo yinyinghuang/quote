@@ -8,11 +8,52 @@
     <official-account></official-account>
   </view>  
   <view class='section section-product-list'>
-    <view class='product-list-header'>
-      <image src='/static/images/icon/home.png' class='product-zone-icon'></image>
-      <text class='product-zone-name'>电脑</text>
+    <view class='product-list-bread'>
+      <text>首页</text>
+      <text class='split'>></text>
+      <text>二级分类</text>
+      <text class='split'>></text>
+      <text class='active'>产品列表</text>
     </view>
-    <view class='product-list-content'>
+    <view class='product-list-filter flex-row'>
+      <view class='product-list-filter-option active'>综合推荐</view>
+      <view class='product-list-filter-option'>人气</view>
+      <view class='product-list-filter-option'>最新</view>
+      <view class='product-list-filter-option' bindtap='handlerNavigatorToFilter' data-category-id='100000'>筛选项</view>
+    </view>
+    <view>
+      <view class='product-list-last flex-column'>
+        <view wx:for="{{products}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
+          <view class='product-icon'>
+            <image src='{{item.album}}' lazy-load binderror='hanlderImageError' data-id='{{index}}'></image>
+          </view>
+          <view class='product-info'>
+            <view class='product-item-text'>{{item.name}}</view>
+            <block wx:if='{{ item.price_hong_max===0 && item.price_hong_min===0 && item.price_water_max===0 && item.price_water_min===0}}'>
+              <view class='product-item-price'>暂无报价</view>
+            </block>
+            <block wx:else>
+              <block wx:if='{{item.price_hong_max!==0 || item.price_hong_min!==0}}'>
+                <view class='product-item-price'>
+                  HK${{item.price_hong_min?item.price_hong_min:''}}
+                  <block wx:if='{{item.price_hong_max && item.price_hong_min}}'>-</block>
+                  {{item.price_hong_max?item.price_hong_max:''}}
+                  <text class='product-price-label'>行</text>
+                </view>
+              </block>
+              <block wx:if='{{item.price_water_max!==0 || item.price_water_min!==0}}'>
+                <view class='product-item-price'>
+                  HK${{item.price_water_min?item.price_water_min:''}}
+                  <block wx:if='{{item.price_water_max && item.price_water_min}}'>-</block>
+                  {{item.price_water_max?item.price_water_max:''}}
+                  <text class='product-price-label'>水</text>
+                </view>
+              </block>
+            </block>
+            
+          </view>   
+        </view>
+      </view>
     </view>
   </view>
 
