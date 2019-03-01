@@ -59,11 +59,9 @@ class CategoriesTable extends Table
             'foreignKey' => 'category_id',
             'className' => 'Api.Products'
         ]);
-        $this->belongsToMany('Attributes', [
+        $this->hasMany('CategoriesAttributes', [
             'foreignKey' => 'category_id',
-            'targetForeignKey' => 'attribute_id',
-            'joinTable' => 'categories_attributes',
-            'className' => 'Api.Attributes'
+            'className' => 'Api.CategoriesAttributes'
         ]);
         $this->belongsToMany('Brands', [
             'foreignKey' => 'category_id',

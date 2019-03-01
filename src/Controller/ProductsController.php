@@ -171,7 +171,7 @@ class ProductsController extends AppController
             'contain'    => ['Attributes'],
             'conditions' => [
                 'category_id' => $category_id,
-                'filter_type' => 1,
+                'is_filter' => 1,
             ],
             'fields'     => [
                 'cateAttrId' => 'CategoriesAttributes.id',

@@ -21,4 +21,8 @@ class AppController extends BaseController
 	protected function getOffset($page,$limit){
 		return ($page-1)*$limit;
 	}
+
+	protected function getDefaultOrder($controller){
+		return [$controller.'.sort desc',$controller.'.id desc'];
+	}
 }
