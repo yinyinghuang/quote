@@ -59,13 +59,42 @@ class CategoriesController extends AppController
         }
     }
 
-    public function getDetail()
+    public function getCategoryRelated()
     {
         $category_id = $this->request->getData('category_id');
         $category = $this->loadModel('Categories')
-            ->find()
-            ->where(['Categories.is_visible' => 1,'Categories.id' => $category_id])
+            ->find('all',[
+                'contain' => ['Zones','Groups'],
+                'conditions' => ['Categories.is_visible' => 1,'Categories.id' => $category_id],
+
+            ])
             ->first();
+
+        if (!empty($category)) {
+            $category->filter = $this->getCategoryFilter($category_id);
+        }
+
         $this->ret(0,$category,['分类信息加载成功']);
+    }
+
+    //获取分类的属性键值,及为筛选项的属性键
+    private function getCategoryFilter($category_id)
+    {
+
+        //分类下为筛选项的属性
+        $cateFilterAttrs = $this->CategoriesAttributes->find('all', [
+            'contain'    => ['Attributes','CategoryAttributeFilters'],
+            'conditions' => [
+                'category_id' => $category_id,
+                'filter_type' => 1,
+            ],
+            'fields'     => [
+                'id' => 'CategoriesAttributes.id',
+                'name' => 'Attributes.name',
+                'filter_type' = 'CategoriesAttributes.filter_type'
+            ],
+        ])
+            ->toArray();
+        return $cateFilterAttrs;
     }
 }

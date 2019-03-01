@@ -26,6 +26,16 @@ Page({
     })
     app.openSetting(this.initPage)
   },
+  //页面上拉触底事件的处理函数
+  onReachBottom: function () {
+    const _this = this
+    _this.getProductList(_this.data.options)
+  },
+  //页面相关事件处理函数--监听用户下拉动作
+  onPullDownRefresh: function () {
+    const _this = this
+    _this.getProductList(Object.assign({},_this.data.options,{page:1}))
+  },
   //初始化页面
   initPage: function () {
     const _this = this
@@ -51,20 +61,20 @@ Page({
   //获取产品列表
   getProductList: function (options) {
     const _this = this
-
-    comm.request({
-      url: glbd.host + 'products/lists',
+    const time = Date.now()
+    comm.request({      
+      url: glbd.host + 'products/lists?t=' + time,
       method: glbd.method,
       data: options,
-      success: function (res) {
-        let time = Date.now()
+      success: function (res) {        
         res.data.data.map((item) => {
           item.album = item.cover ? glbd.hosts + item.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
           delete (item.albums)
         })
+        const page = _this.data.options.page
         _this.setData({
-          products: res.data.data,
-          'options.page': ++_this.data.options.page
+          products: page === 1 ? res.data.data:_this.data.products.concat(res.data.data),
+          'options.page': page+1
         })
       },
     })
@@ -95,11 +105,6 @@ Page({
     wx.navigateTo({
       url: '/pages/Home/category_filter/category_filter?category_id='+id+'&sort='+_this.data.options.sort,
     })
-  },
-  //页面上拉触底事件的处理函数
-  onReachBottom: function () {
-    const _this = this
-    _this.getProductList(_this.data.options)
   },
 
   /**

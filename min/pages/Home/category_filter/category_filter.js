@@ -1,20 +1,31 @@
 // pages/Home/category_filter/category_filter.js
+let app = getApp()
+let glbd = app.globalData
+const comm = require('../../../common/common.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    filter:{},
+    category_id:0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      options: Object.assign({}, this.data.options, options)
+    })
+    app.openSetting(this.initPage)
   },
-
+  //初始化页面
+  initPage: function () {
+    const _this = this
+    _this.getCategoryFilter(_this.data.options, _this.data.page)
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
