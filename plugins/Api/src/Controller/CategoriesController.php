@@ -82,7 +82,7 @@ class CategoriesController extends AppController
     {
 
         //分类下为筛选项的属性
-        $cateFilterAttrs = $this->CategoriesAttributes->find('all', [
+        $cateFilterAttrs = $this->loadModel('CategoriesAttributes')->find('all', [
             'contain'    => ['Attributes','CategoryAttributeFilters'],
             'conditions' => [
                 'category_id' => $category_id,

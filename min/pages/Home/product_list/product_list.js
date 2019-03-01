@@ -39,14 +39,16 @@ Page({
   //初始化页面
   initPage: function () {
     const _this = this
-    _this.data.options.category_id && _this.getCategory(_this.data.options.category_id)
+    if (_this.data.options.category_id ){
+      _this.getCategoryRelated(_this.data.options.category_id)
+    }       
     _this.getProductList(_this.data.options,_this.data.page)
   },
-  //获取分类信息
-  getCategory: function (category_id) {
+  //获取分类信息及筛选项
+  getCategoryRelated: function (category_id) {
     const _this = this
     comm.request({
-      url: glbd.host + 'categories/get-detail',
+      url: glbd.host + 'categories/get-category-related',
       method: glbd.method,
       data: {
         category_id
