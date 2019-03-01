@@ -9,17 +9,19 @@
   </view>  
   <view class='section section-product-list'>
     <view class='product-list-bread'>
-      <text>首页</text>
-      <text class='split'>></text>
-      <text>二级分类</text>
+      <text bindtap='handlerNavigatorToIndex'>首页</text>
+      <block wx:if='{{category}}'>      
+        <text class='split'>></text>
+        <text>{{category.name}}</text>
+      </block>
       <text class='split'>></text>
       <text class='active'>产品列表</text>
     </view>
     <view class='product-list-filter flex-row'>
-      <view class='product-list-filter-option active'>综合推荐</view>
-      <view class='product-list-filter-option'>人气</view>
-      <view class='product-list-filter-option'>最新</view>
-      <view class='product-list-filter-option' bindtap='handlerNavigatorToFilter' data-category-id='100000'>筛选项</view>
+      <view class='product-list-filter-option {{options.sort==="default" ? "active":0}}' data-sort='default' bindtap='handlerProductSort'>综合推荐</view>
+      <view class='product-list-filter-option {{options.sort==="fav" ? "active":0}}' data-sort="fav" bindtap='handlerProductSort'>人气</view>
+      <view class='product-list-filter-option {{options.sort==="newest" ? "active":0}}' data-sort='newest' bindtap='handlerProductSort'>最新</view>
+      <view class='product-list-filter-option {{options.filter===1 ? "filtered":0}}' bindtap='handlerNavigatorToFilter' data-id='{{category.id}}' wx:if='{{category}}'>筛选项</view>
     </view>
     <view>
       <view class='product-list-last flex-column'>

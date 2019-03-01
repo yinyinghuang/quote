@@ -17,4 +17,8 @@ class AppController extends BaseController
 	    ] + $extra;
 	    die(json_encode($res));
 	}
+
+	protected function getOffset($page,$limit){
+		return ($page-1)*$limit;
+	}
 }

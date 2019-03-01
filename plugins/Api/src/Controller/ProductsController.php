@@ -19,13 +19,22 @@ class ProductsController extends AppController
         $contain = ['Categories'];
         $order   = ['Products.sort desc', 'Products.id desc'];
         $limit   = 20;
+        $offset = $this->getOffset(isset($params['page']) ? $params['page']:1,$limit);
 
-        if(isset($params['type'])){
+        //最新更新
+        if (isset($params['type'])) {
             switch ($params['type']) {
                 case 'last':
                     $order = ['Products.modified desc'] + $order;
                     break;
             }
+        }
+        //获取筛选条件
+        
+        
+        //获取排序
+        if(isset($params['sort'])){
+
         }
         $products = $this->Products
             ->find()
@@ -33,24 +42,24 @@ class ProductsController extends AppController
             ->where($where)
             ->contain($contain)
             ->order($order)
+            ->offset($offset)
             ->limit($limit)
-            ->map(function ($row)
-            {                
-                $row->cover = $this->getProductCover($row->id,$row->album);
+            ->map(function ($row) {
+                $row->cover = $this->getProductCover($row->id, $row->album);
                 return $row;
             })
             ->toArray();
         $this->ret(0, $products, '加载成功');
     }
 
-    private function getProductCover($product_id,$product_album)     
+    private function getProductCover($product_id, $product_album)
     {
-        
+
         $cover = '';
         if ($product_album) {
-            $albumDir        = $this->getAlbumDir($product_id);
-            $albums = json_decode($product_album,true);
-            if(count($albums)){
+            $albumDir = $this->getAlbumDir($product_id);
+            $albums   = json_decode($product_album, true);
+            if (count($albums)) {
                 $album = $albums[0];
                 $cover = 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_2.' . $album[1];
             }
@@ -58,12 +67,12 @@ class ProductsController extends AppController
         return $cover;
 
     }
-    private function getProductAlbumUrl($product_id,$product_album)     
+    private function getProductAlbumUrl($product_id, $product_album)
     {
-        $albumDir        = $this->getAlbumDir($product_id);
-        $albums = [];
+        $albumDir = $this->getAlbumDir($product_id);
+        $albums   = [];
         if ($product_album) {
-            foreach (json_decode($product_album,true) as $key => $album) {
+            foreach (json_decode($product_album, true) as $key => $album) {
                 $albums[] = [
                     'thumb'  => 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_2.' . $album[1],
                     'middle' => 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_4.' . $album[1],

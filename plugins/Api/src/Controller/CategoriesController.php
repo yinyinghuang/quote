@@ -53,14 +53,13 @@ class CategoriesController extends AppController
                 }
                 
                 break;
-            
             default:
                 # code...
                 break;
         }
     }
 
-    public function detail()
+    public function getDetail()
     {
         $category_id = $this->request->getData('category_id');
         $category = $this->loadModel('Categories')
