@@ -35,7 +35,11 @@ Page({
       method:glbd.method,
       data:options,
       success:function(res){
-
+        let time = Date.now()
+        res.data.data.map((item) => {
+          item.album = item.cover ? glbd.hosts + item.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
+          delete (item.albums)
+        })
         _this.setData({
           products:res.data.data
         })

@@ -59,4 +59,13 @@ class CategoriesController extends AppController
                 break;
         }
     }
+
+    public function detail()
+    {
+        $category_id = $this->request->getData('category_id');
+        $category = $this->loadModel('Categories')
+            ->find()
+            ->where(['Categories.is_visible' => 1,'Categories.id' => $category_id]);
+        $this->ret(0,$category,['分类信息加载成功'])
+    }
 }

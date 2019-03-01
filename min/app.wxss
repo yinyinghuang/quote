@@ -55,7 +55,7 @@ page {
 }
 
 
-/* 最近更新 */
+/* 产品列表 */
 .product-list-last  .product-item{
   width: 100%;
   height: 196rpx;

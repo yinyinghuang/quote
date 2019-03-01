@@ -83,7 +83,7 @@ Page({
         if (res.data.errCode === 0) {
           let time = Date.now()
           res.data.data.map((item) => {
-            item.album = item.albums.length ? glbd.hosts+ item.albums[0].thumb+'?t='+time : '/static/image/icon/red/nopic.png'
+            item.album = item.cover ? glbd.hosts+ item.cover+'?t='+time : '/static/image/icon/red/nopic.png'
             delete (item.albums)
           })
           _this.setData({
