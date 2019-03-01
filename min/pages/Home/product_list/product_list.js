@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    category:null,
     products:[],
     options:{}
   },
@@ -24,7 +25,24 @@ Page({
   //初始化页面
   initPage:function(){
     const _this = this
+    _this.data.options.category_id && _this.getCategory(_this.data.options.category_id)
     _this.getProductList(_this.data.options)
+  },
+  //获取分类信息
+  getCategory:function(category_id){
+    const _this = this
+    comm.request({
+      url:glbd.host+'categories/detail',
+      method:glbd.method,
+      data:{
+        category_id
+      },
+      success:function(res){
+        this.setData({
+          category:res.data.data
+        })
+      },
+    })
   },
   //获取产品列表
   getProductList:function(options){

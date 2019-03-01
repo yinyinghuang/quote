@@ -47,9 +47,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 1,
 					"name": "产品列表",
 					"pathName": "pages/Home/product_list/product_list",
+					"query": "category_id=100094",
 					"scene": null
 				}
 			]

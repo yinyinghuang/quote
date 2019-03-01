@@ -66,6 +66,6 @@ class CategoriesController extends AppController
         $category = $this->loadModel('Categories')
             ->find()
             ->where(['Categories.is_visible' => 1,'Categories.id' => $category_id]);
-        $this->ret(0,$category,['分类信息加载成功'])
+        $this->ret(0,$category,['分类信息加载成功']);
     }
 }
