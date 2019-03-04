@@ -1,2 +1,20 @@
 <!--pages/Home/category_filter/category_filter.wxml-->
-<text>pages/Home/category_filter/category_filter.wxml</text>
+<view class='container'>
+  <view class='section section-filter' wx:if='{{filter.length}}'>
+    <text class='section-title'>筛选</text>
+    <view class='product-list-filter flex-column'>
+      <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToFilterOption' class='product-item '>
+        <view class='flex-column product-item-container'>
+          <image class='product-item-icon' src='{{item.album}}' lazy-load binderror='hanlderImageError' data-id='{{index}}'></image>
+          <text class='prodcut-item-split'></text>
+          <view class='product-item-text'>{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='section section-official-account'>
+    <official-account></official-account>
+  </view>
+</view>
+
+

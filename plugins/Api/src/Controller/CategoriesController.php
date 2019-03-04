@@ -89,26 +89,13 @@ class CategoriesController extends AppController
     // }
 
     //获取分类的属性键值,及为筛选项的属性键
-    public function getCategoryFilter()
+    public function getCategoryIsFilter()
     {
 
         $category_id = $this->request->query('category_id');
         //分类下为筛选项的属性
         $cateFilterAttrs = $this->loadModel('CategoriesAttributes')->find('all', [
-            'contain'    => ['Attributes' => function ($query) {
-                return $query->select(['Attributes.id']);  
-            }, 'CategoryAttributeFilters' => function ($query) {
-                return $query
-                    ->select([
-                        'CategoryAttributeFilters.id',
-                        'CategoryAttributeFilters.filter',
-                        'CategoryAttributeFilters.category_attribute_id',
-                    ])
-                    ->where([
-                        'CategoryAttributeFilters.is_visible' => 1,
-                    ])
-                    ->order($this->getDefaultOrder('CategoryAttributeFilters'));
-            }],
+            'contain'    => ['Attributes'],
             'conditions' => [
                 'CategoriesAttributes.category_id' => $category_id,
                 'CategoriesAttributes.is_filter'   => 1,
@@ -119,7 +106,22 @@ class CategoriesController extends AppController
                 'name'        => 'Attributes.name',
                 'filter_type' => 'CategoriesAttributes.filter_type',
             ],
-        ])->enableAutoFields(true)
+        ])
+            ->toArray();
+        $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
+    }
+    //获取分类的属性键值,及为筛选项的属性键
+    public function getCategoryFilterOption()
+    {
+
+        $category_attribute_id = $this->request->query('category_attribute_id');
+        //分类下为筛选项的属性
+        $cateFilterAttrs = $this->loadModel('CategoryAttributeFilters')->find('all', [
+            'conditions' => [
+                'CategoryAttributeFilters.category_attribute_id' => $category_attribute_id,
+                'CategoryAttributeFilters.is_visible'  => 1,
+            ],
+        ])
             ->toArray();
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
     }

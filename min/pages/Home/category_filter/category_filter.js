@@ -17,7 +17,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      options: Object.assign({}, this.data.options, options)
+      category_id: options.category_id
     })
     app.openSetting(this.initPage)
   },
@@ -27,11 +27,14 @@ Page({
     _this.getCategoryRelated(_this.data.category_id)
   },
   getCategoryRelated: function (category_id){
+    const _this = this 
     comm.request({
       url:glbd.host+'categories/get-category-filter?category_id=' + category_id,
       method:glbd.method,
       success:function(res){
-        
+       _this.setData({
+         filter:res.data.data
+       }) 
       }
     })
   },
