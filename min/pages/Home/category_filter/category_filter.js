@@ -24,7 +24,16 @@ Page({
   //初始化页面
   initPage: function () {
     const _this = this
-    _this.getCategoryFilter(_this.data.options, _this.data.page)
+    _this.getCategoryRelated(_this.data.category_id)
+  },
+  getCategoryRelated: function (category_id){
+    comm.request({
+      url:glbd.host+'categories/get-category-filter?category_id=' + category_id,
+      method:glbd.method,
+      success:function(res){
+        
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
