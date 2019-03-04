@@ -122,6 +122,10 @@ class CategoriesController extends AppController
                 'CategoryAttributeFilters.category_attribute_id' => $category_attribute_id,
                 'CategoryAttributeFilters.is_visible'  => 1,
             ],
+            'fields'     => [
+                'id'          => 'CategoryAttributeFilters.id',
+                'filter'        => 'CategoryAttributeFilters.filter',
+            ],
             'order' => $this->getDefaultOrder('CategoryAttributeFilters'),
         ])
             ->toArray();

@@ -8,8 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    filter:{},
-    category_id:0
+    filter:{},//筛选项列表
+    category_id:0,
+    selected:{},//选中的筛选项
   },
 
   /**
@@ -17,7 +18,8 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      category_id: options.category_id
+      category_id: options.category_id,
+      filter_selected: options.filter_selected?JSON.parse(options.filter_selected):{},
     })
     app.openSetting(this.initPage)
   },
@@ -32,51 +34,25 @@ Page({
       url:glbd.host+'categories/get-category-is-filter?category_id=' + category_id,
       method:glbd.method,
       success:function(res){
+        res.data.data.forEach((item) => {
+
+        })
        _this.setData({
          filter:res.data.data
        }) 
       }
     })
   },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  handlerNavigatorToFilterOption:function(e){
+    const {id,name} = e.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/Home/category_filter_option/category_filter_option?category_attribute_id='+id+'&category_attribute_name='+name,
+    })
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
 
   },
 

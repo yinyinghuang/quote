@@ -37,7 +37,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -58,6 +58,13 @@
 					"name": "筛选页",
 					"pathName": "pages/Home/category_filter/category_filter",
 					"query": "category_id=100094",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "筛选选项",
+					"pathName": "pages/Home/category_filter_option/category_filter_option",
+					"query": "category_attribute_id=100454",
 					"scene": null
 				}
 			]

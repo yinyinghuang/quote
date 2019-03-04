@@ -1,3 +1,8 @@
+.section-official-account{
+  height: 100rpx;
+  background: #000;
+}
+
 /**app.wxss**/
 page {
     width: 100%;

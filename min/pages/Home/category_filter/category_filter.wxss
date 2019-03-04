@@ -1,1 +1,48 @@
 /* pages/Home/category_filter/category_filter.wxss */
+.section-filter{
+  padding-top: 40rpx;
+}
+.section-title{
+  font-size: 1.4em;
+  line-height: 80rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+.filter-list{
+  background: #fff;
+  padding: 0 20rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.filter-item{
+  padding-top: 40rpx;
+  padding-bottom: 10rpx;
+  border-bottom:1px solid #e5e5e5;
+  justify-content: space-between
+}
+.filter-item-name,
+.filter-item-selected{
+  font-size: 1.4em;
+  line-height: 36rpx;
+}
+.filter-item-selected{
+  font-size: 1.2em;
+  color:#ff7878;
+  font-weight: bold
+}
+.filter-item-arrow{
+  padding-left: 10rpx;
+}
+.filter-reset,
+.filter-confirm{
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-align: center;
+  background: #fff;
+  margin-top: 15rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.section-official-account{
+  
+}

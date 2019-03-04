@@ -2,14 +2,17 @@
 <view class='container'>
   <view class='section section-filter' wx:if='{{filter.length}}'>
     <text class='section-title'>筛选</text>
-    <view class='product-list-filter flex-column'>
-      <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToFilterOption' class='product-item '>
-        <view class='flex-column product-item-container'>
-          <image class='product-item-icon' src='{{item.album}}' lazy-load binderror='hanlderImageError' data-id='{{index}}'></image>
-          <text class='prodcut-item-split'></text>
-          <view class='product-item-text'>{{item.name}}</view>
-        </view>
+    <view class='filter-list'>
+      <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}'   bindtap='handlerNavigatorToFilterOption' class='filter-item flex-row'>
+          <view class='filter-item-name'>{{item.name}}</view>
+          <view class='filter-item-selected'>全部<text class='filter-item-arrow'>></text></view>
       </view>
+    </view>
+    <view class='filter-reset'>
+      重置
+    </view>
+    <view class='filter-confirm'>
+      确认
     </view>
   </view>
   <view class='section section-official-account'>

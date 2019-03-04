@@ -1,2 +1,22 @@
 <!--pages/Home/category_filter_option/category_filter_option.wxml-->
-<text>pages/Home/category_filter_option/category_filter_option.wxml</text>
+<view class='container'>
+  <view class='section section-filter' wx:if='{{filter.length}}'>
+    <view class='section-title'>
+      <text>筛选</text>
+      <text class='split'>></text>
+      <text>筛选</text>
+    </view>
+
+    <view class='option-list'>
+      <view wx:for="{{option}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' bindtap='handlerSelect' class='filter-item'>
+          <view class='option-item-name'>{{item.name}}</view>
+      </view>
+    </view>
+    <view class='option-confirm'>
+      确认
+    </view>
+  </view>
+  <view class='section section-official-account'>
+    <official-account></official-account>
+  </view>
+</view>

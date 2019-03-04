@@ -15,6 +15,7 @@ Page({
       sort: 'default',
       page:1
     },
+    filter_selected:{}
   },
 
   /**
