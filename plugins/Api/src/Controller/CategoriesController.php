@@ -106,6 +106,7 @@ class CategoriesController extends AppController
                 'name'        => 'Attributes.name',
                 'filter_type' => 'CategoriesAttributes.filter_type',
             ],
+            'order' => $this->getDefaultOrder('CategoriesAttributes'),
         ])
             ->toArray();
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
@@ -121,6 +122,7 @@ class CategoriesController extends AppController
                 'CategoryAttributeFilters.category_attribute_id' => $category_attribute_id,
                 'CategoryAttributeFilters.is_visible'  => 1,
             ],
+            'order' => $this->getDefaultOrder('CategoryAttributeFilters'),
         ])
             ->toArray();
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
