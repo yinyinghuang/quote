@@ -8,8 +8,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    option:{},
-    options:null
+    option:[],
+    selected:[],
+    category_attribute_id:0,
+    filter_type:1
   },
 
   /**
@@ -17,7 +19,9 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      options: options.selected?JSON.parse(options.selected):[]
+      selected: options.selected?JSON.parse(options.selected):[],
+      category_attribute_id: options.category_attribute_id,
+      filter_type:options.filter_type
     })
     app.openSetting(this.initPage)
   },
@@ -33,20 +37,30 @@ Page({
     _this.getCategoryFilterOption(_this.data.category_attribute_id)
   },
   getCategoryFilterOption: function (category_attribute_id){
+    const _this = this 
     comm.request({
-      url: glbd.host + 'category/get-category-filter-option?category_attribute_id=' + category_attribute_id,
+      url: glbd.host + 'categories/get-category-filter-option?category_attribute_id=' + category_attribute_id,
       method:glbd.method,
       success:function(res){
-        _this.data.options.map((selected) => {
-
+        //原始已选项与选项列表结合
+        _this.data.selected.forEach((selected_item) => {
+          res.data.data.forEach((item) => {
+            item.selected = selected_item.id === item.id ? 1:0
+          })
         })
-        res.data.data.forEach((item) => {
-
-        })
+        _this.setData({
+          option: res.data.data
+        })        
       },
     })
   },
+  handlerSelect:function(e){
+    const {index} = e.currentTarget.dataset
+    const {option} = this.data
+    const has_be_selected_count = option.some((item) => item.selected)
+    option[index]['selected'] = !option[index]['selected'] 
 
+  },
   /**
    * 用户点击右上角分享
    */

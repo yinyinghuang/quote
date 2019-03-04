@@ -3,7 +3,7 @@
   <view class='section section-filter' wx:if='{{filter.length}}'>
     <text class='section-title'>筛选</text>
     <view class='filter-list'>
-      <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}'   bindtap='handlerNavigatorToFilterOption' class='filter-item flex-row'>
+      <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-filter_type='{{item.filter_type}}'   bindtap='handlerNavigatorToFilterOption' class='filter-item flex-row'>
           <view class='filter-item-name'>{{item.name}}</view>
           <view class='filter-item-selected'>全部<text class='filter-item-arrow'>></text></view>
       </view>

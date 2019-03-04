@@ -8,7 +8,7 @@
     </view>
 
     <view class='option-list'>
-      <view wx:for="{{option}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' bindtap='handlerSelect' class='filter-item'>
+      <view wx:for="{{option}}" wx:key="id" data-index='index' bindtap='handlerSelect' class='filter-item'>
           <view class='option-item-name'>{{item.name}}</view>
       </view>
     </view>

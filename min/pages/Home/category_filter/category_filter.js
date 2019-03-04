@@ -44,9 +44,9 @@ Page({
     })
   },
   handlerNavigatorToFilterOption:function(e){
-    const {id,name} = e.currentTarget.dataset
+    const { id, filter_type} = e.currentTarget.dataset
     wx.navigateTo({
-      url: '/pages/Home/category_filter_option/category_filter_option?category_attribute_id='+id+'&category_attribute_name='+name,
+      url: '/pages/Home/category_filter_option/category_filter_option?category_attribute_id=' + id + '&filter_type=' + filter_type,
     })
   },
   /**
