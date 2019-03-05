@@ -64,7 +64,7 @@ class CategoriesController extends AppController
 
     public function getCategoryRelated()
     {
-        $category_id = $this->request->query('category_id');
+        $category_id = $this->request->getData('category_id');
         $category    = $this->loadModel('Categories')
             ->find('all', [
                 'contain'    => ['Zones', 'Groups'],
