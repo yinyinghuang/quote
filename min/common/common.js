@@ -46,9 +46,10 @@ function request(requestHandler){
   })
 }
 
-
+const type = (varible) => Object.prototype.toString.call(varible)
 export {
   showToast,
   request,
-  requestData
+  requestData,
+  type
 }

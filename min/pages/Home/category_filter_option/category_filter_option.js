@@ -9,19 +9,21 @@ Page({
    */
   data: {
     option:[],
-    selected:[],
     category_attribute_id:0,
-    filter_type:1
+    filter_type:1,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const cate_filter_page = getCurrentPages()[getCurrentPages().length - 2]['__data__']
     this.setData({
-      selected: options.selected?JSON.parse(options.selected):[],
       category_attribute_id: options.category_attribute_id,
-      filter_type:options.filter_type
+      attribute_name: options.attribute_name,
+      filter_type:options.filter_type,
+      cate_filter_page
+
     })
     app.openSetting(this.initPage)
   },
@@ -43,11 +45,12 @@ Page({
       method:glbd.method,
       success:function(res){
         //原始已选项与选项列表结合
-        _this.data.selected.forEach((selected_item) => {
+        const selected = _this.data.cate_filter_page.selected[_this.data.category_attribute_id]
+        if (selected){
           res.data.data.forEach((item) => {
-            item.selected = selected_item.id === item.id ? 1:0
+            item.selected = selected.id ? 1 : 0
           })
-        })
+        }
         _this.setData({
           option: res.data.data
         })        
@@ -55,11 +58,39 @@ Page({
     })
   },
   handlerSelect:function(e){
+    
     const {index} = e.currentTarget.dataset
     const {option} = this.data
-    const has_be_selected_count = option.some((item) => item.selected)
+    if(this.data.filter_type==1){
+      if (!option[index]['selected']){
+        option.some((item) => {
+          if (item.selected) item.selected=!1
+          return item.selected
+        })
+      }      
+    }
     option[index]['selected'] = !option[index]['selected'] 
+    this.setData({
+      option
+    })
 
+  },
+  //跳转回筛选页，并将筛选页参数存执globalData中
+  handlerNavigatorToCateFilter:function(){
+    let data = this.data.option.filter((item) => {
+      return item.selected      
+    })
+    if (this.data.filter_type==1) data = data.slice(0,1)
+    
+    let selected = {}
+    data.forEach((option) => {
+      selected[option.id] = option.filter
+    })
+    this.data.cate_filter_page.selected[this.data.category_attribute_id] = selected
+    glbd.cate_filter_page = this.data.cate_filter_page
+    wx.navigateBack({
+      delta:1
+    })
   },
   /**
    * 用户点击右上角分享

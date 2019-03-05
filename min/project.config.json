@@ -64,7 +64,7 @@
 					"id": 3,
 					"name": "筛选选项",
 					"pathName": "pages/Home/category_filter_option/category_filter_option",
-					"query": "category_attribute_id=100454",
+					"query": "category_attribute_id=100454&attribute_name=类型&filter_type=1",
 					"scene": null
 				}
 			]

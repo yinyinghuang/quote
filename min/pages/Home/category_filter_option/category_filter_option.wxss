@@ -1,1 +1,44 @@
 /* pages/Home/category_filter_option/category_filter_option.wxss */
+.section-option{
+  padding-top: 40rpx;
+}
+.section-title{
+  font-size: 1.4em;
+  line-height: 80rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+.option-list{
+  background: #fff;
+  padding: 0 20rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.option-item{
+  padding-top: 40rpx;
+  padding-bottom: 10rpx;
+  border-bottom:1px solid #e5e5e5;
+  justify-content: space-between
+}
+.option-item-name{
+  font-size: 1.4em;
+  line-height: 36rpx;
+}
+.option-item-name.active{
+  font-size: 1.4em;
+  line-height: 36rpx;
+  color:#ff7878;
+}
+.option-reset,
+.option-confirm{
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-align: center;
+  background: #fff;
+  margin-top: 15rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.section-official-account{
+  
+}

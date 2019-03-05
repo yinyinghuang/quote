@@ -62,31 +62,31 @@ class CategoriesController extends AppController
         }
     }
 
-    // public function getCategoryRelated()
-    // {
-    //     $category_id = $this->request->query('category_id');
-    //     $category    = $this->loadModel('Categories')
-    //         ->find('all', [
-    //             'contain'    => ['Zones', 'Groups'],
-    //             'conditions' => ['Categories.is_visible' => 1, 'Categories.id' => $category_id],
-    //             'fields'     => [
-    //                 'id'         => 'Categories.id',
-    //                 'name'       => 'Categories.name',
-    //                 'zone_name'  => 'Zones.name',
-    //                 'zone_id'    => 'Zones.id',
-    //                 'group_name' => 'Groups.name',
-    //                 'group_id'   => 'Groups.id',
-    //             ],
+    public function getCategoryRelated()
+    {
+        $category_id = $this->request->query('category_id');
+        $category    = $this->loadModel('Categories')
+            ->find('all', [
+                'contain'    => ['Zones', 'Groups'],
+                'conditions' => ['Categories.is_visible' => 1, 'Categories.id' => $category_id],
+                'fields'     => [
+                    'id'         => 'Categories.id',
+                    'name'       => 'Categories.name',
+                    'zone_name'  => 'Zones.name',
+                    'zone_id'    => 'Zones.id',
+                    'group_name' => 'Groups.name',
+                    'group_id'   => 'Groups.id',
+                ],
 
-    //         ])
-    //         ->first();
+            ])
+            ->first();
 
-    //     if (!empty($category)) {
-    //         $category->filter = $this->getCategoryFilter($category_id);
-    //     }
+        // if (!empty($category)) {
+        //     $category->filter = $this->getCategoryFilter($category_id);
+        // }
 
-    //     $this->ret(0, $category, ['分类信息加载成功']);
-    // }
+        $this->ret(0, $category, ['分类信息加载成功']);
+    }
 
     //获取分类的属性键值,及为筛选项的属性键
     public function getCategoryIsFilter()

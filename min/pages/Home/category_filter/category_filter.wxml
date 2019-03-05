@@ -3,15 +3,15 @@
   <view class='section section-filter' wx:if='{{filter.length}}'>
     <text class='section-title'>筛选</text>
     <view class='filter-list'>
-      <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-filter_type='{{item.filter_type}}'   bindtap='handlerNavigatorToFilterOption' class='filter-item flex-row'>
+      <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-attribute_name='{{item.name}}' data-filter_type='{{item.filter_type}}'   bindtap='handlerNavigatorToFilterOption' class='filter-item flex-row'>
           <view class='filter-item-name'>{{item.name}}</view>
-          <view class='filter-item-selected'>全部<text class='filter-item-arrow'>></text></view>
+          <view class='filter-item-selected'>{{item.selected}}<text class='filter-item-arrow'>></text></view>
       </view>
     </view>
-    <view class='filter-reset'>
+    <view class='filter-reset' bindtap='handlerReset'>
       重置
     </view>
-    <view class='filter-confirm'>
+    <view class='filter-confirm' bindtap='handlerNavigatorToProductList'>
       确认
     </view>
   </view>

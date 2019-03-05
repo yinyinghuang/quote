@@ -1,18 +1,18 @@
 <!--pages/Home/category_filter_option/category_filter_option.wxml-->
 <view class='container'>
-  <view class='section section-filter' wx:if='{{filter.length}}'>
-    <view class='section-title'>
+  <view class='section section-option' wx:if='{{option.length}}'>
+    <text class='section-title'>
       <text>筛选</text>
       <text class='split'>></text>
-      <text>筛选</text>
-    </view>
+      <text>{{attribute_name}}</text>
+    </text>
 
     <view class='option-list'>
-      <view wx:for="{{option}}" wx:key="id" data-index='index' bindtap='handlerSelect' class='filter-item'>
-          <view class='option-item-name'>{{item.name}}</view>
+      <view wx:for="{{option}}" wx:key="id" data-index='{{index}}' bindtap='handlerSelect' class='option-item'>
+          <view class='option-item-name {{item.selected?"active":""}}'>{{item.filter}}</view>
       </view>
     </view>
-    <view class='option-confirm'>
+    <view class='option-confirm' bindtap='handlerNavigatorToCateFilter'>
       确认
     </view>
   </view>
