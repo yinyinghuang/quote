@@ -13,11 +13,10 @@ Page({
     filter_type:1,
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  //从筛选页跳转至此页
   onLoad: function (options) {
     const cate_filter_page = getCurrentPages()[getCurrentPages().length - 2]['__data__']
+    
     this.setData({
       category_attribute_id: options.category_attribute_id,
       attribute_name: options.attribute_name,
@@ -38,6 +37,7 @@ Page({
     }
     _this.getCategoryFilterOption(_this.data.category_attribute_id)
   },
+  //获取筛选项选项值
   getCategoryFilterOption: function (category_attribute_id){
     const _this = this 
     comm.request({
@@ -45,17 +45,23 @@ Page({
       method:glbd.method,
       success:function(res){
         //原始已选项与选项列表结合
-        const selected = _this.data.cate_filter_page.selected[_this.data.category_attribute_id]
-        if (selected){
-          res.data.data.forEach((item) => {
-            item.selected = selected.id ? 1 : 0
-          })
-        }
+        const option = _this.matchOptionSelected(res.data.data)
         _this.setData({
-          option: res.data.data
+          option
         })        
       },
     })
+  },
+  //匹配筛选项是否已有选项值
+  matchOptionSelected: function (data) {
+    const selected = this.data.cate_filter_page.selected[this.data.category_attribute_id]
+    
+    if (selected) {
+      data.forEach((item) => {
+        item.selected = selected[item.id] ? 1 : 0
+      })
+    }
+    return data
   },
   handlerSelect:function(e){
     

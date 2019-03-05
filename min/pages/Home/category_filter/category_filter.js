@@ -13,20 +13,18 @@ Page({
     selected:{},//选中的筛选项
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  //从列表页进入此页
   onLoad: function (options) {
     const product_list_page = getCurrentPages()[getCurrentPages().length - 2]['__data__']
     this.setData({
       category_id: options.category_id,
-      product_list_page
+      product_list_page,
+      //同步选项信息
+      selected: product_list_page.filter_selected
     })
     app.openSetting(this.initPage)
   },
-  /**
-   * 生命周期函数--监听页面显示
-   */
+  //筛选项值页跳转回时
   onShow: function () {
     if (glbd.cate_filter_page) {
       this.setData({
@@ -42,7 +40,9 @@ Page({
   initPage: function () {
     const _this = this
     _this.getCategoryRelated(_this.data.category_id)
+
   },
+  //获取分类相关信息
   getCategoryRelated: function (category_id){
     const _this = this 
     comm.request({
@@ -70,6 +70,7 @@ Page({
     })
     return data
   },
+  //选择筛选项，进入筛选项选项页
   handlerNavigatorToFilterOption:function(e){
     const { id, filter_type,attribute_name} = e.currentTarget.dataset
     
@@ -77,26 +78,26 @@ Page({
       url: '/pages/Home/category_filter_option/category_filter_option?category_attribute_id=' + id + '&filter_type=' + filter_type + '&attribute_name=' + attribute_name,
     })
   },
+  //确认后跳转至列表页
   handlerNavigatorToProductList:function(){
-    let data = this.data.option.filter((item) => {
-      return item.selected
-    })
-    if (this.data.filter_type == 1) data = data.slice(0, 1)
-
-    let selected = {}
-    data.forEach((option) => {
-      selected[option.id] = option.filter
-    })
-    this.data.product_list_page.selected[this.data.category_attribute_id] = selected
-    glbd.cate_filter_page = this.data.cate_filter_page
+    //将选择结果同步至列表页data
+    this.data.product_list_page.filter_selected = this.data.selected
+    this.data.product_list_page.is_filtered = !!Object.keys(this.data.selected).length
+    glbd.product_list_page = this.data.product_list_page
     wx.navigateBack({
       delta: 1
     })
   },
-
-  /**
-   * 用户点击右上角分享
-   */
+  handlerReset:function(){
+    this.setData({
+      selected: {}
+    })
+    const filter = this.matchFilterSelected(this.data.filter)
+    this.setData({
+      filter
+    })
+  },
+  //用户点击右上角分享
   onShareAppMessage: function () {
 
   }

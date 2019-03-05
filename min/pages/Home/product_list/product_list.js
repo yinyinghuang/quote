@@ -11,7 +11,6 @@ Page({
     category: null,
     products: [],
     options: {
-      filter:null,
       sort: 'default',
       page:1
     },
@@ -26,6 +25,23 @@ Page({
       options: Object.assign({}, this.data.options, options)
     })
     app.openSetting(this.initPage)
+  },
+
+  //筛选项也跳转回时,重新加载页面
+  onShow: function () {
+    if (glbd.product_list_page) {
+      this.setData({
+        ...glbd.product_list_page
+      })
+      delete (glbd.product_list_page)
+      let filter = []
+      Object.values(this.data.filter_selected).map((filter_item) => {
+        filter = Object.keys(filter_item).concat(filter)
+      })
+      this.data.options.filter = filter.length?filter.join(',')+',' :''
+      this.getProductList(this.data.options, 1)
+    }
+
   },
   //页面上拉触底事件的处理函数
   onReachBottom: function () {
