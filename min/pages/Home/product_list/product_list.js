@@ -108,6 +108,11 @@ Page({
       url: '/pages/Home/index/index',
     })
   },
+  //跳转至分类列表
+  handlerNavigatorToCateList: function (e) {
+    const {id,type} = e.currentTarget.dataset
+    wx.navigateTo({ url: '/pages/Home/category_list/category_list?type='+type+'&id=' + id })
+  },
   //排序产品,page归零
   handlerProductSort: function (e) {
     const _this = this

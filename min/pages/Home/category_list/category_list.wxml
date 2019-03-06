@@ -8,9 +8,14 @@
     <official-account></official-account>
   </view>  
   <view class='section section-category-list'>
-    <view class='category-list-header'>
+    <view class='category-list-header' wx:if='{{zone}}'>
       <image src='/static/images/icon/home.png' class='category-zone-icon'></image>
       <text class='category-zone-name'>{{zone.name}}</text>
+    </view>
+    <view class='product-list-bread' wx:elif='{{group.zone}}'>
+      <text bindtap='handlerNavigatorToIndex'>首页</text>
+      <text class='split'>></text>
+      <text class='active'>{{group.zone.name}}</text>
     </view>
     <view class='category-list-content'>
       <view class='category-group' wx:for='{{groups}}' wx:key='id' wx:for-item='group'>
