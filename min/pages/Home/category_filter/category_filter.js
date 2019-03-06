@@ -46,7 +46,7 @@ Page({
   getCategoryRelated: function (category_id){
     const _this = this 
     comm.request({
-      url:glbd.host+'categories/get-category-is-filter?category_id=' + category_id,
+      url:glbd.host+'categories/get-category-attribute-is-filter?category_id=' + category_id,
       method:glbd.method,
       success:function(res){
         const filter = _this.matchFilterSelected(res.data.data)
