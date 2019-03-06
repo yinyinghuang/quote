@@ -21,7 +21,7 @@ Page({
   initPage:function(){
     const _this = this 
     _this.getProductDetail()
-    _this.getMerchantList()
+    // _this.getMerchantList()
   },
   //获取产品详情
   getProductDetail: function () {

@@ -19,9 +19,12 @@ class ProductsController extends AppController
         $contain = ['Categories'];
         $order   = ['Products.sort desc', 'Products.id desc'];
         $limit   = 20;
-        $offset = $this->getOffset(isset($params['page']) ? $params['page']:1,$limit);
+        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
-        if(isset($params['category_id']) && $params['category_id']) $where['Products.category_id'] = $params['category_id'];
+        if (isset($params['category_id']) && $params['category_id']) {
+            $where['Products.category_id'] = $params['category_id'];
+        }
+
         //最新更新
         if (isset($params['type'])) {
             switch ($params['type']) {
@@ -33,16 +36,16 @@ class ProductsController extends AppController
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
             foreach ($params['filter'] as $filter) {
-                $where[] = 'Products.filter LIKE "%'.$filter.',%"';
+                $where[] = 'Products.filter LIKE "%' . $filter . ',%"';
             }
         }
         //获取排序
-        if(isset($params['sort'])){
+        if (isset($params['sort'])) {
             switch ($params['sort']) {
                 case 'hotest':
-                        
+
                     break;
-                
+
                 default:
                     # code...
                     break;
@@ -81,16 +84,22 @@ class ProductsController extends AppController
     }
     public function detail($id)
     {
-        if (empty($id)) $this->ret(1, null, '产品id缺失');
-        $product = $this->loadModel('Products')->find('all',[
-            'conditions' => ['Products.id' => $id,'Products.is_visible' => 1]
+        if (empty($id)) {
+            $this->ret(1, null, '产品id缺失');
+        }
+
+        $product = $this->loadModel('Products')->find('all', [
+            'conditions' => ['Products.id' => $id, 'Products.is_visible' => 1],
         ])->first();
-        if(empty($product))  $this->ret(1, null, '产品不存在或已被删除');
-        $product->attributes = $this->loadModel('ProductsAttributes')->find('all',[
-            'conditions' => ['ProductsAttributes.product_id' => $id,'CategoriesAttributes.is_visible' => 1],
-            'contain' => ['CategoriesAttributes' => function($query){
-                return $query->contain(['Attributes'])->where(['Attributes.is_visible' => 1])
-            }]
+        if (empty($product)) {
+            $this->ret(1, null, '产品不存在或已被删除');
+        }
+
+        $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
+            'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
+            'contain'    => ['CategoriesAttributes' => function ($query) {
+                return $query->contain(['Attributes'])->where(['Attributes.is_visible' => 1]);
+            }],
         ]);
         $this->ret(0, $product, '产品加载成功');
     }

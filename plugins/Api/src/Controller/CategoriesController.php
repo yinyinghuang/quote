@@ -52,7 +52,7 @@ class CategoriesController extends AppController
                         ->toArray();
                     $this->ret(0, compact('zone', 'groups'), '加载成功');
                 } else {
-                    $this->ret(1, null, '参数错误');
+                    $this->ret(1, null, 'id参数缺失');
                 }
 
                 break;
@@ -80,7 +80,7 @@ class CategoriesController extends AppController
                     }
                     $this->ret(0, compact('groups'), '加载成功');
                 } else {
-                    $this->ret(1, null, '参数错误');
+                    $this->ret(1, null, 'id参数缺失');
                 }
 
                 break;
@@ -89,7 +89,7 @@ class CategoriesController extends AppController
                 break;
         }
     }
-
+    //产品列表页中分类相关信息获取
     public function getCategoryRelated()
     {
         $category_id = $this->request->getData('category_id');
@@ -116,10 +116,10 @@ class CategoriesController extends AppController
         $this->ret(0, $category, ['分类信息加载成功']);
     }
 
-    //获取分类的属性键值,及为筛选项的属性键
-    public function getCategoryAttributeIsFilter()
+    //分类属性筛选项页，获取分类的属性键值,及为筛选项的属性键
+    public function getCategoryAttributeIsFilter($category_id)
     {
-        $category_id = $this->request->query('category_id');
+        if(empty($category_id)) $this->ret(1,,null,'category_id缺失');
         //分类下为筛选项的属性
         $cateFilterAttrs = $this->_getCategoryAttributeIsFilter($category_id);
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
@@ -148,7 +148,7 @@ class CategoriesController extends AppController
             ->toArray();
         return $cateAttrFilters;
     }
-    //获取分类的属性键值,及为筛选项的属性键
+    //分类属性筛选项页，获取分类的属性键值,及为筛选项的属性键
     public function getCategoryFilterOption()
     {
 

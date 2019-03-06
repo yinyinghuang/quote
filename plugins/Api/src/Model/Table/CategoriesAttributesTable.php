@@ -48,6 +48,10 @@ class CategoriesAttributesTable extends Table
             'joinType' => 'INNER',
             'className' => 'Api.Attributes'
         ]);
+        $this->hasMany('ProductsAttributes', [
+            'foreignKey' => 'category_attribute_id',
+            'className' => 'Api.ProductsAttributes'
+        ]);
     }
 
     /**
