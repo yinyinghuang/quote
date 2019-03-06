@@ -12,10 +12,10 @@
       <image src='/static/images/icon/home.png' class='category-zone-icon'></image>
       <text class='category-zone-name'>{{zone.name}}</text>
     </view>
-    <view class='product-list-bread' wx:elif='{{group.zone}}'>
+    <view class='product-list-bread' wx:elif='{{group[0].zone_id}}'>
       <text bindtap='handlerNavigatorToIndex'>首页</text>
       <text class='split'>></text>
-      <text class='active'>{{group.zone.name}}</text>
+      <text class='active'>{{group[0].zone_name}}</text>
     </view>
     <view class='category-list-content'>
       <view class='category-group' wx:for='{{groups}}' wx:key='id' wx:for-item='group'>

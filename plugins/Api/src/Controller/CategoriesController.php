@@ -72,6 +72,7 @@ class CategoriesController extends AppController
                         },'Zones'])
                         ->where(['Groups.is_visible' => 1, 'Groups.id' => $params['id']])
                         ->order(['Groups.sort desc', 'Groups.id desc'])
+                        ->enableAutoFields(true)
                         ->toArray();
 
                     if (empty($groups)) {
