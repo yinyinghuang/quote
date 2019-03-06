@@ -35,7 +35,7 @@ class ProductsController extends AppController
                 $where['filter LIKE'] = '%'.$filter.',%';
             }
         }
-        
+        debug($where);
         //获取排序
         if(isset($params['sort'])){
             switch ($params['sort']) {
