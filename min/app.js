@@ -21,7 +21,8 @@ App({
   //已授权，是否已存在登陆信息
   initPage:function(_fn = function(){}){
     const _this= this
-    if(_this.globalData.pKey){
+    if(_this.globalData.pKey || wx.getStorageSync('local_pkey')){
+      if (!_this.globalData.pKey) _this.globalData.pKey = wx.getStorageSync('local_pkey')
       typeof(_fn) === 'function' && _fn()
     }else{
       _this.login(_fn)
