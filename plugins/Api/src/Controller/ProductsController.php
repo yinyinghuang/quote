@@ -61,6 +61,7 @@ class ProductsController extends AppController
                 return $row;
             })
             ->toArray();
+        debug(count($products));
         $this->ret(0, $products, '加载成功');
     }
 
