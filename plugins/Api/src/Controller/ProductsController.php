@@ -32,7 +32,7 @@ class ProductsController extends AppController
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
             foreach ($params['filter'] as $filter) {
-                $where[] = 'Products.filter LIKE %'.$filter.',%';
+                $where[] = 'Products.filter LIKE "%'.$filter.',%"';
             }
         }
         //获取排序
