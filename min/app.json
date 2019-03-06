@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/Home/index/index",
-    "pages/Home/product/list",
     "pages/Home/product_list/product_list",
     "pages/Home/category_filter/category_filter",
     "pages/Home/category_filter_option/category_filter_option",

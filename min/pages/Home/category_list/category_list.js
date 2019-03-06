@@ -39,8 +39,7 @@ Page({
       success:function(res){
         let data = res.data.data
         _this.setData({
-          zone:data.zone,
-          groups:data.groups
+          ...data
         })
       },
       fail:function(res){
@@ -48,6 +47,13 @@ Page({
       }
     })
   },
+  //跳转至首页
+  handlerNavigatorToIndex: function () {
+    wx.switchTab({
+      url: '/pages/Home/index/index',
+    })
+  },
+  //跳转至产品列表
   handlerNavigatorToProductList:function(e){
     const id = e.currentTarget.dataset.id
     wx.navigateTo({

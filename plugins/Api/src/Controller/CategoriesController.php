@@ -31,7 +31,7 @@ class CategoriesController extends AppController
                     $zone = $this->loadModel('Zones')
                         ->find()
                         ->select(['id', 'name'])
-                        ->where(['Zones.is_visible' => 1])
+                        ->where(['Zones.is_visible' => 1,'Zones.id' => $params['id']])
                         ->first();
                     if (empty($zone)) {
                         $this->ret(2, null, '空间不存在');
