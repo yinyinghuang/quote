@@ -115,7 +115,7 @@ class CategoriesController extends AppController
             'order'      => $this->getDefaultOrder('CategoriesAttributes'),
         ])
             ->leftJoinWith('CategoryAttributeFilters')
-            ->having(['option_count >'=> 0])
+            // ->having(['option_count >'=> 0])
             ->toArray();
         return $cateAttrFilters;
     }
