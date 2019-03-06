@@ -30,11 +30,23 @@ class ProductsController extends AppController
             }
         }
         //获取筛选条件
-        
+        if (isset($params['filter']) && !empty($params['filter'])) {
+            foreach ($params['filter'] as $filter) {
+                $where['filter LIKE'] = '%'.$filter.',%';
+            }
+        }
         
         //获取排序
         if(isset($params['sort'])){
-
+            switch ($params['sort']) {
+                case 'hotest':
+                        
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
         }
         $products = $this->Products
             ->find()
