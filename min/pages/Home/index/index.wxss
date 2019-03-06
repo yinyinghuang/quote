@@ -4,15 +4,16 @@
 }
 .section-title{
   font-size: 1.4em;
-  line-height: 80rpx;
+  line-height: 3em;
 }
 /* 公众号关注 */
 .section.section-official-account{
   display: block;
-  position: absolute;
-  bottom: -20rpx;
+  position: fixed;
+  bottom: 20rpx;
+  left: 30rpx;
   width: 92%;
-  margin: auto 0;
+  
 }
 /* 分类部分 */
 .section-category{
@@ -31,8 +32,8 @@
   border: 1px solid #fff;
 }
 .category-item-text{
-  height: 80rpx;
-  line-height: 80rpx;
+  height: 60rpx;
+  line-height: 60rpx;
   color: #9e9e9e;
 }
 /* 最近浏览 */
@@ -70,7 +71,7 @@
 .product-list-recent .product-item-text{
   display: block;
   width: 200rpx;
-  line-height: 30rpx;
+  line-height: 1.5em;
   max-height: 50rpx;
   margin: 10rpx 0;
   overflow: hidden;

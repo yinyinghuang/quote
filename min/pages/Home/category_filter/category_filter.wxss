@@ -4,7 +4,7 @@
 }
 .section-title{
   font-size: 1.4em;
-  line-height: 80rpx;
+  line-height: 3em;
   font-weight: bold;
   margin-bottom: 30rpx;
 }
@@ -22,7 +22,7 @@
 .filter-item-name,
 .filter-item-selected{
   font-size: 1.4em;
-  line-height: 36rpx;
+  line-height: 1.4em;
 }
 .filter-item-selected{
   font-size: 1.2em;

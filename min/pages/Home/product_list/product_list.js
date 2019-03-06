@@ -127,6 +127,30 @@ Page({
       url: '/pages/Home/category_filter/category_filter?category_id='+id+'&sort='+_this.data.options.sort,
     })
   },
+  //跳转至产品详情
+  handlerNavigatorToProductDetail: function ({ currentTarget: { dataset } }) {
+    const { id, album, name } = dataset
+    let recent = wx.getStorageSync('recent')
+    recent = recent ? recent : []
+
+    for (let i in recent) {
+      if (recent[i].id === id) {
+        recent.splice(i, 1)
+        break
+      }
+    }
+    recent.unshift({ id, album, name, time: Date.now() })
+    wx.setStorageSync('recent', recent.slice(0, 50))
+
+    wx.navigateTo({ url: '/pages/Home/product_detail/product_detail?product_id=' + id })
+  },
+  //产品图片不存在
+  hanlderImageError: function (e) {
+    this.data.products[e.currentTarget.dataset.id].album = '/static/images/icon-red/nopic.png';
+    this.setData({
+      products: this.data.products
+    })
+  },
 
   /**
    * 用户点击右上角分享

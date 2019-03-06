@@ -81,20 +81,25 @@ class CategoriesController extends AppController
             ])
             ->first();
 
-        // if (!empty($category)) {
-        //     $category->filter = $this->getCategoryFilter($category_id);
-        // }
+        if (!empty($category)) {
+            $category->filter_count = count($this->getCategoryAttributeIsFilter($category_id));
+        }
 
         $this->ret(0, $category, ['分类信息加载成功']);
     }
 
     //获取分类的属性键值,及为筛选项的属性键
-    public function getCategoryIsFilter()
+    public function getCategoryAttributeIsFilter()
     {
-
         $category_id = $this->request->query('category_id');
         //分类下为筛选项的属性
-        $cateFilterAttrs = $this->loadModel('CategoriesAttributes')->find('all', [
+        $cateFilterAttrs = $this->_getCategoryAttributeIsFilter($category_id);
+        $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
+    }
+    protected function _getCategoryAttributeIsFilter($category_id)
+    {
+        //分类下为筛选项的属性
+        $cateAttrFilters = $this->loadModel('CategoriesAttributes')->find('all', [
             'contain'    => ['Attributes'],
             'conditions' => [
                 'CategoriesAttributes.category_id' => $category_id,
@@ -102,14 +107,17 @@ class CategoriesController extends AppController
                 'CategoriesAttributes.is_visible'  => 1,
             ],
             'fields'     => [
-                'id'          => 'CategoriesAttributes.id',
-                'name'        => 'Attributes.name',
-                'filter_type' => 'CategoriesAttributes.filter_type',
+                'id'           => 'CategoriesAttributes.id',
+                'name'         => 'Attributes.name',
+                'filter_type'  => 'CategoriesAttributes.filter_type',
+                'option_count' => 'count(CategoryAttributeFilters.id)',
             ],
-            'order' => $this->getDefaultOrder('CategoriesAttributes'),
+            'order'      => $this->getDefaultOrder('CategoriesAttributes'),
         ])
+            ->leftJoinWith('CategoryAttributeFilters')
+            ->having(['option_count' > 0])
             ->toArray();
-        $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
+        return $cateAttrFilters;
     }
     //获取分类的属性键值,及为筛选项的属性键
     public function getCategoryFilterOption()
@@ -120,13 +128,13 @@ class CategoriesController extends AppController
         $cateFilterAttrs = $this->loadModel('CategoryAttributeFilters')->find('all', [
             'conditions' => [
                 'CategoryAttributeFilters.category_attribute_id' => $category_attribute_id,
-                'CategoryAttributeFilters.is_visible'  => 1,
+                'CategoryAttributeFilters.is_visible'            => 1,
             ],
             'fields'     => [
-                'id'          => 'CategoryAttributeFilters.id',
-                'filter'        => 'CategoryAttributeFilters.filter',
+                'id'     => 'CategoryAttributeFilters.id',
+                'filter' => 'CategoryAttributeFilters.filter',
             ],
-            'order' => $this->getDefaultOrder('CategoryAttributeFilters'),
+            'order'      => $this->getDefaultOrder('CategoryAttributeFilters'),
         ])
             ->toArray();
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);

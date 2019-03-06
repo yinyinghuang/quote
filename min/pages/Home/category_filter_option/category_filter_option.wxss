@@ -4,7 +4,7 @@
 }
 .section-title{
   font-size: 1.4em;
-  line-height: 80rpx;
+  line-height: 3em;
   font-weight: bold;
   margin-bottom: 30rpx;
 }
@@ -21,11 +21,11 @@
 }
 .option-item-name{
   font-size: 1.4em;
-  line-height: 36rpx;
+  line-height: 1.4em;
 }
 .option-item-name.active{
   font-size: 1.4em;
-  line-height: 36rpx;
+  line-height: 1.4em;
   color:#ff7878;
 }
 .option-reset,

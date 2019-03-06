@@ -18,7 +18,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      zone_id:options.id
+      zone_id:options.zone_id
     })
     app.openSetting(this.initPage)
   },

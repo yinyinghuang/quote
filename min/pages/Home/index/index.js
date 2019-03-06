@@ -25,6 +25,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    const _this = this
     _this.getRecentViewList()
   },
 
@@ -34,7 +35,6 @@ Page({
   initPage:function(){
     const _this = this
     _this.getCategoryList()
-    _this.getRecentViewList()
     _this.getLastProductList()
   },
   /**
@@ -117,7 +117,9 @@ Page({
   },
   //跳转至分类列表
   handlerNavigatorToCateList: function (e) {
-    wx.navigateTo({ url: '/pages/Home/category_list/category_list?category_id=' + e.currentTarget.dataset.id })
+    const id = e.currentTarget.dataset.id
+    console.log(id)
+    wx.navigateTo({ url: '/pages/Home/category_list/category_list?zone_id=' + id })
   },
   //产品图片不存在
   hanlderImageError:function(e){

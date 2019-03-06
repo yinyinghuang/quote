@@ -9,18 +9,18 @@
   margin-bottom: 30rpx;
 }
 .category-zone-icon{
-  width: 30rpx;
-  height: 28rpx;
+  width: 1.4em;
+  height: 1.4em;
 }
 .category-zone-name{
   font-size: 1.4em;
   font-weight: bold;
-  line-height: 30rpx;
+  line-height: 1.4em;
   margin: 30rpx;
 }
 .category-list-content{
   font-size: 1.4em;
-  line-height: 36rpx;
+  line-height: 1.4em;
   padding: 0 20rpx;
   background: #fff;
 }
