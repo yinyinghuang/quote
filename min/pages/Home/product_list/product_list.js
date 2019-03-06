@@ -40,7 +40,8 @@ Page({
       })
       this.data.options.filter = filter.length ? filter.join(',') + ',' : ''
       this.data.options.filter = filter
-      this.getProductList(this.data.options, 1)
+      this.data.options.page = 1
+      this.getProductList(this.data.options)
     }
 
   },

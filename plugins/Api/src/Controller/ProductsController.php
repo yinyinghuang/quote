@@ -21,6 +21,7 @@ class ProductsController extends AppController
         $limit   = 20;
         $offset = $this->getOffset(isset($params['page']) ? $params['page']:1,$limit);
 
+        if(isset($params['category_id']) && $params['category_id']) $where['Products.category_id'] = $params['category_id'];
         //最新更新
         if (isset($params['type'])) {
             switch ($params['type']) {
@@ -35,7 +36,6 @@ class ProductsController extends AppController
                 $where[] = 'Products.filter LIKE "%'.$filter.',%"';
             }
         }
-        print_r($where);die;
         //获取排序
         if(isset($params['sort'])){
             switch ($params['sort']) {
