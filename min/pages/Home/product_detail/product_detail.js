@@ -1,65 +1,71 @@
 // pages/Home/product_detail/product_detail.js
+let app = getApp()
+let glbd = app.globalData
+const comm = require('../../../common/common.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    id:0,
+    merchants:[]
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  //生命周期函数--监听页面加载
   onLoad: function (options) {
-
+    this.setData({
+      ...options
+    })
+    app.openSetting(this.initPage)
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  initPage:function(){
+    const _this = this 
+    _this.getProductDetail()
+    _this.getMerchantList()
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  //获取产品详情
+  getProductDetail: function () {
+    const _this = this
+    comm.request({
+      url: glbd.host + 'products/detail/' + _this.data.id,
+      method: glbd.method,
+      success: function (res) {
+        _this.setData({
+          ...res.data.data
+        })
+        _this._saveTrack()
+      }
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  //获取在售商户列表
+  getMerchantList: function () {
+    const _this = this
+    comm.request({
+      url: glbd.host + 'merchants/list?product_id=' + _this.data.id,
+      method: glbd.method,
+      success: function (res) {
+        _this.setData({
+          merchants:res.data.data
+        })
+      }
+    })
   },
+  //保存浏览记录
+  _saveTrack: function (){
+    const { id, album, name} = this.data
+    let recent = wx.getStorageSync('recent')
+    recent = recent ? recent : []
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+    for (let i in recent) {
+      if (recent[i].id === id) {
+        recent.splice(i, 1)
+        break
+      }
+    }
+    recent.unshift({ id, album, name, time: Date.now() })
+    wx.setStorageSync('recent', recent.slice(0, 50))
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
+  //用户点击右上角分享
   onShareAppMessage: function () {
 
   }

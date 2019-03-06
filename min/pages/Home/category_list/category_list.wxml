@@ -15,7 +15,9 @@
     <view class='category-list-bread' wx:if='{{groups[0].zone}}'>
       <text bindtap='handlerNavigatorToIndex'>首页</text>
       <text class='split'>></text>
-      <text class='active'>{{groups[0].zone.name}}</text>
+      <text bindtap='handlerNavigatorToCateList' data-id='{{groups[0].zone.id}}' data-type='zone_children'>{{groups[0].zone.name}}</text>
+      <text class='split'>></text>
+      <text class='active'>分类列表</text>
     </view>
     <view class='category-list-content'>
       <view class='category-group' wx:for='{{groups}}' wx:key='id' wx:for-item='group'>

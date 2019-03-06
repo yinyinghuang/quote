@@ -57,19 +57,19 @@ class ProductsController extends AppController
             ->offset($offset)
             ->limit($limit)
             ->map(function ($row) {
-                $row->cover = $this->getProductCover($row->id, $row->album);
+                $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
             })
             ->toArray();
         $this->ret(0, $products, '加载成功');
     }
 
-    private function getProductCover($product_id, $product_album)
+    private function _getProductCover($product_id, $product_album)
     {
 
         $cover = '';
         if ($product_album) {
-            $albumDir = $this->getAlbumDir($product_id);
+            $albumDir = $this->_getAlbumDir($product_id);
             $albums   = json_decode($product_album, true);
             if (count($albums)) {
                 $album = $albums[0];
@@ -79,9 +79,24 @@ class ProductsController extends AppController
         return $cover;
 
     }
-    private function getProductAlbumUrl($product_id, $product_album)
+    public function detail($id)
     {
-        $albumDir = $this->getAlbumDir($product_id);
+        if (empty($id)) $this->ret(1, null, '产品id缺失');
+        $product = $this->loadModel('Products')->find('all',[
+            'conditions' => ['Products.id' => $id,'Products.is_visible' => 1]
+        ])->first();
+        if(empty($product))  $this->ret(1, null, '产品不存在或已被删除');
+        $product->attributes = $this->loadModel('ProductsAttributes')->find('all',[
+            'conditions' => ['ProductsAttributes.product_id' => $id,'CategoriesAttributes.is_visible' => 1],
+            'contain' => ['CategoriesAttributes' => function($query){
+                return $query->contain(['Attributes'])->where(['Attributes.is_visible' => 1])
+            }]
+        ]);
+        $this->ret(0, $product, '产品加载成功');
+    }
+    private function _getProductAlbumUrl($product_id, $product_album)
+    {
+        $albumDir = $this->_getAlbumDir($product_id);
         $albums   = [];
         if ($product_album) {
             foreach (json_decode($product_album, true) as $key => $album) {
@@ -97,7 +112,7 @@ class ProductsController extends AppController
     }
 
     //获取产品图片文件夹
-    private function getAlbumDir($product_id)
+    private function _getAlbumDir($product_id)
     {
         return intval($product_id / 1000) . '000' . '/';
     }

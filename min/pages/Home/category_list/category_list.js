@@ -53,6 +53,11 @@ Page({
       url: '/pages/Home/index/index',
     })
   },
+  //跳转至分类列表
+  handlerNavigatorToCateList: function (e) {
+    const { id, type } = e.currentTarget.dataset
+    wx.navigateTo({ url: '/pages/Home/category_list/category_list?type=' + type + '&id=' + id })
+  },
   //跳转至产品列表
   handlerNavigatorToProductList:function(e){
     const id = e.currentTarget.dataset.id

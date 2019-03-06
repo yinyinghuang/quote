@@ -95,26 +95,13 @@ Page({
     })
   },
   //跳转至产品详情
-  handlerNavigatorToProductDetail: function ({currentTarget:{dataset}}){
-    const {id,album,name} = dataset
-    let recent = wx.getStorageSync('recent')
-    recent = recent ? recent :[]
-    
-    for (let i in recent) {
-      if (recent[i].id === id) {
-        recent.splice(i,1)
-        break
-      }
-    }
-    recent.unshift({ id, album, name,time: Date.now() })
-    wx.setStorageSync('recent', recent.slice(0,50))
-
-    wx.navigateTo({ url: '/pages/Home/product_detail/product_detail?product_id='+id})
+  handlerNavigatorToProductDetail: function (e){
+    const {id} = e.currentTarget.dataset
+    wx.navigateTo({ url: '/pages/Home/product_detail/product_detail?id='+id})
   },
   //跳转至分类列表
   handlerNavigatorToCateList: function (e) {
     const id = e.currentTarget.dataset.id
-    console.log(id)
     wx.navigateTo({ url: '/pages/Home/category_list/category_list?type=zone_children&id=' + id })
   },
   //产品图片不存在
