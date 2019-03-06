@@ -32,7 +32,7 @@ class ProductsController extends AppController
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
             foreach ($params['filter'] as $filter) {
-                $where['filter LIKE'] = '%'.$filter.',%';
+                $where[] = 'Products.filter LIKE %'.$filter.',%';
             }
         }
         debug($where);
@@ -61,7 +61,6 @@ class ProductsController extends AppController
                 return $row;
             })
             ->toArray();
-        debug(count($products));
         $this->ret(0, $products, '加载成功');
     }
 
