@@ -10,7 +10,6 @@ Page({
   data: {
     zone:null,
     groups:null,
-    zone_id:0
   },
 
   /**
@@ -18,7 +17,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      zone_id:options.zone_id
+      ...options
     })
     app.openSetting(this.initPage)
   },
@@ -30,12 +29,12 @@ Page({
   //获取分类列表
   getCategoryList:function(zone_id){
     const _this = this
+    const {type,id} = _this.data
     comm.request({
       url:glbd.host+'categories/lists',
       method:glbd.method,
       data:{
-        type:'zone_children',
-        id:zone_id
+        type,id
       },
       success:function(res){
         let data = res.data.data

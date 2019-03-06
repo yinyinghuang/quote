@@ -14,7 +14,8 @@ Page({
       sort: 'default',
       page:1
     },
-    filter_selected:{}
+    filter_selected:{},
+    reach_bottom:false
   },
 
   /**
@@ -95,7 +96,8 @@ Page({
         const page = _this.data.options.page
         _this.setData({
           products: page === 1 ? res.data.data:_this.data.products.concat(res.data.data),
-          'options.page': page+1
+          'options.page': page+1,
+          reach_bottom:!res.data.data.length
         })
       },
     })

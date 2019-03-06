@@ -56,6 +56,33 @@ class CategoriesController extends AppController
                 }
 
                 break;
+
+            case 'group_children':
+                if (isset($params['id']) && $params['id']) {                    
+
+                    $groups = $this->loadModel('Groups')
+                        ->find()
+                        ->select(['Groups.id', 'Groups.name'])
+                        ->contain(['Categories' => function ($query) {
+                            return $query->select(['Categories.id', 'Categories.group_id', 'Categories.name', 'product_count' => $query->func()->count('Products.id')])
+                                ->where(['Categories.is_visible' => 1])
+                                ->order(['Categories.sort desc', 'Categories.id desc'])
+                                ->leftJoinWith('Products')
+                                ->group(['Categories.id']);
+                        },'Zones'])
+                        ->where(['Groups.is_visible' => 1, 'Groups.id' => $params['id']])
+                        ->order(['Groups.sort desc', 'Groups.id desc'])
+                        ->toArray();
+
+                    if (empty($groups)) {
+                        $this->ret(2, null, '分组不存在');
+                    }
+                    $this->ret(0, compact('groups'), '加载成功');
+                } else {
+                    $this->ret(1, null, '参数错误');
+                }
+
+                break;
             default:
                 # code...
                 break;

@@ -1,20 +1,29 @@
 /* pages/Home/product_list/product_list.wxss */
 .product-list-bread{
-  font-size: 1.4em;
+  font-size: 1.2em;
   color: #a2a2a2;
   border-bottom: 1px solid #d2d2d2;
-  padding-bottom: 8rpx;
+  padding-bottom: 20rpx;
 }
 .product-list-bread .active{
   color: #333;
 }
 .product-list-bread .split{
-  padding: 0 16rpx;
+  padding: 0 8rpx;
+}
+.category-zone-name,
+.category-group-name,
+.category-category-name{
+  display: inline-block;
+  /* max-width: 100rpx; */
+  /* height: 100%; */
+  /* line-height: 100%; */
+  /* overflow: hidden; */
 }
 .product-list-filter{
   font-size: 1.4em;
   color: #a2a2a2;
-  padding: 40rpx 0; 
+  padding: 20rpx 0; 
   line-height: 48rpx;
   text-align: center;
 }
@@ -28,4 +37,16 @@
 .product-list-filter-option.active{
   background: #ff7878;
   color: #fff;
+}
+.product-list-reach-bottom{
+  display: none;
+}
+.product-list-reach-bottom.active{
+  display: block;
+  background: #fff;
+  font-size: 1.2em;
+  padding:20rpx;
+  text-align:center;
+  font-weight:bold;
+
 }

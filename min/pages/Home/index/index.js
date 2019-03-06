@@ -80,18 +80,14 @@ Page({
       method: glbd.method,
       data: comm.requestData(glbd, { type: 'last' }),
       success: function (res) {
-        if (res.data.errCode === 0) {
-          let time = Date.now()
-          res.data.data.map((item) => {
-            item.album = item.cover ? glbd.hosts+ item.cover+'?t='+time : '/static/image/icon/red/nopic.png'
-            delete (item.albums)
-          })
-          _this.setData({
-            last: res.data.data
-          })
-        } else {
-          comm.showToast(res.data.errMsg ? res.data.errMsg : '最新更新获取失败')
-        }
+        let time = Date.now()
+        res.data.data.map((item) => {
+          item.album = item.cover ? glbd.hosts + item.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
+          delete (item.albums)
+        })
+        _this.setData({
+          last: res.data.data
+        })
       },
       fail: function () {
         comm.showToast('最新更新获取失败')
@@ -119,7 +115,7 @@ Page({
   handlerNavigatorToCateList: function (e) {
     const id = e.currentTarget.dataset.id
     console.log(id)
-    wx.navigateTo({ url: '/pages/Home/category_list/category_list?zone_id=' + id })
+    wx.navigateTo({ url: '/pages/Home/category_list/category_list?type=zone_children&id=' + id })
   },
   //产品图片不存在
   hanlderImageError:function(e){

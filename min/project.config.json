@@ -37,13 +37,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "分类列表",
 					"pathName": "pages/Home/category_list/category_list",
-					"query": "type=zones&zone_id=1",
+					"query": "type=zone_children&id=1",
 					"scene": null
 				},
 				{

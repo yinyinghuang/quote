@@ -10,9 +10,13 @@
   <view class='section section-product-list'>
     <view class='product-list-bread'>
       <text bindtap='handlerNavigatorToIndex'>首页</text>
-      <block wx:if='{{category}}'>      
+      <block wx:if='{{category}}'>       
         <text class='split'>></text>
-        <text>{{category.name}}</text>
+        <text class='category-zone-name' bindtap='handlerNavigatorToCateogryList' data-id='{{category.zone_id}}' data-type='zone'>{{category.zone_name}}</text>     
+        <text class='split'>></text>
+        <text class='category-group-name'>{{category.group_name}}</text>    
+        <text class='split'>></text>
+        <text class='category-category-name'>{{category.name}}</text>
       </block>
       <text class='split'>></text>
       <text class='active'>产品列表</text>
@@ -56,6 +60,7 @@
           </view>   
         </view>
       </view>
+      <view class='product-list-reach-bottom {{reach_bottom?"active":""}}'>暂无更多数据</view>
     </view>
   </view>
 </view>
