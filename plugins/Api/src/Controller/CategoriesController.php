@@ -82,7 +82,7 @@ class CategoriesController extends AppController
             ->first();
 
         if (!empty($category)) {
-            $category->filter_count = count($this->getCategoryAttributeIsFilter($category_id));
+            $category->filter_count = count($this->_getCategoryAttributeIsFilter($category_id));
         }
 
         $this->ret(0, $category, ['分类信息加载成功']);
