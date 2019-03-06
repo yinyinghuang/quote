@@ -113,9 +113,10 @@ class CategoriesController extends AppController
                 'option_count' => 'count(CategoryAttributeFilters.id)',
             ],
             'order'      => $this->getDefaultOrder('CategoriesAttributes'),
+            'group' => ['CategoriesAttributes.id']
         ])
             ->leftJoinWith('CategoryAttributeFilters')
-            // ->having(['option_count >'=> 0])
+            ->having(['option_count >'=> 0])
             ->toArray();
         return $cateAttrFilters;
     }
