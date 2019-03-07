@@ -58,7 +58,7 @@ Page({
     })
   },
   //获取分类相关信息
-  getCategoryRelated: function (category_id){
+  getCategoryAttributeIsFilter: function (category_id){
     const _this = this 
     comm.request({
       url:glbd.host+'categories/get-category-attribute-is-filter/' + category_id,

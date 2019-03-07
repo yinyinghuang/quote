@@ -156,6 +156,14 @@ class CategoriesController extends AppController
             ->toArray();
         return $cateAttrFilters;
     }
+    public function getCategoryBrand($category_id)
+    {
+        if (empty($category_id)) {
+            $this->ret(1, null, 'category_id缺失');
+        }
+        $this->ret(0, $this->_getCategoryBrand($category_id), ['分类信息加载成功']);
+
+    }
     //获取分类品牌
     protected function _getCategoryBrand($category_id)
     {
