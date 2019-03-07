@@ -131,12 +131,8 @@ class AppController extends Controller
         // ]);
         $cates = $this->loadModel('Categories')->find('list');
         foreach ($cates as $cate_id => $cate_name) {
-
-            $price_hong_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_hong_max desc')->first();
-            if(empty($price_hong_max)){
-                continue;
-            }
-            $price_hong_max = $price_hong_max->price_hong_max;
+            
+            $price_hong_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_hong_max desc')->first()->price_hong_max;
             $price_water_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_water_max desc')->first()->price_water_max;
             $price_max = max($price_hong_max,$price_water_max);
 
