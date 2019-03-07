@@ -31,7 +31,7 @@ class CategoriesController extends AppController
                     $zone = $this->loadModel('Zones')
                         ->find()
                         ->select(['id', 'name'])
-                        ->where(['Zones.is_visible' => 1,'Zones.id' => $params['id']])
+                        ->where(['Zones.is_visible' => 1, 'Zones.id' => $params['id']])
                         ->first();
                     if (empty($zone)) {
                         $this->ret(2, null, '空间不存在');
@@ -58,18 +58,18 @@ class CategoriesController extends AppController
                 break;
 
             case 'group_children':
-                if (isset($params['id']) && $params['id']) {                    
+                if (isset($params['id']) && $params['id']) {
 
                     $groups = $this->loadModel('Groups')
                         ->find()
-                        ->select(['id' => 'Groups.id',  'name'=>'Groups.name','zone_name' => 'Zones.name','zone_id' => 'Zones.id'])
+                        ->select(['id' => 'Groups.id', 'name' => 'Groups.name', 'zone_name' => 'Zones.name', 'zone_id' => 'Zones.id'])
                         ->contain(['Categories' => function ($query) {
                             return $query->select(['Categories.id', 'Categories.group_id', 'Categories.name', 'product_count' => $query->func()->count('Products.id')])
                                 ->where(['Categories.is_visible' => 1])
                                 ->order(['Categories.sort desc', 'Categories.id desc'])
                                 ->leftJoinWith('Products')
                                 ->group(['Categories.id']);
-                        },'Zones'])
+                        }, 'Zones'])
                         ->where(['Groups.is_visible' => 1, 'Groups.id' => $params['id']])
                         ->order(['Groups.sort desc', 'Groups.id desc'])
                         ->enableAutoFields(true)
@@ -104,6 +104,8 @@ class CategoriesController extends AppController
                     'zone_id'    => 'Zones.id',
                     'group_name' => 'Groups.name',
                     'group_id'   => 'Groups.id',
+                    'price_max'  => 'Categories.price_max',
+                    'price_min'  => 'Categories.price_min',
                 ],
 
             ])
@@ -111,6 +113,7 @@ class CategoriesController extends AppController
 
         if (!empty($category)) {
             $category->filter_count = count($this->_getCategoryAttributeIsFilter($category_id));
+            $category->brand_count  = count($this->_getCategoryBrand($category_id));
         }
 
         $this->ret(0, $category, ['分类信息加载成功']);
@@ -119,7 +122,10 @@ class CategoriesController extends AppController
     //分类属性筛选项页，获取分类的属性键值,及为筛选项的属性键
     public function getCategoryAttributeIsFilter($category_id)
     {
-        if(empty($category_id)) $this->ret(1,null,'category_id缺失');
+        if (empty($category_id)) {
+            $this->ret(1, null, 'category_id缺失');
+        }
+
         //分类下为筛选项的属性
         $cateFilterAttrs = $this->_getCategoryAttributeIsFilter($category_id);
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
@@ -141,12 +147,20 @@ class CategoriesController extends AppController
                 'option_count' => 'count(CategoryAttributeFilters.id)',
             ],
             'order'      => $this->getDefaultOrder('CategoriesAttributes'),
-            'group' => ['CategoriesAttributes.id']
+            'group'      => ['CategoriesAttributes.id'],
         ])
             ->leftJoinWith('CategoryAttributeFilters')
-            ->having(['option_count >'=> 0])
+            ->having(['option_count >' => 0])
             ->toArray();
         return $cateAttrFilters;
+    }
+    //获取分类品牌
+    protected function _getCategoryBrand($category_id)
+    {
+        $brands = $this->loadModel('CategoriesBrands')->find('all', [
+            'conditions' => ['category_id' => $category_id],
+        ])->extract('brands')->toArray();
+        return $brands;
     }
     //分类属性筛选项页，获取分类的属性键值,及为筛选项的属性键
     public function getCategoryFilterOption()
