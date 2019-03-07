@@ -25,7 +25,7 @@
       <view class='product-list-filter-option {{options.sort==="default" ? "active":0}}' data-sort='default' bindtap='handlerProductSort'>综合推荐</view>
       <view class='product-list-filter-option {{options.sort==="fav" ? "active":0}}' data-sort="fav" bindtap='handlerProductSort'>人气</view>
       <view class='product-list-filter-option {{options.sort==="newest" ? "active":0}}' data-sort='newest' bindtap='handlerProductSort'>最新</view>
-      <view class='product-list-filter-option {{is_filtered ? "active":""}}' bindtap='handlerNavigatorToFilter' data-id='{{category.id}}' wx:if='{{category &&category.filter_count}}'>筛选项</view>
+      <view class='product-list-filter-option {{is_filtered ? "active":""}}' bindtap='handlerNavigatorToFilter' data-id='{{category.id}}' wx:if='{{category &&(category.filter_count || category.price_max!==0 || category.brand_count)}}'>筛选项</view>
     </view>
     <view>
       <view class='product-list-last flex-column'>

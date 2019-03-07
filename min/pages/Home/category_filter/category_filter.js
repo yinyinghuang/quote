@@ -40,7 +40,22 @@ Page({
   initPage: function () {
     const _this = this
     _this.getCategoryRelated(_this.data.category_id)
+    _this.getCategoryAttributeIsFilter(_this.data.category_id)
 
+  },
+  //获取分类相关信息
+  getCategoryRelated: function (category_id) {
+    const _this = this
+    comm.request({
+      url: glbd.host + 'categories/get-category-related/' + category_id,
+      method: glbd.method,
+      success: function (res) {
+        const filter = _this.matchFilterSelected(res.data.data)
+        _this.setData({
+          filter,
+        })
+      }
+    })
   },
   //获取分类相关信息
   getCategoryRelated: function (category_id){

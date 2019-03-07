@@ -68,11 +68,8 @@ Page({
   getCategoryRelated: function (category_id) {
     const _this = this
     comm.request({
-      url: glbd.host + 'categories/get-category-related',
+      url: glbd.host + 'categories/get-category-related/' + category_id,
       method: glbd.method,
-      data: {
-        category_id
-      },
       success: function (res) {
         _this.setData({
           category: res.data.data

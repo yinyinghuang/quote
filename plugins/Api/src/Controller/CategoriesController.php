@@ -90,9 +90,11 @@ class CategoriesController extends AppController
         }
     }
     //产品列表页中分类相关信息获取
-    public function getCategoryRelated()
+    public function getCategoryRelated($category_id)
     {
-        $category_id = $this->request->getData('category_id');
+        if (empty($category_id)) {
+            $this->ret(1, null, 'category_id缺失');
+        }
         $category    = $this->loadModel('Categories')
             ->find('all', [
                 'contain'    => ['Zones', 'Groups'],
