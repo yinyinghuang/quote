@@ -11,6 +11,7 @@ Page({
     filter:{},//筛选项列表
     category_id:0,
     selected:{},//选中的筛选项
+    category:{}
   },
 
   //从列表页进入此页
@@ -19,6 +20,7 @@ Page({
     this.setData({
       category_id: options.category_id,
       product_list_page,
+      category: product_list_page.category,
       //同步选项信息
       selected: product_list_page.filter_selected
     })
@@ -39,20 +41,20 @@ Page({
   //初始化页面
   initPage: function () {
     const _this = this
-    _this.getCategoryRelated(_this.data.category_id)
+    _this.data.category.brand_count && _this.getCategoryBrand(_this.data.category_id)
     _this.getCategoryAttributeIsFilter(_this.data.category_id)
 
   },
   //获取分类相关信息
-  getCategoryRelated: function (category_id) {
+  getCategoryBrand: function (category_id) {
     const _this = this
     comm.request({
-      url: glbd.host + 'categories/get-category-related/' + category_id,
+      url: glbd.host + 'categories/get-category-brand/' + category_id,
       method: glbd.method,
       success: function (res) {
         const filter = _this.matchFilterSelected(res.data.data)
         _this.setData({
-          filter,
+          brand:res.data.data
         })
       }
     })
