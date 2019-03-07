@@ -18,9 +18,7 @@ Page({
     const cate_filter_page = getCurrentPages()[getCurrentPages().length - 2]['__data__']
     
     this.setData({
-      category_attribute_id: options.category_attribute_id,
-      attribute_name: options.attribute_name,
-      filter_type:options.filter_type,
+      ...options,
       cate_filter_page
 
     })
@@ -54,7 +52,7 @@ Page({
   },
   //匹配筛选项是否已有选项值
   matchOptionSelected: function (data) {
-    const selected = this.data.cate_filter_page.selected[this.data.category_attribute_id]
+    const selected = this.data.cate_filter_page.filter_selected[this.data.category_attribute_id]
     
     if (selected) {
       data.forEach((item) => {
@@ -81,18 +79,18 @@ Page({
     })
 
   },
-  //跳转回筛选页，并将筛选页参数存执globalData中
+  //跳转回筛选页，并将已选筛选项值存入globalData中
   handlerNavigatorToCateFilter:function(){
     let data = this.data.option.filter((item) => {
       return item.selected      
     })
     if (this.data.filter_type==1) data = data.slice(0,1)
     
-    let selected = {}
+    let option_selected = {}
     data.forEach((option) => {
-      selected[option.id] = option.filter
+      option_selected[option.id] = option.filter
     })
-    this.data.cate_filter_page.selected[this.data.category_attribute_id] = selected
+    this.data.cate_filter_page.filter_selected[this.data.category_attribute_id] = option_selected
     glbd.cate_filter_page = this.data.cate_filter_page
     wx.navigateBack({
       delta:1

@@ -6,7 +6,8 @@
       <text class='split'>></text>
       <text>{{attribute_name}}</text>
     </text>
-
+    <view>
+    </view>
     <view class='option-list'>
       <view wx:for="{{option}}" wx:key="id" data-index='{{index}}' bindtap='handlerSelect' class='option-item'>
           <view class='option-item-name {{item.selected?"active":""}}'>{{item.filter}}</view>

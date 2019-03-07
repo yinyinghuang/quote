@@ -39,7 +39,6 @@ Page({
       Object.values(this.data.filter_selected).map((filter_item) => {
         filter = Object.keys(filter_item).concat(filter)
       })
-      this.data.options.filter = filter.length ? filter.join(',') + ',' : ''
       this.data.options.filter = filter
       this.data.options.page = 1
       this.getProductList(this.data.options)

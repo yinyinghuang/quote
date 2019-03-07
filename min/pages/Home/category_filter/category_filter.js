@@ -10,8 +10,8 @@ Page({
   data: {
     filter:{},//筛选项列表
     category_id:0,
-    selected:{},//选中的筛选项
-    category:{}
+    filter_selected:{},//选中的筛选项
+    category:{},
   },
 
   //从列表页进入此页
@@ -22,7 +22,7 @@ Page({
       product_list_page,
       category: product_list_page.category,
       //同步选项信息
-      selected: product_list_page.filter_selected
+      filter_selected: product_list_page.filter_selected
     })
     app.openSetting(this.initPage)
   },
@@ -41,23 +41,8 @@ Page({
   //初始化页面
   initPage: function () {
     const _this = this
-    _this.data.category.brand_count && _this.getCategoryBrand(_this.data.category_id)
     _this.getCategoryAttributeIsFilter(_this.data.category_id)
 
-  },
-  //获取分类相关信息
-  getCategoryBrand: function (category_id) {
-    const _this = this
-    comm.request({
-      url: glbd.host + 'categories/get-category-brand/' + category_id,
-      method: glbd.method,
-      success: function (res) {
-        const filter = _this.matchFilterSelected(res.data.data)
-        _this.setData({
-          brand:res.data.data
-        })
-      }
-    })
   },
   //获取分类相关信息
   getCategoryAttributeIsFilter: function (category_id){
@@ -76,12 +61,12 @@ Page({
   //匹配筛选项是否已有选项值
   matchFilterSelected:function(data){
     const _this = this
-    const selected = _this.data.selected
-    selected && data.forEach((item) => {
+    const {filter_selected} = _this.data
+    filter_selected && data.forEach((item) => {
       item.selected = '全部'
       
-      if (selected[item.id] && comm.type(selected[item.id]) === '[object Object]') {
-        const selected_name_array = Object.values(selected[item.id])
+      if (filter_selected[item.id] && comm.type(filter_selected[item.id]) === '[object Object]') {
+        const selected_name_array = Object.values(filter_selected[item.id])
         if (selected_name_array.length) item.selected = selected_name_array.join(',')
       }
     })
@@ -98,8 +83,8 @@ Page({
   //确认后跳转至列表页
   handlerNavigatorToProductList:function(){
     //将选择结果同步至列表页data
-    this.data.product_list_page.filter_selected = this.data.selected
-    this.data.product_list_page.is_filtered = !!Object.keys(this.data.selected).length
+    this.data.product_list_page.filter_selected = this.data.filter_selected
+    this.data.product_list_page.is_filtered = !!Object.keys(this.data.filter_selected).length
     glbd.product_list_page = this.data.product_list_page
     wx.navigateBack({
       delta: 1
@@ -107,7 +92,7 @@ Page({
   },
   handlerReset:function(){
     this.setData({
-      selected: {}
+      filter_selected: {}
     })
     const filter = this.matchFilterSelected(this.data.filter)
     this.setData({
