@@ -11,7 +11,8 @@
     "pages/Home/product_detail/product_detail",
     "pages/Home/product_search/product_search",
     "pages/My/index/index",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/Home/category_brand/category_brand"
   ],
   "window": {
     "backgroundTextStyle": "light",

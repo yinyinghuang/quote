@@ -80,6 +80,15 @@ Page({
       url: '/pages/Home/category_filter_option/category_filter_option?category_attribute_id=' + id + '&filter_type=' + filter_type + '&attribute_name=' + attribute_name,
     })
   },
+
+  //选择品牌筛选项，品牌列表
+  handlerNavigatorToBrand: function (e) {
+    const { category_id } = e.currentTarget.dataset
+
+    wx.navigateTo({
+      url: '/pages/Home/category_brand/category_brand?category_id=' + category_id,
+    })
+  },
   //确认后跳转至列表页
   handlerNavigatorToProductList:function(){
     //将选择结果同步至列表页data
