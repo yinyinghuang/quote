@@ -40,7 +40,7 @@ class ProductsAttributesTable extends Table
             'foreignKey' => 'product_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('CategoryAttributes', [
+        $this->belongsTo('CategoriesAttributes', [
             'foreignKey' => 'category_attribute_id',
             'joinType' => 'INNER'
         ]);

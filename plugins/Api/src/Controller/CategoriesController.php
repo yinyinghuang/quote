@@ -18,7 +18,7 @@ class CategoriesController extends AppController
         switch ($params['type']) {
             case 'zones':
                 $zones = $this
-                    ->loadModel('Api.Zones')
+                    ->loadModel('Zones')
                     ->find()
                     ->select(['id', 'name'])
                     ->where(['Zones.is_visible' => 1])
@@ -28,7 +28,7 @@ class CategoriesController extends AppController
                 break;
             case 'zone_children':
                 if (isset($params['id']) && $params['id']) {
-                    $zone = $this->loadModel('Api.Zones')
+                    $zone = $this->loadModel('Zones')
                         ->find()
                         ->select(['id', 'name'])
                         ->where(['Zones.is_visible' => 1,'Zones.id' => $params['id']])
@@ -37,7 +37,7 @@ class CategoriesController extends AppController
                         $this->ret(2, null, '空间不存在');
                     }
 
-                    $groups = $this->loadModel('Api.Groups')
+                    $groups = $this->loadModel('Groups')
                         ->find()
                         ->select(['Groups.id', 'Groups.name'])
                         ->contain(['Categories' => function ($query) {
@@ -60,7 +60,7 @@ class CategoriesController extends AppController
             case 'group_children':
                 if (isset($params['id']) && $params['id']) {                    
 
-                    $groups = $this->loadModel('Api.Groups')
+                    $groups = $this->loadModel('Groups')
                         ->find()
                         ->select(['id' => 'Groups.id',  'name'=>'Groups.name','zone_name' => 'Zones.name','zone_id' => 'Zones.id'])
                         ->contain(['Categories' => function ($query) {
@@ -93,7 +93,7 @@ class CategoriesController extends AppController
     public function getCategoryRelated()
     {
         $category_id = $this->request->getData('category_id');
-        $category    = $this->loadModel('Api.Categories')
+        $category    = $this->loadModel('Categories')
             ->find('all', [
                 'contain'    => ['Zones', 'Groups'],
                 'conditions' => ['Categories.is_visible' => 1, 'Categories.id' => $category_id],
@@ -127,7 +127,7 @@ class CategoriesController extends AppController
     protected function _getCategoryAttributeIsFilter($category_id)
     {
         //分类下为筛选项的属性
-        $cateAttrFilters = $this->loadModel('Api.CategoriesAttributes')->find('all', [
+        $cateAttrFilters = $this->loadModel('CategoriesAttributes')->find('all', [
             'contain'    => ['Attributes'],
             'conditions' => [
                 'CategoriesAttributes.category_id' => $category_id,
@@ -154,7 +154,7 @@ class CategoriesController extends AppController
 
         $category_attribute_id = $this->request->query('category_attribute_id');
         //分类下为筛选项的属性
-        $cateFilterAttrs = $this->loadModel('Api.CategoryAttributeFilters')->find('all', [
+        $cateFilterAttrs = $this->loadModel('CategoryAttributeFilters')->find('all', [
             'conditions' => [
                 'CategoryAttributeFilters.category_attribute_id' => $category_attribute_id,
                 'CategoryAttributeFilters.is_visible'            => 1,
