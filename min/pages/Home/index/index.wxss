@@ -10,9 +10,8 @@
 .section.section-official-account{
   display: block;
   position: fixed;
-  bottom: 20rpx;
-  left: 30rpx;
-  width: 92%;
+  bottom: -20rpx;
+  left: 0;
   
 }
 /* 分类部分 */

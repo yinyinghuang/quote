@@ -129,7 +129,28 @@ class AppController extends Controller
         //     ],
         //     'unauthorizedRedirect' => $this->referer()
         // ]);
+        $cates = $this->loadModel('Categories')->find('list');
+        foreach ($cates as $cate_id => $cate_name) {
 
+            $price_hong_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_hong_max desc')->first();
+            if(empty($price_hong_max)){
+                continue;
+            }
+            $price_hong_max = $price_hong_max->price_hong_max;
+            $price_water_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_water_max desc')->first()->price_water_max;
+            $price_max = max($price_hong_max,$price_water_max);
+
+
+            $price_hong_min = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_hong_min asc')->first()->price_hong_min;
+            $price_water_min = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_water_min asc')->first()->price_water_min;
+            $price_min = max($price_hong_min,$price_water_min);
+            $this->Categories->query()
+                ->update()
+                ->set(compact('price_min','price_max'))
+                ->where(['id' => $cate_id])
+                ->execute();
+
+        }
         $Navs  = $this->navs;
         $token = $this->request->getParam('_csrfToken');
         $this->set(compact('Navs', 'token'));

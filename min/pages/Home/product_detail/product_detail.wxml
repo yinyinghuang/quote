@@ -1,2 +1,11 @@
 <!--pages/Home/product_detail/product_detail.wxml-->
-<text>pages/Home/product_detail/product_detail.wxml</text>
+<view class='container'>
+  <view class='section section-official-account'>
+    <official-account></official-account>
+  </view>  
+  <view class='section section-product-info'>
+
+  </view>
+
+</view>
+

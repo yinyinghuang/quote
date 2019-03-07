@@ -1,6 +1,8 @@
 .section-official-account{
-  height: 100rpx;
-  background: #000;
+  /* height: 100rpx;
+  background: #000; */
+  
+  width: 100%;
 }
 
 /**app.wxss**/
