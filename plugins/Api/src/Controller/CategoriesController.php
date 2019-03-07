@@ -119,7 +119,7 @@ class CategoriesController extends AppController
     //分类属性筛选项页，获取分类的属性键值,及为筛选项的属性键
     public function getCategoryAttributeIsFilter($category_id)
     {
-        if(empty($category_id)) $this->ret(1,,null,'category_id缺失');
+        if(empty($category_id)) $this->ret(1,null,'category_id缺失');
         //分类下为筛选项的属性
         $cateFilterAttrs = $this->_getCategoryAttributeIsFilter($category_id);
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
