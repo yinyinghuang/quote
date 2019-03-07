@@ -129,9 +129,12 @@ class AppController extends Controller
         //     ],
         //     'unauthorizedRedirect' => $this->referer()
         // ]);
+        // 更新分类的最高最低价
         $cates = $this->loadModel('Categories')->find('list');
         foreach ($cates as $cate_id => $cate_name) {
-
+            if(empty($this->loadModel('Products')->find()->where(['category_id' => $cate_id])->first())){
+                continue;
+            }
             $price_hong_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_hong_max desc')->first()->price_hong_max;
             $price_water_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_water_max desc')->first()->price_water_max;
             $price_max = max($price_hong_max,$price_water_max);

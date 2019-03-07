@@ -305,9 +305,18 @@ class ProductsController extends AppController
             }
             $this->resApi($code, $data, implode(';', $msgs));
         }
+        
         //详情编辑页面提交请求
         if (isset($params['detail']) && $params['detail']) {
-
+            //更新所属分类的最高最低值
+            $category = $this->Products->Categories->find()->where(['id' => $product->category_id])->first();
+            $price_max = max($product->price_hong_max,$product->price_water_max);
+            $price_min = min($product->price_hong_min,$product->price_water_min);
+            if($price_max>$category->price_max || $price_min<$category->price_min){
+                $category->price_max = $price_max;
+                $category->price_min = $price_min;
+                $this->Products->Categories->save($category);
+            }
             //商户图片被修改
             if (isset($params['albums']) && is_array($params['albums']) && !empty($params['albums']) && !isset($params['albums']['error'])) {
                 $albumArr = $this->saveAlbums($params['albums'], $product->id);
