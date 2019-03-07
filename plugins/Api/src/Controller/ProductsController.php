@@ -88,19 +88,21 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
 
-        $product = $this->loadModel('Products')->find('all', [
+        $product = $this->loadModel('Api.Products')->find('all', [
             'conditions' => ['Products.id' => $id, 'Products.is_visible' => 1],
         ])->first();
         if (empty($product)) {
             $this->ret(1, null, '产品不存在或已被删除');
         }
 
-        $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
+        $product->attributes = $this->loadModel('Api.ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
-            'contain'    => ['CategoriesAttributes' => function ($query) {
-                return $query->contain(['Attributes'])->where(['Attributes.is_visible' => 1]);
-            }],
-        ]);
+            'contain'    => ['CategoriesAttributes'],
+            'fields'    => ['value' => 'ProductsAttributes.value','attribute_id' => 'CategoriesAttributes.attribute_id'],
+        ])->map(function($row){
+            $row->attribute_name = $this->loadModel('Api.Attributes')->find()->where(['id' => $row->attribute_id])->first()->name;
+            return $row;
+        });
         $this->ret(0, $product, '产品加载成功');
     }
     private function _getProductAlbumUrl($product_id, $product_album)
