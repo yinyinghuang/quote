@@ -140,8 +140,7 @@ class AppController extends Controller
             $price_hong_min = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_hong_min asc')->first()->price_hong_min;
             $price_water_min = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_water_min asc')->first()->price_water_min;
             $price_min = max($price_hong_min,$price_water_min);
-            debug($price_hong_max);
-            debug($price_water_max);
+
             $this->Categories->query()
                 ->update()
                 ->set(compact('price_min','price_max'))
