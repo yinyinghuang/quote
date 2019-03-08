@@ -13,9 +13,10 @@
           <view class='option-item-name {{item.selected?"active":""}}'>{{item.filter}}</view>
       </view>
     </view>
-    <view class='option-confirm' bindtap='handlerNavigatorToCateFilter'>
-      确认
+    <view class='option-buttons'>
+      <view class='option-confirm' bindtap='handlerNavigatorToCateFilter'>确认</view>
     </view>
+    
   </view>
   <view class='section section-official-account'>
     <official-account></official-account>

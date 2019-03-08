@@ -12,7 +12,8 @@
     "pages/Home/product_search/product_search",
     "pages/My/index/index",
     "pages/login/login",
-    "pages/Home/category_brand_list/category_brand_list"
+    "pages/Home/category_brand_list/category_brand_list",
+    "pages/Home/category_price_range/category_price_range"
   ],
   "window": {
     "backgroundTextStyle": "light",

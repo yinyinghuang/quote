@@ -11,6 +11,7 @@ Page({
     option: [],
     category_id: 0,
     filter_type: 1,
+    selected:''
   },
 
   //从筛选页跳转至此页
@@ -52,11 +53,13 @@ Page({
   },
   //匹配筛选项是否已有选项值
   matchOptionSelected: function (data) {
-    const selected = this.data.cate_filter_page.filter_selected['brand']
+    const selected = this.data.cate_filter_page.brand
 
     if (selected) {
-      data.forEach((item) => {
-        item.selected = selected[item.name] ? 1 : 0
+      data.some((item) => {
+        const flag = selected === item.name
+        item.selected = flag ? 1 : 0
+        return flag
       })
     }
     return data
@@ -68,29 +71,32 @@ Page({
     if (this.data.filter_type == 1) {
       if (!option[index]['selected']) {
         option.some((item) => {
-          if (item.selected) item.selected = !1
-          return item.selected
+          if (item.selected) {
+            item.selected = !1
+            return 1
+          }
         })
       }
     }
     option[index]['selected'] = !option[index]['selected']
     this.setData({
-      option
+      option,
+      selected: option[index]['name']
     })
 
   },
   //跳转回筛选页，并将已选筛选项值存入globalData中
   handlerNavigatorToCateFilter: function () {
-    let data = this.data.option.filter((item) => {
-      return item.selected
-    })
-    if (this.data.filter_type == 1) data = data.slice(0, 1)
+    // let data = this.data.option.filter((item) => {
+    //   return item.selected
+    // })
+    // if (this.data.filter_type == 1) data = data.slice(0, 1)
 
-    let option_selected = {}
-    data.forEach((option) => {
-      option_selected[option.id] = option.filter
-    })
-    this.data.cate_filter_page.filter_selected['brand'] = option_selected
+    // let option_selected = {}
+    // data.forEach((option) => {
+    //   option_selected[option.id] = option.filter
+    // })
+    this.data.cate_filter_page.brand = this.data.selected
     glbd.cate_filter_page = this.data.cate_filter_page
     wx.navigateBack({
       delta: 1

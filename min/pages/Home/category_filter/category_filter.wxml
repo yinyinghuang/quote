@@ -3,25 +3,25 @@
   <view class='section section-filter' wx:if='{{filter.length}}'>
     <text class='section-title'>筛选</text>
     <view class='filter-list'>
-      <view class='filter-item flex-row' wx:if='{{category.price_max}}' bindtap='handlerNavigatorToPrice' data-category_id='{{category.id}}'>
+      <view class='filter-item flex-row' wx:if='{{category.price_max}}' bindtap='handlerNavigatorToPrice' data-price_max='{{category.price_max}}' data-price_min='{{category.price_min}}'>
           <view class='filter-item-name'>价格</view>
-          <view class='filter-item-selected'> <text class='filter-item-arrow'>></text></view>
+          <view class='filter-item-selected'>{{price}} <text class='filter-item-arrow'>></text></view>
       </view>
-      <view class='filter-item flex-row' wx:if='{{category.brand_count}}'  data-category_id='{{cateogry.id}}' bindtap='handlerNavigatorToBrand'>
+      <view class='filter-item flex-row' wx:if='{{category.brand_count}}'  data-category_id='{{category_id}}' bindtap='handlerNavigatorToBrand'>
           <view class='filter-item-name'>品牌</view>
-          <view class='filter-item-selected'> <text class='filter-item-arrow'>></text></view>
+          <view class='filter-item-selected'>{{brand}} <text class='filter-item-arrow'>></text></view>
       </view>
       <view wx:for="{{filter}}" wx:key="id" data-id='{{item.id}}' data-attribute_name='{{item.name}}' data-filter_type='{{item.filter_type}}'   bindtap='handlerNavigatorToFilterOption' class='filter-item flex-row'>
           <view class='filter-item-name'>{{item.name}}</view>
           <view class='filter-item-selected'>{{item.selected}}<text class='filter-item-arrow'>></text></view>
       </view>
     </view>
-    <view class='filter-confirm' bindtap='handlerNavigatorToProductList'>
-      确认
+    <view class='filter-buttons'>
+      <view class='filter-reset' bindtap='handlerReset'>重置</view>
+      <view class='filter-confirm' bindtap='handlerNavigatorToProductList'>确认</view>
     </view>
-    <view class='filter-reset' bindtap='handlerReset'>
-      重置
-    </view>
+    
+    
   </view>
   <view class='section section-official-account'>
     <official-account></official-account>

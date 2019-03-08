@@ -14,7 +14,9 @@ Page({
       sort: 'default',
       page:1
     },
-    filter_selected:{},
+    filter_selected: {},
+    brand: '',
+    price:'',
     reach_bottom:false
   },
 

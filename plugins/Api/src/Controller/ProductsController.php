@@ -33,6 +33,26 @@ class ProductsController extends AppController
                     break;
             }
         }
+        //获取品牌
+        if (isset($params['brand']) && !empty($params['brand'])) {
+            $where['Products.brand'] = $params['brand'];
+        }
+        //获取价格
+        if (isset($params['price']) && !empty($params['price'])) {
+            $price_range = explode('-', $params['price']);
+            if(count($price_range)===2){
+                if(!empty($price_range[0])){
+                    $where['Products.price_hong_min >='] = $price_range[0];
+                    $where['Products.price_water_min >='] = $price_range[0];
+                }
+                if(!empty($price_range[1])){
+                    $where['Products.price_hong_max <='] = $price_range[1];
+                    $where['Products.price_water_max <='] = $price_range[1];
+                }
+                
+            }
+            
+        }
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
             foreach ($params['filter'] as $filter) {

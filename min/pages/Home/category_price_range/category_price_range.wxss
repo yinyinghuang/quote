@@ -23,11 +23,10 @@
 .option-item-name{
   font-size: 1.4em;
   line-height: 1.4em;
+  width: 20%;
 }
-.option-item-name.active{
-  font-size: 1.4em;
-  line-height: 1.4em;
-  color:#ff7878;
+.option-item-value{
+  width:80%;
 }
 .option-buttons{
   width: 100%;
@@ -47,7 +46,4 @@
   background: #fff;
   margin: 15rpx 30rpx 30rpx;
   box-shadow: 3rpx 3rpx 5rpx #000;  
-}
-.section-official-account{
-  
 }

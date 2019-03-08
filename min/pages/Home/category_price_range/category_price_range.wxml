@@ -1,0 +1,33 @@
+<!--pages/Home/category_price_range/category_price_range.wxml-->
+<view class='container'>
+  <view class='section section-option'>
+    <text class='section-title'>
+      <text>筛选</text>
+      <text class='split'>></text>
+      <text>价格</text>
+    </text>
+    <view>
+    </view>
+    <view class='option-list'>
+      <view  class='option-item flex-row'>
+          <view class='option-item-name'>最小值</view>
+          <view class='option-item-value'>
+            <slider bindchange="handlerSliderChange" min="{{price_min}}" max="{{price_max}}" value='{{min}}' show-value block-size='14' step='{{step}}' data-type='min'/>
+          </view>
+      </view>
+      <view  class='option-item flex-row'>
+          <view class='option-item-name'>最大值</view>
+          <view class='option-item-value'>
+            <slider bindchange="handlerSliderChange" min="{{price_min}}" max="{{price_max}}" value='{{max}}' show-value block-size='14' step='{{step}}' data-type='max'/>
+          </view>
+      </view>
+    </view>
+    <view class='option-buttons'>
+      <view class='option-confirm' bindtap='handlerNavigatorToCateFilter'>确认</view>
+    </view>
+    
+  </view>
+  <view class='section section-official-account'>
+    <official-account></official-account>
+  </view>
+</view>

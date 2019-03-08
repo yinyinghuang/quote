@@ -12,6 +12,8 @@ Page({
     category_id:0,
     filter_selected:{},//选中的筛选项
     category:{},
+    brand:'',
+    price:''
   },
 
   //从列表页进入此页
@@ -22,7 +24,9 @@ Page({
       product_list_page,
       category: product_list_page.category,
       //同步选项信息
-      filter_selected: product_list_page.filter_selected
+      filter_selected: product_list_page.filter_selected,
+      brand: product_list_page.brand,
+      price: product_list_page.price,
     })
     app.openSetting(this.initPage)
   },
@@ -63,8 +67,7 @@ Page({
     const _this = this
     const {filter_selected} = _this.data
     filter_selected && data.forEach((item) => {
-      item.selected = '全部'
-      
+      item.selected = '全部'      
       if (filter_selected[item.id] && comm.type(filter_selected[item.id]) === '[object Object]') {
         const selected_name_array = Object.values(filter_selected[item.id])
         if (selected_name_array.length) item.selected = selected_name_array.join(',')
@@ -73,7 +76,14 @@ Page({
     return data
   },
   handlerNavigatorToPrice:function(e){
-    const {category_id} = e.currentTarget.dataset
+    const { price_max, price_min} = e.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/Home/category_price_range/category_price_range?price_max=' + price_max+'&price_min='+price_min,
+    })
+  },
+  //选择品牌筛选项，品牌列表
+  handlerNavigatorToBrand: function (e) {
+    const { category_id } = e.currentTarget.dataset
     wx.navigateTo({
       url: '/pages/Home/category_brand_list/category_brand_list?category_id=' + category_id,
     })
@@ -86,20 +96,13 @@ Page({
       url: '/pages/Home/category_filter_option/category_filter_option?category_attribute_id=' + id + '&filter_type=' + filter_type + '&attribute_name=' + attribute_name,
     })
   },
-
-  //选择品牌筛选项，品牌列表
-  handlerNavigatorToBrand: function (e) {
-    const { category_id } = e.currentTarget.dataset
-
-    wx.navigateTo({
-      url: '/pages/Home/category_brand/category_brand?category_id=' + category_id,
-    })
-  },
   //确认后跳转至列表页
   handlerNavigatorToProductList:function(){
     //将选择结果同步至列表页data
     this.data.product_list_page.filter_selected = this.data.filter_selected
-    this.data.product_list_page.is_filtered = !!Object.keys(this.data.filter_selected).length
+    this.data.product_list_page.brand = this.data.brand
+    this.data.product_list_page.price = this.data.price
+    this.data.product_list_page.is_filtered = Object.keys(this.data.filter_selected).length || this.data.brand || this.data.price
     glbd.product_list_page = this.data.product_list_page
     wx.navigateBack({
       delta: 1
@@ -107,7 +110,9 @@ Page({
   },
   handlerReset:function(){
     this.setData({
-      filter_selected: {}
+      filter_selected: {},
+      brand: '',
+      price: ''
     })
     const filter = this.matchFilterSelected(this.data.filter)
     this.setData({
