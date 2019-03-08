@@ -118,7 +118,7 @@ class ProductsController extends AppController
         if (empty($product)) {
             $this->ret(1, null, '产品不存在或已被删除');
         }
-
+        $product->albums = $this->_getProductAlbumUrl($product->id, $product->album);
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
             'contain'    => ['CategoriesAttributes'],
