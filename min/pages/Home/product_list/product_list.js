@@ -42,6 +42,8 @@ Page({
         filter = Object.keys(filter_item).concat(filter)
       })
       this.data.options.filter = filter
+      if(this.data.brand ) this.data.options.brand = this.data.brand
+      if (this.data.price) this.data.options.price = this.data.price
       this.data.options.page = 1
       this.getProductList(this.data.options)
     }

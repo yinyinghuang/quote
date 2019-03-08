@@ -40,18 +40,22 @@ class ProductsController extends AppController
         //获取价格
         if (isset($params['price']) && !empty($params['price'])) {
             $price_range = explode('-', $params['price']);
-            if(count($price_range)===2){
-                if(!empty($price_range[0])){
-                    $where['Products.price_hong_min >='] = $price_range[0];
-                    $where['Products.price_water_min >='] = $price_range[0];
+            if (count($price_range) === 2) {
+                if (!empty($price_range[0])) {
+                    $where['or'] = [
+                        'Products.price_hong_min >=' => $price_range[0],
+                        'Products.price_water_min >=' => $price_range[0]
+                    ];
                 }
-                if(!empty($price_range[1])){
-                    $where['Products.price_hong_max <='] = $price_range[1];
-                    $where['Products.price_water_max <='] = $price_range[1];
+                if (!empty($price_range[1])) {
+                    $where['or'] = [
+                        'Products.price_hong_max >=' => $price_range[1],
+                        'Products.price_water_max >=' => $price_range[1]
+                    ];
                 }
-                
+
             }
-            
+
         }
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
@@ -118,8 +122,8 @@ class ProductsController extends AppController
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
             'contain'    => ['CategoriesAttributes'],
-            'fields'    => ['value' => 'ProductsAttributes.value','attribute_id' => 'CategoriesAttributes.attribute_id'],
-        ])->map(function($row){
+            'fields'     => ['value' => 'ProductsAttributes.value', 'attribute_id' => 'CategoriesAttributes.attribute_id'],
+        ])->map(function ($row) {
             $row->attribute_name = $this->loadModel('Attributes')->find()->where(['id' => $row->attribute_id])->first()->name;
             return $row;
         });
