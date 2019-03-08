@@ -72,6 +72,12 @@ Page({
     })
     return data
   },
+  handlerNavigatorToPrice:function(e){
+    const {category_id} = e.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/Home/category_brand_list/category_brand_list?category_id=' + category_id,
+    })
+  },
   //选择筛选项，进入筛选项选项页
   handlerNavigatorToFilterOption:function(e){
     const { id, filter_type,attribute_name} = e.currentTarget.dataset

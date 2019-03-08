@@ -9,7 +9,7 @@ Page({
    */
   data: {
     option: [],
-    category_attribute_id: 0,
+    category_id: 0,
     filter_type: 1,
   },
 
@@ -27,19 +27,19 @@ Page({
 
   initPage: function () {
     const _this = this
-    if (!_this.data.category_attribute_id) {
-      comm.showToast('category_attribute_id缺失')
+    if (!_this.data.category_id) {
+      comm.showToast('category_id缺失')
       wx.navigateTo({
         url: '/pages/Home/index/index',
       })
     }
-    _this.getCategoryFilterOption(_this.data.category_attribute_id)
+    _this.getCategoryBrand(_this.data.category_id)
   },
   //获取筛选项选项值
-  getCategoryFilterOption: function (category_attribute_id) {
+  getCategoryBrand: function (category_id) {
     const _this = this
     comm.request({
-      url: glbd.host + 'categories/get-category-filter-option?category_attribute_id=' + category_attribute_id,
+      url: glbd.host + 'categories/get-category-brand/' + category_id,
       method: glbd.method,
       success: function (res) {
         //原始已选项与选项列表结合
@@ -52,11 +52,11 @@ Page({
   },
   //匹配筛选项是否已有选项值
   matchOptionSelected: function (data) {
-    const selected = this.data.cate_filter_page.filter_selected[this.data.category_attribute_id]
+    const selected = this.data.cate_filter_page.filter_selected['brand']
 
     if (selected) {
       data.forEach((item) => {
-        item.selected = selected[item.id] ? 1 : 0
+        item.selected = selected[item.name] ? 1 : 0
       })
     }
     return data
@@ -90,7 +90,7 @@ Page({
     data.forEach((option) => {
       option_selected[option.id] = option.filter
     })
-    this.data.cate_filter_page.filter_selected[this.data.category_attribute_id] = option_selected
+    this.data.cate_filter_page.filter_selected['brand'] = option_selected
     glbd.cate_filter_page = this.data.cate_filter_page
     wx.navigateBack({
       delta: 1
