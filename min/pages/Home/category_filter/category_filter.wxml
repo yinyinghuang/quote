@@ -7,7 +7,7 @@
           <view class='filter-item-name'>价格</view>
           <view class='filter-item-selected'> <text class='filter-item-arrow'>></text></view>
       </view>
-      <view class='filter-item flex-row' wx:if='{{category.brand_count}}'>
+      <view class='filter-item flex-row' wx:if='{{category.brand_count}}'  data-category_id='{{cateogry.id}}' bindtap='handlerNavigatorToBrand'>
           <view class='filter-item-name'>品牌</view>
           <view class='filter-item-selected'> <text class='filter-item-arrow'>></text></view>
       </view>
