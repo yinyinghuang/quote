@@ -47,9 +47,21 @@ function request(requestHandler){
 }
 
 const type = (varible) => Object.prototype.toString.call(varible)
+const formatPrice = (price) => {
+  price = (price.toFixed(2)+'').split('.')
+  let price_positive = price[0]
+  let result = 0
+  let str = []
+  while (price_positive > 1000){
+    str.push(price_positive % 1000)
+    price_positive = Math.floor(price_positive / 1000)
+  }
+  return price_positive + (str.length ? ',' + str.join(',') : '') + (price[1] ? '.' + price[1]:'')
+}
 export {
   showToast,
   request,
   requestData,
-  type
+  type,
+  formatPrice
 }

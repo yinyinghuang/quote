@@ -1,1 +1,79 @@
 /* pages/Home/product_detail/product_detail.wxss */
+.product-detail-primary{
+  background: #fff;
+  box-sizing: border-box;
+  padding: 20rpx;
+  margin-bottom: 80rpx;
+}
+.product-name{
+  font-size: 1.5em;
+  line-height: 1.5em;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  padding: 30rpx 0 20rpx;
+}
+.product-albums{
+  height: 460rpx;
+  box-sizing: border-box;
+  margin: 30rpx;
+}
+.slide-image{
+  width: 100%;
+  height: 100%;
+}
+
+.product-item-price{
+  font-size: 1,2em;
+  line-height: 1.5em;
+  font-weight: bold;
+}
+.product-item-price .product-price-label{
+  font-weight: normal;
+  border: 1px solid #000;
+  margin-left: 20rpx;
+}
+.product-price,
+.product-action{
+  width: 50%;
+  justify-content: flex-end;
+}
+.product-action-icon{
+  width: 45rpx;
+  height: 45rpx;
+  margin-left: 20rpx;
+}
+/* 评价 */
+.product-detail-rate-comment{
+  margin-bottom: 50rpx;
+}
+.product-rate,
+.product-comment{
+  justify-content: flex-start;
+  margin-bottom: 20rpx;
+}
+.product-rate-write{
+  padding: 0 20rpx;
+  font-size: 1.2em;
+  line-height: 1.5em;
+  font-weight: bold;
+  color: #ff7878;
+}
+.write-icon{
+  width: 30rpx;
+  height: 30rpx;
+}
+.rate-icon{
+  width: 25rpx;
+  height: 25rpx;
+  vertical-align: middle
+}
+
+product-title{
+  font-size: 1.4em;
+  line-height: 1.5em;
+  margin-bottom: 30rpx;
+}
+.product-attr-list{
+  justify-content: space-between
+}

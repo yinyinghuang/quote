@@ -43,14 +43,14 @@ class ProductsController extends AppController
             if (count($price_range) === 2) {
                 if (!empty($price_range[0])) {
                     $where['or'] = [
-                        'Products.price_hong_min >=' => $price_range[0],
-                        'Products.price_water_min >=' => $price_range[0]
+                        'Products.price_hong_min >='  => $price_range[0],
+                        'Products.price_water_min >=' => $price_range[0],
                     ];
                 }
                 if (!empty($price_range[1])) {
                     $where['or'] = [
-                        'Products.price_hong_max >=' => $price_range[1],
-                        'Products.price_water_max >=' => $price_range[1]
+                        'Products.price_hong_max >='  => $price_range[1],
+                        'Products.price_water_max >=' => $price_range[1],
                     ];
                 }
 
@@ -118,7 +118,7 @@ class ProductsController extends AppController
         if (empty($product)) {
             $this->ret(1, null, '产品不存在或已被删除');
         }
-        $product->albums = $this->_getProductAlbumUrl($product->id, $product->album);
+        $product->albums     = $this->_getProductAlbumUrl($product->id, $product->album);
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
             'contain'    => ['CategoriesAttributes'],
@@ -146,9 +146,53 @@ class ProductsController extends AppController
 
     }
 
+    public function quoteLists($product_id)
+    {
+        if (empty($product_id)) {
+            $this->ret(1, null, '产品id缺失');
+        }
+
+        $params = $this->request->getData();
+        $select = [
+            'merchant_id'   => 'Merchants.id',
+            'merchant_name' => 'Merchants.name',
+            'price_hong'    => 'Quotes.price_hong',
+            'price_water'   => 'Quotes.price_water',
+        ];
+        $where   = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
+        $contain = ['Merchants'];
+        $order   = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.id desc', 'Merchants.id desc'];
+        $limit   = 20;
+        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+
+        $merchants = $this->loadModel('Quotes')
+            ->find()
+            ->select($select)
+            ->where($where)
+            ->contain($contain)
+            ->order($order)
+            ->offset($offset)
+            ->limit($limit)
+            ->map(function ($row) {
+                $location = $this->loadModel('MerchantLocations')->find('all',[
+                    'merchant_id' => $row->merchant_id,
+                    'address is not null'
+                ])->first();
+                if( $location) $row->address = $location->address;
+                return $row;
+            })
+            ->toArray();
+        $this->ret(0, $merchants, '加载成功');
+    }
+
     //获取产品图片文件夹
     private function _getAlbumDir($product_id)
     {
         return intval($product_id / 1000) . '000' . '/';
+    }
+    //获取产品图片文件夹
+    private function getLogoDir($merchant_id)
+    {
+        return intval($merchant_id / 100) . '00' . '/';
     }
 }

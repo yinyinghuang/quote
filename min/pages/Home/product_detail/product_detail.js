@@ -9,7 +9,8 @@ Page({
    */
   data: {
     id:0,
-    merchants:[]
+    merchants:[],
+    attribute_group:[]
   },
   //生命周期函数--监听页面加载
   onLoad: function (options) {
@@ -30,8 +31,26 @@ Page({
       url: glbd.host + 'products/detail/' + _this.data.id,
       method: glbd.method,
       success: function (res) {
+        let detail = res.data.data
+        detail.albums.forEach((item) => {
+          item.middle = glbd.hosts + item.middle
+          item.full = glbd.hosts + item.full
+          item.thumb = glbd.hosts + item.thumb
+        })
+        if (detail.price_hong_max) detail.price_hong_max = comm.formatPrice(detail.price_hong_max)
+        if (detail.price_hong_min) detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
+        if (detail.price_water_max) detail.price_water_max = comm.formatPrice(detail.price_water_max)
+        if (detail.price_water_min) detail.price_water_min = comm.formatPrice(detail.price_water_min)
+
+        let attribute_group = []
+        if (detail.attributes.length){
+          const half = Math.ceil(detail.attributes.length / 2)
+          attribute_group.push(detail.attributes.slice(0, half))
+          attribute_group.push(detail.attributes.slice(half))
+        }
         _this.setData({
-          ...res.data.data
+          ...detail,
+          attribute_group
         })
         _this._saveTrack()
       }
