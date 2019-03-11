@@ -43,8 +43,10 @@
     </view>
     <view class='product-detail-rate-comment'>
       <view class='product-rate flex-row'>
-        <image src='/static/images/icon/home.png' class='write-icon'></image>
-        <view class='product-rate-write'>发表意见</view>
+        <block wx:if='{{!commented}}'>
+          <image src='/static/images/icon/home.png' class='write-icon'></image>
+          <view class='product-rate-write'>发表意见</view>
+        </block>
         <view class=''>
           <image src='/static/images/icon/home.png' class='active rate-icon'></image>
           <image src='/static/images/icon/home.png' class='active rate-icon'></image>
