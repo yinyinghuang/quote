@@ -71,22 +71,24 @@
     </view>
   </view>
   <view class='section section-merchant-list'>
-    <view class='product-title'>在售商家</view>
+    <view class='product-title'>在售商家</view>    
     <view class='merchant-tabs flex-row'>
-      <view>附近</view>
-      <view>筛选</view>
+      <view class='merchant-tab-item'>附近</view>
+      <view class='merchant-tab-item'>筛选</view>
     </view>
     <view class='merchant-list flex-column'>
-      <view class='merchant-item flex-row' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}'>
-        <image class='map-icon' src='/static/images/icon/home.png'></image>
-        <view class='merchant-item-detail'>
-          <view class='merchant-name'>{{merchant.name}}</view>
+      <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerNavigatorToMerchantDetail' data-merchant_id='{{merchant.merchant_id}}'>  
+        <view class='merchant-name'>
+          <image class='map-icon' src='/static/images/icon/home.png'></image>
+          <text class='merchant-name-text'>{{merchant.merchant_name}}</text>
+        </view>
+        <view class='merchant-detail'>
           <view class='merchant-address'>{{merchant.address}}</view>
           <view class='merchant-quote flex-row'>
-            <view class='merchant-quote-text'>售价</view>
+            <view class='merchant-quote-text'>售价:</view>
             <view class='merchant-quote-price'>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}</view>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}</view>
+              <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='quote-price-label'>行</text></view>
+              <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='quote-price-label'>水</text></view>
             </view>
           </view>
         </view>

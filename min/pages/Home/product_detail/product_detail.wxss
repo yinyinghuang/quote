@@ -4,6 +4,7 @@
   box-sizing: border-box;
   padding: 20rpx;
   margin-bottom: 80rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .product-name{
   font-size: 1.5em;
@@ -69,11 +70,67 @@
   vertical-align: middle
 }
 
-product-title{
+.product-title{
   font-size: 1.4em;
   line-height: 1.5em;
   margin-bottom: 30rpx;
 }
 .product-attr-list{
   justify-content: space-between
+}
+/* 在售商家 */
+.merchant-tabs,
+.merchant-list{
+  width: 100%;
+  background: #fff;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.merchant-item{
+  margin: 40rpx 0;
+}
+.merchant-tabs{
+  font-size: 1.4em;
+  padding:30rpx 0;
+  margin-bottom: 20rpx;
+}
+.merchant-tab-item{
+  width: 50%;
+  text-align: center;
+  border-right: 1px solid #e5e5e5
+}
+
+.merchant-tab-item:last-child{
+  border-right: none
+}
+.map-icon{
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0 20rpx;
+  vertical-align: middle;
+}
+.merchant-detail{
+  margin-left: 70rpx;
+  font-size: 1em;
+  line-height: 1.8em
+}
+.merchant-detail .merchant-name{
+  font-size: 1.1em;
+}
+.merchant-detail .merchant-address{
+  color: #7f7f7f;
+}
+.merchant-quote{
+  justify-content: flex-start;
+}
+.merchant-quote-text{
+  width: 68rpx;
+}
+.merchant-quote-price-item{
+  color: #ff7878;
+}
+.quote-price-label{
+  color: #333;
+  border: 1px solid #000;
+  margin-left: 20rpx;
 }

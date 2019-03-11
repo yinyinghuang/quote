@@ -22,7 +22,7 @@ Page({
   initPage:function(){
     const _this = this 
     _this.getProductDetail()
-    // _this.getMerchantList()
+    _this.getMerchantList()
   },
   //获取产品详情
   getProductDetail: function () {
@@ -30,6 +30,7 @@ Page({
     comm.request({
       url: glbd.host + 'products/detail/' + _this.data.id,
       method: glbd.method,
+      data: comm.requestData(glbd),
       success: function (res) {
         let detail = res.data.data
         detail.albums.forEach((item) => {
@@ -60,11 +61,16 @@ Page({
   getMerchantList: function () {
     const _this = this
     comm.request({
-      url: glbd.host + 'merchants/list?product_id=' + _this.data.id,
+      url: glbd.host + 'products/quote-lists/' + _this.data.id,
       method: glbd.method,
       success: function (res) {
+        let data = res.data.data
+        data.forEach((quote) => {
+          if (quote.price_hong) quote.price_hong = comm.formatPrice(quote.price_hong)
+          if (quote.price_water) quote.price_water = comm.formatPrice(quote.price_water)
+        })
         _this.setData({
-          merchants:res.data.data
+          merchants:data
         })
       }
     })

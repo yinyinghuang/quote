@@ -111,7 +111,7 @@ class ProductsController extends AppController
         if (empty($id)) {
             $this->ret(1, null, '产品id缺失');
         }
-
+        $fan_id  = $this->request->getData('pkey');
         $product = $this->loadModel('Products')->find('all', [
             'conditions' => ['Products.id' => $id, 'Products.is_visible' => 1],
         ])->first();
@@ -119,6 +119,12 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品不存在或已被删除');
         }
         $product->albums     = $this->_getProductAlbumUrl($product->id, $product->album);
+        $product->comment_count     = $this->loadModel('Comments')->find('all',[
+            'conditions' => ['product_id' => $product->id,'is_checked' => 1],
+        ])->count();
+        $product->commented     = $this->loadModel('Comments')->find('all',[
+            'conditions' => compact('product_id','fan_id'),
+        ])->count();
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
             'contain'    => ['CategoriesAttributes'],
