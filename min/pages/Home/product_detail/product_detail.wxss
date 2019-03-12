@@ -92,6 +92,9 @@
   background: #fff;
   box-shadow: 3rpx 3rpx 5rpx #000;
 }
+.merchant-list{
+  justify-content: flex-start;
+}
 .merchant-item{
   margin: 40rpx 0;
 }
