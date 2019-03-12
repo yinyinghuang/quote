@@ -15,8 +15,12 @@ class MerchantsController extends AppController
     public function areaLists()
     {
         $areas = $this->loadModel('Areas')->find('all',[
-            'contain'=> ['Districts'],
-            'conditions' => ['Areas.is_visible' => 1]
+            'fields' => ['Areas.id','Areas.name'],
+            'contain'=> ['Districts' => function($query){
+                return $query->select(['Districts.name','Districts.id','Districts.area_id'])->where(['Districts.is_visible' => 1])->order(['Districts.sort']);
+            }],
+            'conditions' => ['Areas.is_visible' => 1],
+            'order' => ['Areas.sort']
         ])
         ->toArray();
         $this->ret(0, $areas, '加载成功');

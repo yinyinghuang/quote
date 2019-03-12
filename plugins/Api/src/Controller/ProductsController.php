@@ -125,7 +125,7 @@ class ProductsController extends AppController
         $product->commented     = $this->loadModel('Comments')->find('all',[
             'conditions' => compact('product_id','fan_id'),
         ])->count();
-        $product->liked     = $this->loadModel('Like')->find('all',[
+        $product->liked     = $this->loadModel('Likes')->find('all',[
             'conditions' => compact('product_id','fan_id'),
         ])->count();
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
