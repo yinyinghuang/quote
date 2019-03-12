@@ -83,6 +83,7 @@ Page({
   //获取产品列表
   getProductList: function (options) {
     const _this = this
+    if(_this.data.reach_bottom) return false
     const time = Date.now()
     comm.request({      
       url: glbd.host + 'products/lists?t=' + time,

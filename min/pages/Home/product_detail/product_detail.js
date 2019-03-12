@@ -24,7 +24,9 @@ Page({
       price_type: '行货|水货',
       area:'地区',
     },
-    areas:[]
+    areas:[],
+    merchant_reach_bottom:false,
+    page:1
   },
   //生命周期函数--监听页面加载
   onLoad: function (options) {
@@ -33,6 +35,11 @@ Page({
       merchant_filter_name: Object.assign({}, this.data.default_merchant_filter_name)
     })
     app.openSetting(this.initPage)
+  },
+  //页面上拉触底事件的处理函数
+  onReachBottom: function () {
+    const _this = this
+    _this.getMerchantList()
   },
   initPage:function(){
     const _this = this 
@@ -76,18 +83,25 @@ Page({
   //获取在售商户列表
   getMerchantList: function () {
     const _this = this
+    if(_this.data.merchant_reach_bottom) return false
     comm.request({
       url: glbd.host + 'products/quote-lists/' + _this.data.id,
       method: glbd.method,
-      data:_this.data.merchant_filter,
+      data:{
+        ..._this.data.merchant_filter,
+        page:this.data.page
+      },
       success: function (res) {
         let data = res.data.data
+        const { page } = _this.data
         data.forEach((quote) => {
           if (quote.price_hong) quote.price_hong = comm.formatPrice(quote.price_hong)
           if (quote.price_water) quote.price_water = comm.formatPrice(quote.price_water)
         })
         _this.setData({
-          merchants:data
+          merchants: page == 1 ? data : _this.data.merchants.concat(data),
+          page: page + 1,
+          merchant_reach_bottom: !data.length,
         })
       }
     })
@@ -217,10 +231,12 @@ Page({
   handlerMerchantFilterConfirm:function(){
     const _this = this
     const merchant_filtered = Object.values(_this.data.merchant_filter).some((item) => item)
-    console.log(Object.values(_this.data.merchant_filter))
+
     _this.setData({
       'style.merchant_filtered': merchant_filtered,
       'style.show_merchant_filter': false,
+      page:1,
+      merchant_reach_bottom:0
     })
     _this.getMerchantList()
   },

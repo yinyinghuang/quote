@@ -236,8 +236,8 @@ class ProductsController extends AppController
         } else {
             $like = $this->loadModel('Likes')->find('all')->where($conditions)->first();
             if (!$like) {
-                $like = $this->loadModel('Likes')->newEntity($conditions);
-                $this->loadModel('Likes')->save($like);
+                $conditions['created'] = date('Y-m-d H:i:s');
+                $this->loadModel('Likes')->query()->insert(['fan_id','product_id','created'])->values($conditions)->execute();
             }
         }
         $this->ret(0, 1, '加载成功');

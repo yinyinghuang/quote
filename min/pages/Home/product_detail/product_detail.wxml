@@ -106,11 +106,11 @@
         </view>
       </view>
       <view class='merchant-filter-buttons'>
-        <view class='merchant-filter-reset' bindtap='handlerMerchantFilterReset'>重置</view>
         <view class='merchant-filter-confirm' bindtap='handlerMerchantFilterConfirm'>确认</view>
+        <view class='merchant-filter-reset' bindtap='handlerMerchantFilterReset'>重置</view>
       </view>
     </view>
-    <view class='merchant-list flex-column'>
+    <view class='merchant-list flex-column'>      
       <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerNavigatorToMerchantDetail' data-merchant_id='{{merchant.merchant_id}}'>  
         <view class='merchant-name'>
           <image class='map-icon' src='/static/images/icon/home.png'></image>
@@ -127,6 +127,7 @@
           </view>
         </view>
       </view>
+      <view class='merchant-item' wx:if='{{merchant_reach_bottom}}'>暂无更多数据</view>
     </view>
   </view>
 
