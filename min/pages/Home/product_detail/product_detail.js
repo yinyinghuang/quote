@@ -12,14 +12,25 @@ Page({
     merchants:[],
     attribute_group:[],
     liked:false,
-    show_merchant_filter:false,
-    merchant_filter:{},
+    style:{
+      show_merchant_filter: false,
+      show_price_type:false,
+      show_area:false,
+      merchant_filtered:false,
+    },
+    merchant_filter: {},
+    merchant_filter_name:{},
+    default_merchant_filter_name:{
+      price_type: '行货|水货',
+      area:'地区',
+    },
     areas:[]
   },
   //生命周期函数--监听页面加载
   onLoad: function (options) {
     this.setData({
-      ...options
+      ...options,
+      merchant_filter_name: Object.assign({}, this.data.default_merchant_filter_name)
     })
     app.openSetting(this.initPage)
   },
@@ -85,7 +96,7 @@ Page({
   getAreaList: function () {
     let areas = wx.getStorageSync('areaList')
     const _this = this
-    if(!areas){
+    if(areas === undefined || !areas.length){
       const _this = this
       comm.request({
         url: glbd.host + 'merchants/area-lists/',
@@ -100,7 +111,7 @@ Page({
       })
     }else{
       _this.setData({
-        areas: res.data.data
+        areas
       })
     }    
   },
@@ -151,7 +162,7 @@ Page({
     })
   },
   //跳转至附近商家
-  handlerNavigatorToCommentList: function (e) {
+  handlerNavigatorToNearBy: function (e) {
     const {id} = e.currentTarget.dataset
     wx.navigateTo({
       url: '/pages/Home/product_merchant_near_by/product_merchant_near_by?product_id=' + id,
@@ -160,26 +171,65 @@ Page({
   //显示/隐藏筛选页面
   handlerShowMerchantFilter:function(){
     this.setData({
-      show_merchant_filter:!this.data.show_merchant_filter
-    })    
+      'style.show_merchant_filter': !this.data.style.show_merchant_filter
+    })
+  },
+  //显示/隐藏筛选项
+  handlerShowMerchantFilterOption:function(e){
+    const {type}  =e.currentTarget.dataset
+    this.setData({
+      ['style.show_'+type]:!this.data.style['show_'+type]
+    })
   },
   //设置商户筛选选项
   handlerSetMerchantFilter:function(e){
-    const {key,value} =e.currentTarget.dataset
-    this.setData({
-      ['merchant_filter.' + key]:value
-    })
+    const {key,value,style,name} =e.currentTarget.dataset
+    //点击已选的选项，取消选中
+    if (this.data.merchant_filter[key] == value){
+      this.setData({
+        ['merchant_filter.' + key]: null,
+        ['merchant_filter_name.' + style]: this.data.default_merchant_filter_name[style],
+        ['style.show_' + style]: false
+      })
+    }else{
+      if(key=='area_id' || key==='district_id') {
+        this.setData({
+          'merchant_filter.area_id': null,
+          'merchant_filter.district_id':null,
+        })
+      }
+      this.setData({
+        ['merchant_filter.' + key]: value,
+        ['merchant_filter_name.' + style]: name,
+        ['style.show_' + style]: false
+      })
+    }
+    
   },
   //重置商户筛选选项
   handlerMerchantFilterReset:function(){
     this.setData({
-      merchant_filter:{}
+      merchant_filter:{},
+      merchant_filter_name: Object.assign({}, this.data.default_merchant_filter_name),
     })
   },
   //确认选项，刷新商户
   handlerMerchantFilterConfirm:function(){
-    const _this = this;
+    const _this = this
+    const merchant_filtered = Object.values(_this.data.merchant_filter).some((item) => item)
+    console.log(Object.values(_this.data.merchant_filter))
+    _this.setData({
+      'style.merchant_filtered': merchant_filtered,
+      'style.show_merchant_filter': false,
+    })
     _this.getMerchantList()
+  },
+  //跳转至商户详情
+  handlerNavigatorToMerchantDetail:function(e){
+    const {merchant_id} =e.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/Home/merchant_detail/merchant_detail?id='+merchant_id,
+    }) 
   },
   //用户点击右上角分享
   onShareAppMessage: function () {

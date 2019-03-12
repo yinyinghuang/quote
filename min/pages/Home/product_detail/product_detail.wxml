@@ -80,25 +80,29 @@
   </view>
   <view class='section section-merchant-list'>
     <view class='product-title'>在售商家</view>    
-    <view class='merchant-tabs flex-row'>
+    <view class='merchant-tabs flex-row {{style.show_merchant_filter?"active":""}}'>
       <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy'>附近</view>
-      <view class='merchant-tab-item' bindtap='handlerShowMerchantFilter'>筛选</view>
+      <view class='merchant-tab-item {{style.show_merchant_filter||style.merchant_filtered?"active":""}}' bindtap='handlerShowMerchantFilter'>筛选</view>
     </view>
-    <view class='merchant-filter'>
-      <view class='merchant-filter-price-type'>
-        <view class='merchant-filter-title'>行货|水货</view>
-        <view class='merchant-filter-price-type-list'>
-          <view class='merchant-filter-item' data-key='price_type' data-value='1' bindtap='handlerSetMerchantFilter'>行货</view>
-          <view class='merchant-filter-item' data-key='price_type' data-value='2' bindtap='handlerSetMerchantFilter'>水货</view>
+    <view class='merchant-filter {{style.show_merchant_filter?"active":""}}'>
+      <view class='merchant-filter-option'>
+        <view class='merchant-filter-selected flex-row' bindtap='handlerShowMerchantFilterOption' data-type='price_type'>
+          <view class='merchant-filter-name {{merchant_filter_name.price_type!=default_merchant_filter_name.price_type?"active":""}}'>{{merchant_filter_name.price_type}}</view>
+          <view class='merchant-filter-arrow'>></view>
+        </view>
+        <view class='merchant-filter-option-list {{style.show_price_type?"active":""}}'>
+          <view class='merchant-filter-option-item {{merchant_filter.price_type==1?"active":""}}' data-style='price_type' data-key='price_type' data-value='1'  data-name='行货' bindtap='handlerSetMerchantFilter'>行货</view>
+          <view class='merchant-filter-option-item {{merchant_filter.price_type==2?"active":""}}' data-style='price_type' data-key='price_type' data-value='2'  data-name='水货'  bindtap='handlerSetMerchantFilter'>水货</view>
         </view>
       </view>
-      <view class='merchant-filter-area'>
-        <view class='merchant-filter-title'>地区</view>
-        <view class='merchant-filter-price-type-list' wx:for='{{areas}}' wx:for-item='{{area}}' wx:key='{{id}}'>
-          <view class='merchant-filter-item-area' data-key='area_id' data-value='{{area.id}}' bindtap='handlerSetMerchantFilter'>{{area.name}}</view>     
-          <view class='merchant-filter-item-district' wx:for='{{area.districts}}' wx:for-item='{{district}}' wx:key='{{id}}'>
-            <view class='merchant-filter-item' data-key='district_id' data-value='{{district.id}}' bindtap='handlerSetMerchantFilter'>{{district.name}}</view>
-          </view>     
+      <view class='merchant-filter-option'>
+        <view class='merchant-filter-selected flex-row' bindtap='handlerShowMerchantFilterOption' data-type='area'>
+          <view class='merchant-filter-name {{merchant_filter_name.area!=default_merchant_filter_name.area?"active":""}}'>{{merchant_filter_name.area}}</view>
+          <view class='merchant-filter-arrow'>></view>
+        </view>
+        <view class='merchant-filter-option-list {{style.show_area?"active":""}}' wx:for='{{areas}}' wx:for-item='area' wx:key='{{id}}'>
+          <view class='merchant-filter-option-item area {{merchant_filter.area_id==area.id?"active":""}}' data-style='area' data-key='area_id' data-value='{{area.id}}'  data-name='{{area.name}}' bindtap='handlerSetMerchantFilter'>{{area.name}}</view>   
+          <view class='merchant-filter-option-item district {{merchant_filter.district_id==district.id?"active":""}}' data-style='area' data-key='district_id' data-value='{{district.id}}'  data-name='{{district.name}}' bindtap='handlerSetMerchantFilter'  wx:for='{{area.districts}}' wx:for-item='district' wx:key='{{id}}'>{{district.name}}</view>
         </view>
       </view>
       <view class='merchant-filter-buttons'>

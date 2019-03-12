@@ -83,6 +83,9 @@
   justify-content: space-between
 }
 /* 在售商家 */
+.section-merchant-list{
+  position:relative;
+}
 .merchant-tabs,
 .merchant-list{
   width: 100%;
@@ -92,19 +95,90 @@
 .merchant-item{
   margin: 40rpx 0;
 }
+.merchant-tabs.active{
+  border-bottom: #e5e5e5;
+  box-shadow: none;
+}
 .merchant-tabs{
   font-size: 1.4em;
-  padding:30rpx 0;
+  padding:20rpx 0;
   margin-bottom: 20rpx;
 }
 .merchant-tab-item{
   width: 50%;
   text-align: center;
-  border-right: 1px solid #e5e5e5
+  border-right: 1px solid #e5e5e5;
 }
-
+.merchant-tab-item.active{
+  background: #ff7878;
+  color: #fff;
+}
 .merchant-tab-item:last-child{
   border-right: none
+}
+.merchant-filter{
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 178rpx;
+  background: #fff;
+  width: 100%;
+  padding: 0 20rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+  box-sizing: border-box;
+}
+.merchant-filter.active{
+  display: block;
+}
+.merchant-filter-selected{
+  padding-top: 40rpx;
+  padding-bottom: 10rpx;
+  border-bottom:1px solid #e5e5e5;
+  justify-content: space-between
+}
+.merchant-filter-selected .merchant-filter-name,
+.merchant-filter-selected .merchant-filter-arrow{
+  font-size: 1.4em;
+  line-height: 1.4em;
+}
+.merchant-filter-selected .merchant-filter-arrow{
+  color:#ff7878;
+  font-weight: bold;
+  padding-left: 10rpx;
+}
+.merchant-filter-option-list{
+  display: none;
+}
+.merchant-filter-option-list.active{
+  display: block;
+}
+.merchant-filter-option-item{
+  font-size: 1.2em;
+  line-height: 2
+}
+.merchant-filter-option-item.area{
+  line-height: 2.5;
+  font-weight: bold;
+}
+.merchant-filter-option-item.district{
+  margin-left: 30rpx;
+}
+.merchant-filter-selected .merchant-filter-name.active,
+.merchant-filter-option-item.active{
+  color: #ff7878;
+}
+.merchant-filter-reset,
+.merchant-filter-confirm{
+  position: relative;
+  width: 92%;
+  height: 66rpx;
+  line-height: 66rpx;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-align: center;
+  background: #fff;
+  margin: 40rpx 30rpx 30rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .map-icon{
   display: inline-block;

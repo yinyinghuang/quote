@@ -118,15 +118,15 @@ class ProductsController extends AppController
         if (empty($product)) {
             $this->ret(1, null, '产品不存在或已被删除');
         }
-        $product->albums     = $this->_getProductAlbumUrl($product->id, $product->album);
-        $product->comment_count     = $this->loadModel('Comments')->find('all',[
-            'conditions' => ['product_id' => $product->id,'is_checked' => 1],
+        $product->albums        = $this->_getProductAlbumUrl($product->id, $product->album);
+        $product->comment_count = $this->loadModel('Comments')->find('all', [
+            'conditions' => ['product_id' => $product->id, 'is_checked' => 1],
         ])->count();
-        $product->commented     = $this->loadModel('Comments')->find('all',[
-            'conditions' => compact('product_id','fan_id'),
+        $product->commented = $this->loadModel('Comments')->find('all', [
+            'conditions' => compact('product_id', 'fan_id'),
         ])->count();
-        $product->liked     = $this->loadModel('Likes')->find('all',[
-            'conditions' => compact('product_id','fan_id'),
+        $product->liked = $this->loadModel('Likes')->find('all', [
+            'conditions' => compact('product_id', 'fan_id'),
         ])->count();
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
@@ -174,23 +174,52 @@ class ProductsController extends AppController
         $limit   = 20;
         $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
-        $merchants = $this->loadModel('Quotes')
-            ->find()
-            ->select($select)
-            ->where($where)
-            ->contain($contain)
-            ->order($order)
-            ->offset($offset)
-            ->limit($limit)
-            ->map(function ($row) {
-                $location = $this->loadModel('MerchantLocations')->find('all',[
-                    'merchant_id' => $row->merchant_id,
-                    'address is not null'
-                ])->first();
-                if( $location) $row->address = $location->address;
-                return $row;
-            })
-            ->toArray();
+        //存在地区筛选项
+        $area_id     = isset($params['area_id']) ? intval($params['area_id']) : 0;
+        $district_id = isset($params['district_id']) ? intval($params['district_id']) : 0;
+        if ($area_id || $district_id) {
+            $locationWhere                                = [];
+            $area_id && $locationWhere['area_id']         = $area_id;
+            $district_id && $locationWhere['district_id'] = $district_id;
+            $merchant_ids                                 = $this->loadModel('MerchantLocations')->find('all', [
+                'conditions' => $locationWhere,
+            ])->extract('id')->toArray();
+        }
+        //存在水货/行货筛选项
+        if (isset($params['price_type']) && in_array($params['price_type'], ['1', '2'])) {
+            $params['price_type'] == 1 && $where['Quotes.price_hong !=']  = 0;
+            $params['price_type'] == 2 && $where['Quotes.price_water !='] = 0;
+        }
+
+        //存在地区筛选项且无满足该条件的商户
+        if (isset($merchant_ids) && empty($merchant_ids)) {
+            $merchants = [];
+        } else {
+            isset($merchant_ids) && $where['Merchants.id in'] = $merchant_ids;
+
+            $merchants = $this->loadModel('Quotes')
+                ->find('all', [
+                    'fields'     => $select,
+                    'conditions' => $where,
+                    'contain'    => $contain,
+                    'order'      => $order,
+                    'offset'     => $offset,
+                    'limit'      => $limit,
+                ])
+                ->map(function ($row) {
+                    $where    = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                    $location = $this->loadModel('MerchantLocations')->find('all', [
+                        'conditions' => $where,
+                    ])->first();
+                    if ($location) {
+                        $row->address = $location->address;
+                    }
+
+                    return $row;
+                })
+                ->toArray();
+        }
+
         $this->ret(0, $merchants, '加载成功');
     }
     public function setLike($product_id)
@@ -198,17 +227,17 @@ class ProductsController extends AppController
         if (empty($product_id)) {
             $this->ret(1, null, '产品id缺失');
         }
-        $params =  $this->request->getData();
-        $fan_id = $params['pkey'];
-        $type = $params['type'];
-        $conditions = compact('product_id','fan_id');
-        if($type==='dislike'){
+        $params     = $this->request->getData();
+        $fan_id     = $params['pkey'];
+        $type       = $params['type'];
+        $conditions = compact('product_id', 'fan_id');
+        if ($type === 'dislike') {
             $this->loadModel('Likes')->deleteAll($conditions);
-        }else{
+        } else {
             $like = $this->loadModel('Likes')->find('all')->where($conditions)->first();
-            if(!$like){
+            if (!$like) {
                 $like = $this->loadModel('Likes')->newEntity($conditions);
-                $this->loadModel('Likes')->save($like);                
+                $this->loadModel('Likes')->save($like);
             }
         }
         $this->ret(0, 1, '加载成功');
