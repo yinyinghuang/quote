@@ -6,11 +6,13 @@
   <view class='section section-product-detail'>
     <view class='product-detail-primary'>
       <view class='product-name'>{{name}}</view>
-      <swiper class='product-albums' wx:for='{{albums}}' wx:key='{{index}}'>
-        <swiper-item class='flex-column product-album-item'>
-          <image src="{{item.middle}}" class="slide-image" width="345" />
-        </swiper-item>
-      </swiper>
+      <view class='product-albums'>
+        <swiper class='product-albums-swiper' wx:for='{{albums}}' wx:key='{{index}}'>
+          <swiper-item class='flex-column product-album-item'>
+            <image src="{{item.middle}}" class="slide-image" width="345" />
+          </swiper-item>
+        </swiper>
+      </view>
       <view class='product-price-action flex-row'>      
         <view class='product-price'>
           <block wx:if='{{ price_hong_max===0 && price_hong_min===0 && price_water_max===0 && price_water_min===0}}'>
@@ -36,27 +38,31 @@
           </block>
         </view>
         <view class='product-action flex-row'>
-          <image src='/static/images/icon/home.png' class='product-action-icon'></image>
-          <image src='/static/images/icon/home.png' class='product-action-icon'></image>
+          <button bindtap='handlerLike' data-id='{{id}}'>
+            <image src='/static/images/icon{{liked?"-red":""}}/home.png' class='product-action-icon'></image>
+          </button>          
+          <button open-type='share'>
+            <image src='/static/images/icon/home.png' class='product-action-icon'></image>
+          </button>
+          
         </view>
       </view>
     </view>
     <view class='product-detail-rate-comment'>
       <view class='product-rate flex-row'>
-        <block wx:if='{{!commented}}'>
+        <view class='flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
           <image src='/static/images/icon/home.png' class='write-icon'></image>
           <view class='product-rate-write'>发表意见</view>
-        </block>
+        </view>
         <view class=''>
-          <image src='/static/images/icon/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon/home.png' class='active rate-icon'></image>
+          <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='active rate-icon'></image>
+          <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='active rate-icon'></image>
+          <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='active rate-icon'></image>
+          <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='active rate-icon'></image>
         </view>
       </view>
-      <view class='product-comment flex-row'>
+      <view class='product-comment flex-row' bindtap='handlerNavigatorToCommentList' data-id='{{id}}' data-name='{{name}}' data-thumb='{{albums[0]}}' data-price_hong_max='{{price_hong_max}}' data-price_hong_min='{{price_hong_min}}' data-price_water_max='{{price_water_max}}' data-price_water_min='{{price_water_min}}'>
         <image src='/static/images/icon/home.png' class='write-icon'></image>
         <view class='product-rate-write'>用户评价|{{comment_count}}</view>
       </view>
@@ -75,8 +81,30 @@
   <view class='section section-merchant-list'>
     <view class='product-title'>在售商家</view>    
     <view class='merchant-tabs flex-row'>
-      <view class='merchant-tab-item'>附近</view>
-      <view class='merchant-tab-item'>筛选</view>
+      <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy'>附近</view>
+      <view class='merchant-tab-item' bindtap='handlerShowMerchantFilter'>筛选</view>
+    </view>
+    <view class='merchant-filter'>
+      <view class='merchant-filter-price-type'>
+        <view class='merchant-filter-title'>行货|水货</view>
+        <view class='merchant-filter-price-type-list'>
+          <view class='merchant-filter-item' data-key='price_type' data-value='1' bindtap='handlerSetMerchantFilter'>行货</view>
+          <view class='merchant-filter-item' data-key='price_type' data-value='2' bindtap='handlerSetMerchantFilter'>水货</view>
+        </view>
+      </view>
+      <view class='merchant-filter-area'>
+        <view class='merchant-filter-title'>地区</view>
+        <view class='merchant-filter-price-type-list' wx:for='{{areas}}' wx:for-item='{{area}}' wx:key='{{id}}'>
+          <view class='merchant-filter-item-area' data-key='area_id' data-value='{{area.id}}' bindtap='handlerSetMerchantFilter'>{{area.name}}</view>     
+          <view class='merchant-filter-item-district' wx:for='{{area.districts}}' wx:for-item='{{district}}' wx:key='{{id}}'>
+            <view class='merchant-filter-item' data-key='district_id' data-value='{{district.id}}' bindtap='handlerSetMerchantFilter'>{{district.name}}</view>
+          </view>     
+        </view>
+      </view>
+      <view class='merchant-filter-buttons'>
+        <view class='merchant-filter-reset' bindtap='handlerMerchantFilterReset'>重置</view>
+        <view class='merchant-filter-confirm' bindtap='handlerMerchantFilterConfirm'>确认</view>
+      </view>
     </view>
     <view class='merchant-list flex-column'>
       <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerNavigatorToMerchantDetail' data-merchant_id='{{merchant.merchant_id}}'>  

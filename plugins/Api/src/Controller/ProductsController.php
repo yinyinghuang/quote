@@ -125,6 +125,9 @@ class ProductsController extends AppController
         $product->commented     = $this->loadModel('Comments')->find('all',[
             'conditions' => compact('product_id','fan_id'),
         ])->count();
+        $product->liked     = $this->loadModel('Like')->find('all',[
+            'conditions' => compact('product_id','fan_id'),
+        ])->count();
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
             'contain'    => ['CategoriesAttributes'],
@@ -189,6 +192,26 @@ class ProductsController extends AppController
             })
             ->toArray();
         $this->ret(0, $merchants, '加载成功');
+    }
+    public function setLike($product_id)
+    {
+        if (empty($product_id)) {
+            $this->ret(1, null, '产品id缺失');
+        }
+        $params =  $this->request->getData();
+        $fan_id = $params['pkey'];
+        $type = $params['type'];
+        $conditions = compact('product_id','fan_id');
+        if($type==='dislike'){
+            $this->loadModel('Likes')->deleteAll($conditions);
+        }else{
+            $like = $this->loadModel('Likes')->find('all')->where($conditions)->first();
+            if(!$like){
+                $like = $this->loadModel('Likes')->newEntity($conditions);
+                $this->loadModel('Likes')->save($like);                
+            }
+        }
+        $this->ret(0, 1, '加载成功');
     }
 
     //获取产品图片文件夹

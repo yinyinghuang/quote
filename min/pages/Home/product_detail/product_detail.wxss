@@ -13,11 +13,15 @@
   width: 100%;
   text-align: center;
   padding: 30rpx 0 20rpx;
+  height: 50rpx;
 }
 .product-albums{
   height: 460rpx;
   box-sizing: border-box;
   margin: 30rpx;
+}
+.product-albums-swiper{
+  height: 460rpx;
 }
 .slide-image{
   width: 100%;

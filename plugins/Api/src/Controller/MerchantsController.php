@@ -12,9 +12,14 @@ use Api\Controller\AppController;
 class MerchantsController extends AppController
 {
 
-    public function listsProduct($product_id)
+    public function areaLists()
     {
-        
+        $areas = $this->loadModel('Areas')->find('all',[
+            'contain'=> ['Districts'],
+            'conditions' => ['Areas.is_visible' => 1]
+        ])
+        ->toArray();
+        $this->ret(0, $areas, '加载成功');
     }
 
     public function lists()

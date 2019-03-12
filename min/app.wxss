@@ -6,6 +6,20 @@
 }
 
 /**app.wxss**/
+button{
+  position:relative;
+  display:block;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  text-align:center;
+  text-decoration:none;
+  line-height: 1;
+  border-radius: 0;
+}
+button::after{
+  border: none;
+}
 page {
     width: 100%;
     height: 100%;
