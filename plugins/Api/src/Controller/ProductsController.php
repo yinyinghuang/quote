@@ -258,7 +258,6 @@ class ProductsController extends AppController
         $fields            = ['product_id', 'fan_id', 'rating', 'content', 'created'];
 
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
-        debug($params);die;
         $this->ret(0, 1, '提交成功');
     }
     //获取产品图片文件夹

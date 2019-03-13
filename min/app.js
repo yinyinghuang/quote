@@ -70,6 +70,7 @@ App({
   getNoStr:function(_fn = function(){}){
     const _this = this
     comm.request({
+      loadingMsg:'登录中...',
       url:_this.globalData.host + 'fans/login',
       data: comm.requestData(_this.globalData, {
         user_msg_str: JSON.stringify(_this.globalData.userInfo),
