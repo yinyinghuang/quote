@@ -45,9 +45,11 @@ Page({
       }),
       success: function (res) {
         if(res.data.data){
+          comm.showToast('跳转至产品详情','success')
           wx.navigateTo({
             url: '/pages/Home/product_detail/product_detail?id='+_this.data.id,
           })
+          wx.hideLoading()
         }else{
           comm.showToast(res.data.errMsg)
         }

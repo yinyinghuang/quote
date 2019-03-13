@@ -245,6 +245,17 @@ class ProductsController extends AppController
     {
         if (empty($product_id)) {
             $this->ret(1, null, '产品id缺失');
+        }        
+        $comments = $this->loadModel('Comments')->find('all',[
+            'conditions' => ['product_id' => $product_id,'is_checked' => 1],
+        ])
+        ->toArray();        
+        $this->ret(0, $comments, '加载成功');
+    }
+    public function commentLists($product_id)
+    {
+        if (empty($product_id)) {
+            $this->ret(1, null, '产品id缺失');
         }
         $params = $this->request->getData();
         
