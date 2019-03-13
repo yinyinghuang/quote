@@ -255,7 +255,6 @@ class ProductsController extends AppController
         $content           = $params['content'];
         $created           = date('Y-m-d H:i:s');
         $fields            = ['product_id', 'fan_id', 'rating', 'content', 'created'];
-        $values['created'] =
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
         $this->ret(0, 1, '提交成功');
     }
