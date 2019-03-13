@@ -51,6 +51,7 @@ Page({
   getProductDetail: function () {
     const _this = this
     comm.request({
+      loadingMsg: '获取产品详情中...',
       url: glbd.host + 'products/detail/' + _this.data.id,
       method: glbd.method,
       data: comm.requestData(glbd),
@@ -85,6 +86,7 @@ Page({
     const _this = this
     if(_this.data.merchant_reach_bottom) return false
     comm.request({
+      loadingMsg: '获取报价列表中...',
       url: glbd.host + 'products/quote-lists/' + _this.data.id,
       method: glbd.method,
       data:{
@@ -113,6 +115,7 @@ Page({
     if(areas === undefined || !areas.length){
       const _this = this
       comm.request({
+        loadingMsg:'获取地区列表中...',
         url: glbd.host + 'merchants/area-lists/',
         method: glbd.method,
         data: _this.data.merchant_filter,
@@ -148,14 +151,16 @@ Page({
   handlerLike:function(e){
     const {id} = e.currentTarget.dataset
     const _this = this
+    const type = _this.data.liked ? 'dislike' : 'like'
     comm.request({
+      loadingMsg: type=='like'?'收藏中...':'取消收藏中...',
       url: glbd.host + 'products/setLike/' + id,
       method: glbd.method,
       data: comm.requestData(glbd,{
-        type:_this.data.liked?'dislike':'like'
+        type
       }),
       success: function (res) {
-        if(res.data.data) this.setData({
+        if(res.data.data) _this.setData({
           liked:!_this.data.liked
         })
       }

@@ -1,5 +1,6 @@
-const showToast = (title) => wx.showToast({
-  title: title,
+const showToast = (title, icon='none') => wx.showToast({
+  icon,
+  title,
   duration: 1000,
 })
 const requestHandler = {
@@ -19,7 +20,8 @@ const requestData = (glbd,data={}) => {
 }
 function request(requestHandler){
   wx.showLoading({
-    title: '加载中',
+    icon:'loading',
+    title: requestHandler.loadingMsg ? requestHandler.loadingMsg:'加载中',
     mask:true
   })
   wx.request({

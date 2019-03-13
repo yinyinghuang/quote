@@ -1,1 +1,38 @@
 /* pages/Home/product_comment_add/product_comment_add.wxss */
+.section-comment-add{
+  
+}
+.comment-fields,
+.comment-submit{  
+  background: #fff;
+  padding: 20rpx;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.comment-fields{
+  margin-bottom: 20rpx;
+}
+.comment-field-item{
+  margin-bottom: 20rpx;
+}
+.comment-field-name{
+  font-size: 1.4em;
+  line-height:2
+}
+.rate-icon{
+  width: 30rpx;
+  height: 30rpx;
+  vertical-align: middle
+}
+textarea{
+  width: 100%;
+  border: 1px solid #333;
+  padding: 20rpx;
+  font-size: 1.2em;
+  line-height: 1.7;
+  box-sizing: border-box;
+}
+.comment-submit{
+  font-size: 1.4em;
+  padding: 35rpx;
+  font-weight: bold
+}

@@ -127,8 +127,8 @@
           </view>
         </view>
       </view>
-      <view class='merchant-item' wx:if='{{merchant_reach_bottom}}'>暂无更多数据</view>
     </view>
+    <view class='merchant-no-more' wx:if='{{merchant_reach_bottom}}'>暂无更多数据</view>
   </view>
 
 </view>

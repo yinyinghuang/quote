@@ -93,6 +93,7 @@
   box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .merchant-list{
+  
   justify-content: flex-start;
 }
 .merchant-item{
@@ -214,4 +215,11 @@
   color: #333;
   border: 1px solid #000;
   margin-left: 20rpx;
+}
+.merchant-no-more{
+  background: #fff;
+  /* margin-top:20rpx; */
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 3rpx 3rpx 5rpx #000;
 }

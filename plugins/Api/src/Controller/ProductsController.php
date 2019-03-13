@@ -154,7 +154,6 @@ class ProductsController extends AppController
         return $albums;
 
     }
-
     public function quoteLists($product_id)
     {
         if (empty($product_id)) {
@@ -237,12 +236,29 @@ class ProductsController extends AppController
             $like = $this->loadModel('Likes')->find('all')->where($conditions)->first();
             if (!$like) {
                 $conditions['created'] = date('Y-m-d H:i:s');
-                $this->loadModel('Likes')->query()->insert(['fan_id','product_id','created'])->values($conditions)->execute();
+                $this->loadModel('Likes')->query()->insert(['fan_id', 'product_id', 'created'])->values($conditions)->execute();
             }
         }
         $this->ret(0, 1, '加载成功');
     }
-
+    public function addComment($product_id)
+    {
+        if (empty($product_id)) {
+            $this->ret(1, null, '产品id缺失');
+        }
+        $params = $this->request->getData();
+        if (!isset($params['content']) || strlen($params['content']) < 10) {
+            $this->ret(0, 0, '评价内容必填');
+        }
+        $fan_id            = $params['pkey'];
+        $rating            = $params['rating'];
+        $content           = $params['content'];
+        $created           = date('Y-m-d H:i:s');
+        $fields            = ['product_id', 'fan_id', 'rating', 'content', 'created'];
+        $values['created'] =
+        $this->loadModel('Likes')->query()->insert($fields)->values(compact($fields))->execute();
+        $this->ret(0, 1, '提交成功');
+    }
     //获取产品图片文件夹
     private function _getAlbumDir($product_id)
     {

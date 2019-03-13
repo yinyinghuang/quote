@@ -1,2 +1,32 @@
 <!--pages/Home/product_comment_add/product_comment_add.wxml-->
-<text>pages/Home/product_comment_add/product_comment_add.wxml</text>
+<view class='container'>
+  <view class='section section-comment-add'>
+    <form class='' bindsubmit='handlerSubmit'>
+      <view class='comment-fields'>
+        <view class='comment-field-item'>
+          <view class='comment-field-name'>整体评分</view>
+          <view class='comment-field-value'>
+            <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='1'></image>
+            <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='2'></image>
+            <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='3'></image>
+            <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='4'></image>
+            <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='5'></image>
+          </view>
+        </view>
+        <view class='comment-field-item'>
+          <view class='comment-field-name'>评价</view>
+          <view class='comment-field-value'>
+            <textarea name='content'></textarea>
+          </view>      
+        </view>
+      </view>
+      <button form-type="submit" class='comment-submit'>提交</button>
+    </form>  
+    <view class='section section-official-account'>
+      <official-account></official-account>
+    </view>
+  </view>
+    
+</view>
+
+

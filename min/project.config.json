@@ -37,7 +37,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 5,
 			"list": [
 				{
 					"id": 0,
@@ -71,6 +71,13 @@
 					"id": 4,
 					"name": "产品详情",
 					"pathName": "pages/Home/product_detail/product_detail",
+					"query": "id=231241",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "产品评价",
+					"pathName": "pages/Home/product_comment_add/product_comment_add",
 					"query": "id=231241",
 					"scene": null
 				}
