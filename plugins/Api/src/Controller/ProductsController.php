@@ -251,7 +251,6 @@ class ProductsController extends AppController
         if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
-        debug($params);die;
         $fan_id            = $params['pkey'];
         $rating            = $params['rating'];
         $content           = $params['content'];
@@ -259,6 +258,7 @@ class ProductsController extends AppController
         $fields            = ['product_id', 'fan_id', 'rating', 'content', 'created'];
 
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
+        debug($params);die;
         $this->ret(0, 1, '提交成功');
     }
     //获取产品图片文件夹
