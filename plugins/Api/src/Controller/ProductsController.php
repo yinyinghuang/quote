@@ -247,10 +247,11 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params = $this->request->getData();
-        debug($params);die;
+        
         if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
+        debug($params);die;
         $fan_id            = $params['pkey'];
         $rating            = $params['rating'];
         $content           = $params['content'];
