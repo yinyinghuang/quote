@@ -247,7 +247,8 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params = $this->request->getData();
-        if (!isset($params['content']) || strlen($params['content']) < 10) {
+        debug($params);die;
+        if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
         $fan_id            = $params['pkey'];
@@ -255,7 +256,7 @@ class ProductsController extends AppController
         $content           = $params['content'];
         $created           = date('Y-m-d H:i:s');
         $fields            = ['product_id', 'fan_id', 'rating', 'content', 'created'];
-        
+
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
         $this->ret(0, 1, '提交成功');
     }

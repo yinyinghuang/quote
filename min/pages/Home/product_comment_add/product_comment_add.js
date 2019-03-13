@@ -37,8 +37,8 @@ Page({
     comm.request({
       loadingMsg: '提交中...',
       url: glbd.host + 'products/add-comment/' + _this.data.id,
-      // method: glbd.method,
-      method: 'get',
+      method: glbd.method,
+      // method: 'get',
       data: comm.requestData(glbd, {
         ..._this.data,
         content
