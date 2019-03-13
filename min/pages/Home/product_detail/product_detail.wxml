@@ -50,19 +50,19 @@
     </view>
     <view class='product-detail-rate-comment'>
       <view class='product-rate flex-row'>
+        <view class=''>
+          <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
+        </view>
         <view class='flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
           <image src='/static/images/icon/home.png' class='write-icon'></image>
           <view class='product-rate-write'>发表意见</view>
         </view>
-        <view class=''>
-          <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='active rate-icon'></image>
-          <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='active rate-icon'></image>
-        </view>
       </view>
-      <view class='product-comment flex-row' bindtap='handlerNavigatorToCommentList' data-id='{{id}}' data-name='{{name}}' data-thumb='{{albums[0]}}' data-price_hong_max='{{price_hong_max}}' data-price_hong_min='{{price_hong_min}}' data-price_water_max='{{price_water_max}}' data-price_water_min='{{price_water_min}}'>
+      <view class='product-comment flex-row' bindtap='handlerNavigatorToCommentList' data-id='{{id}}' data-name='{{name}}' data-thumb='{{albums[0]}}' data-price_hong_max='{{price_hong_max}}' data-price_hong_min='{{price_hong_min}}' data-price_water_max='{{price_water_max}}' data-price_water_min='{{price_water_min}}' data-comment_count='{{comment_count}}' data-commented='{{commented}}'>
         <image src='/static/images/icon/home.png' class='write-icon'></image>
         <view class='product-rate-write'>用户评价|{{comment_count}}</view>
       </view>

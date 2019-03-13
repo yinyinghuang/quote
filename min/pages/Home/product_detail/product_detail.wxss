@@ -3,7 +3,7 @@
   background: #fff;
   box-sizing: border-box;
   padding: 20rpx;
-  margin-bottom: 80rpx;
+  margin-bottom: 40rpx;  
   box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .product-name{
@@ -71,7 +71,7 @@
 .rate-icon{
   width: 25rpx;
   height: 25rpx;
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 .product-title{

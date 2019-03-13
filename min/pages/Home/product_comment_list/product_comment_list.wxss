@@ -1,1 +1,31 @@
 /* pages/Home/product_comment_list/product_comment_list.wxss */
+.product-item{
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.comment-list-header{
+  justify-content: space-between;
+}
+.section-title{
+  font-size: 1.4em;
+  line-height: 2;
+  margin-bottom: 30rpx;
+}
+.comment-list-header-title{
+  font-size: 1.4em;
+}
+.product-rate-write{
+  padding: 0 20rpx;
+  font-size: 1.2em;
+  line-height: 1.5em;
+  font-weight: bold;
+  color: #ff7878;
+}
+.write-icon{
+  width: 30rpx;
+  height: 30rpx;
+}
+.rate-icon{
+  width: 25rpx;
+  height: 25rpx;
+  vertical-align: middle;
+}

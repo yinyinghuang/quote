@@ -1,2 +1,64 @@
 <!--pages/Home/product_comment_list/product_comment_list.wxml-->
-<text>pages/Home/product_comment_list/product_comment_list.wxml</text>
+<view class='section section-official-account'>
+  <official-account></official-account>
+</view>
+<view class='section section-product-info'>
+  <view data-id='{{id}}' data-name='{{name}}' data-album='{{album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
+    <view class='product-icon'>
+      <image src='{{thumb.middle}}' lazy-load binderror='hanlderImageError'></image>
+    </view>
+    <view class='product-info'>
+      <view class='product-item-text'>{{name}}</view>
+      <block wx:if='{{ price_hong_max===0 && price_hong_min===0 && price_water_max===0 && price_water_min===0}}'>
+        <view class='product-item-price'>暂无报价</view>
+      </block>
+      <block wx:else>
+        <block wx:if='{{price_hong_max!==0 || price_hong_min!==0}}'>
+          <view class='product-item-price'>
+            HK${{price_hong_min?price_hong_min:''}}
+            <block wx:if='{{price_hong_max && price_hong_min}}'>-</block>
+            {{price_hong_max?price_hong_max:''}}
+            <text class='product-price-label'>行</text>
+          </view>
+        </block>
+        <block wx:if='{{price_water_max!==0 || price_water_min!==0}}'>
+          <view class='product-item-price'>
+            HK${{price_water_min?price_water_min:''}}
+            <block wx:if='{{price_water_max && price_water_min}}'>-</block>
+            {{price_water_max?price_water_max:''}}
+            <text class='product-price-label'>水</text>
+          </view>
+        </block>
+      </block>    
+    </view>   
+  </view>
+</view>
+<view class='section section-comment-list'>
+  <view class='comment-list-header flex-row'>
+    <view class='section-title'>用户评价|{{comment_count}}</view>
+    <view class='comment-list-header-add' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
+      <image src='/static/images/icon/home.png' class='write-icon'></image>
+      <view class='product-rate-write'>发表意见</view>
+    </view>
+  </view>
+  <view class='comment-list-body flex-column'>
+    <view class='comment-item' wx:for='{{comment_list}}' wx:key='{{index}}' wx:for-item='comment'>
+      <view class='comment-item-header flex-row'>
+        <view class='comment-item-userinfo flex-row'>
+          <image class='comment-item-user-avatar' src='{{comment.fan_avatar}}'></image>
+          <view class='comment-item-user-name-time'>
+            <view class='comment-item-username'>{{comment.fan_name}}</view>
+            <view class='comment-item-time'>{{comment.created}}</view>
+          </view>
+        </view>
+        <view class='comment-item-rating'>          
+          <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

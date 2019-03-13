@@ -9,6 +9,7 @@ Page({
    */
   data: {
     id:0,
+    commented:1,
     merchants:[],
     attribute_group:[],
     liked:false,

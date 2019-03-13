@@ -29,6 +29,7 @@ Page({
   //提交表单
   handlerSubmit:function(e){
     const {content} = e.detail.value
+    const {product_id} = this.data
     if(content.length<10) {
       comm.showToast('评价字数不能少于10个哦')
       return false
@@ -36,9 +37,8 @@ Page({
     const _this = this
     comm.request({
       loadingMsg: '提交中...',
-      url: glbd.host + 'products/add-comment/' + _this.data.id,
+      url: glbd.host + 'products/add-comment/' + product_id,
       method: glbd.method,
-      // method: 'get',
       data: comm.requestData(glbd, {
         ..._this.data,
         content
@@ -47,7 +47,7 @@ Page({
         if(res.data.data){
           comm.showToast('跳转至产品详情','success')
           wx.navigateTo({
-            url: '/pages/Home/product_detail/product_detail?id='+_this.data.id,
+            url: '/pages/Home/product_detail/product_detail?id=' + product_id,
           })
           wx.hideLoading()
         }else{

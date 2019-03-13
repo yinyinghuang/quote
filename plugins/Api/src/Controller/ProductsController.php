@@ -14,15 +14,15 @@ class ProductsController extends AppController
     public function lists()
     {
         $params  = $this->request->getData();
-        $select  = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max'];
-        $where   = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
+        $fields  = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max'];
+        $conditions   = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
         $contain = ['Categories'];
         $order   = ['Products.sort desc', 'Products.id desc'];
         $limit   = 20;
         $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
         if (isset($params['category_id']) && $params['category_id']) {
-            $where['Products.category_id'] = $params['category_id'];
+            $conditions['Products.category_id'] = $params['category_id'];
         }
 
         //最新更新
@@ -35,20 +35,20 @@ class ProductsController extends AppController
         }
         //获取品牌
         if (isset($params['brand']) && !empty($params['brand'])) {
-            $where['Products.brand'] = $params['brand'];
+            $conditions['Products.brand'] = $params['brand'];
         }
         //获取价格
         if (isset($params['price']) && !empty($params['price'])) {
             $price_range = explode('-', $params['price']);
             if (count($price_range) === 2) {
                 if (!empty($price_range[0])) {
-                    $where['or'] = [
+                    $conditions['or'] = [
                         'Products.price_hong_min >='  => $price_range[0],
                         'Products.price_water_min >=' => $price_range[0],
                     ];
                 }
                 if (!empty($price_range[1])) {
-                    $where['or'] = [
+                    $conditions['or'] = [
                         'Products.price_hong_max >='  => $price_range[1],
                         'Products.price_water_max >=' => $price_range[1],
                     ];
@@ -60,7 +60,7 @@ class ProductsController extends AppController
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
             foreach ($params['filter'] as $filter) {
-                $where[] = 'Products.filter LIKE "%' . $filter . ',%"';
+                $conditions[] = 'Products.filter LIKE "%' . $filter . ',%"';
             }
         }
         //获取排序
@@ -76,13 +76,7 @@ class ProductsController extends AppController
             }
         }
         $products = $this->Products
-            ->find()
-            ->select($select)
-            ->where($where)
-            ->contain($contain)
-            ->order($order)
-            ->offset($offset)
-            ->limit($limit)
+            ->find('all',compact('fields','conditions','contain','order','offset','limit'))
             ->map(function ($row) {
                 $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
@@ -161,13 +155,13 @@ class ProductsController extends AppController
         }
 
         $params = $this->request->getData();
-        $select = [
+        $fields = [
             'merchant_id'   => 'Merchants.id',
             'merchant_name' => 'Merchants.name',
             'price_hong'    => 'Quotes.price_hong',
             'price_water'   => 'Quotes.price_water',
         ];
-        $where   = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
+        $conditions   = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
         $contain = ['Merchants'];
         $order   = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.id desc', 'Merchants.id desc'];
         $limit   = 20;
@@ -186,29 +180,22 @@ class ProductsController extends AppController
         }
         //存在水货/行货筛选项
         if (isset($params['price_type']) && in_array($params['price_type'], ['1', '2'])) {
-            $params['price_type'] == 1 && $where['Quotes.price_hong !=']  = 0;
-            $params['price_type'] == 2 && $where['Quotes.price_water !='] = 0;
+            $params['price_type'] == 1 && $conditions['Quotes.price_hong !=']  = 0;
+            $params['price_type'] == 2 && $conditions['Quotes.price_water !='] = 0;
         }
 
         //存在地区筛选项且无满足该条件的商户
         if (isset($merchant_ids) && empty($merchant_ids)) {
             $merchants = [];
         } else {
-            isset($merchant_ids) && $where['Merchants.id in'] = $merchant_ids;
+            isset($merchant_ids) && $conditions['Merchants.id in'] = $merchant_ids;
 
             $merchants = $this->loadModel('Quotes')
-                ->find('all', [
-                    'fields'     => $select,
-                    'conditions' => $where,
-                    'contain'    => $contain,
-                    'order'      => $order,
-                    'offset'     => $offset,
-                    'limit'      => $limit,
-                ])
+                ->find('all', ,compact('fields','conditions','contain','order','offset','limit'))
                 ->map(function ($row) {
-                    $where    = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                    $conditions    = ['merchant_id' => $row->merchant_id, 'address is not null'];
                     $location = $this->loadModel('MerchantLocations')->find('all', [
-                        'conditions' => $where,
+                        'conditions' => $conditions,
                     ])->first();
                     if ($location) {
                         $row->address = $location->address;
@@ -241,18 +228,24 @@ class ProductsController extends AppController
         }
         $this->ret(0, 1, '加载成功');
     }
-    public function addComment($product_id)
+    public function commentLists($product_id)
     {
         if (empty($product_id)) {
             $this->ret(1, null, '产品id缺失');
-        }        
-        $comments = $this->loadModel('Comments')->find('all',[
-            'conditions' => ['product_id' => $product_id,'is_checked' => 1],
-        ])
-        ->toArray();        
+        }
+        $fields = ['fan_name' => 'Fans.nickname', 'fan_avatar' => 'Fans.avatar','created' => 'Comments.created','rating' => 'Comments.rating','content' => 'Comments.content'];
+        $conditions = ['product_id' => $product_id,'is_checked' => 1];
+        $contain = ['Fans'];
+        $order   = ['Comments.sort desc','Comments.id desc'];
+        $limit   = 20;
+        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+
+        $comments = $this->loadModel('Comments')
+            ->find('all',compact('fields','conditions','contain','order','offset','limit'))
+            ->toArray();        
         $this->ret(0, $comments, '加载成功');
     }
-    public function commentLists($product_id)
+    public function addComment($product_id)
     {
         if (empty($product_id)) {
             $this->ret(1, null, '产品id缺失');

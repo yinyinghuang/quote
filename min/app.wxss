@@ -78,14 +78,14 @@ page {
 
 
 /* 产品列表 */
-.product-list-last  .product-item{
+.product-item{
   width: 100%;
   height: 196rpx;
   margin-bottom: 15rpx;
   justify-content: flex-start;
   background: #fff;
 }
-.product-list-last .product-icon image{
+.product-icon image{
   width: 136rpx;
   height: 136rpx;
   margin: 30rpx;

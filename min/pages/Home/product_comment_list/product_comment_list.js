@@ -1,65 +1,63 @@
 // pages/Home/product_comment_list/product_comment_list.js
+let app = getApp()
+let glbd = app.globalData
+const comm = require('../../../common/common.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    comment_list:[],
+    page:1,
+    comment_reach_bottom:false,
+    commented:1,
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  //生命周期函数--监听页面加载
   onLoad: function (options) {
+    const detail = JSON.parse(options.detail)
+    const product_id = options.product_id
+    this.setData({
+      ...detail,
+      product_id
+    })
+    app.openSetting(this.initPage)
+  },
+  initPage:function(){
+    const _this = this
 
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  getCommentList:function(){
+    const { product_id, page, comment_reach_bottom} = this.data
+    if (comment_reach_bottom) return false
+    comm.request({
+      loadingMsg: '获取评论中...',
+      url: glbd.host + 'products/comment-lists/' + product_id,
+      method: glbd.method,
+      data:{page},
+      success: function (res) {
+        const comment_list = res.data.data
+        _this.setData({
+          comment_reach_bottom:!comment_list.length,
+          comment_list:page==1?comment_list:_this.data.comment_list.concat(comment_list),
+          page:page+1
+        })
+      }
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
+  //页面上拉触底事件的处理函数
   onReachBottom: function () {
-
+    const _this = this
+    _this.getCommentList()
   },
-
-  /**
-   * 用户点击右上角分享
-   */
+  //产品图片不存在
+  hanlderImageError: function (e) {
+    this.setData({
+      'thumb.middle': '/static/images/icon-red/nopic.png'
+    })
+  },
+  //用户点击右上角分享
   onShareAppMessage: function () {
 
   }
