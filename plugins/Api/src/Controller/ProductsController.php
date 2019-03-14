@@ -115,7 +115,7 @@ class ProductsController extends AppController
         }
         $product->albums        = $this->_getProductAlbumUrl($product->id, $product->album);
         $product->comment_count = $this->loadModel('Comments')->find('all', [
-            'conditions' => ['product_id' => $product->id/*, 'is_checked' => 1*/],
+            'conditions' => ['product_id' => $product->id, 'is_checked' => 1],
         ])->count();
         $product->commented = $this->loadModel('Comments')->find('all', [
             'conditions' => compact('product_id', 'fan_id'),
