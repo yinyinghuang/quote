@@ -132,7 +132,7 @@ class ProductsController extends AppController
             return $row;
         });        
         //更新产品数据统计
-        $this->setProductMetaData($id,['view_count' => 'view_count'+1]);
+        $this->setProductMetaData($id,['view_count' => 'view_count'+2]);
         $this->ret(0, $product, '产品加载成功');
     }
     private function _getProductAlbumUrl($product_id, $product_album)
