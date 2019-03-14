@@ -75,7 +75,8 @@ class CommentsController extends AppController
         //若修改审核状态
         if ($params['is_checked'] != $comment->is_checked) {
             $comment_delt = $params['is_checked'] ? 1 : -1;
-            $this->setProductMetaData($comment->product_id, ['comment_count' => $comment_delt]);
+            $comment_score_delt = $params['is_checked'] ? $comment->rating : -$comment->rating;
+            $this->setProductMetaData($comment->product_id, ['comment_count' => $comment_delt,'comment_score_total' => $$comment_score_delt]);
         }
         $comment = $this->Comments->patchEntity($comment, $params);
         $data    = $this->Comments->save($comment) ? 0 : 2;

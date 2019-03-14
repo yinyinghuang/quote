@@ -17,8 +17,9 @@ Page({
     let op = ''
     if (options.op!=='{}'){
       let option = []
-      for (const [key,value] in JSON.parse(options.op)){
-        option.push(`${key}=${value}`)
+      let bp_options = JSON.parse(options.op)
+      for (const key in bp_options){
+        option.push(`${key}=${bp_options[key]}`)
       }
       op = '?' + option.join('&')
     }

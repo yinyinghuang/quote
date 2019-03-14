@@ -1,4 +1,9 @@
 /* pages/Home/product_detail/product_detail.wxss */
+.swiper-item{
+  display: block;
+  height: 150px;
+  background: #ff7878;
+}
 .split{
   padding: 0 6rpx;
 }
@@ -32,8 +37,8 @@
 }
 
 .product-item-price{
-  font-size: 1,2em;
-  line-height: 1.5em;
+  font-size: 1.2em;
+  line-height: 1.8;
   font-weight: bold;
 }
 .product-item-price .product-price-label{
@@ -43,8 +48,11 @@
 }
 .product-price,
 .product-action{
-  width: 50%;
+  width: 80%;
   justify-content: flex-end;
+}
+.product-action{
+  width: 20%;
 }
 .product-action-icon{
   width: 45rpx;
@@ -83,7 +91,15 @@
   margin-bottom: 30rpx;
 }
 .product-attr-list{
-  justify-content: space-between
+  justify-content: flex-start;
+}
+.product-attr-column{
+  width: 50%;
+}
+.product-attr-item{
+  align-items: left;
+  line-height: 1.7;
+  font-size: 1.1em;
 }
 /* 在售商家 */
 .section-merchant-list{
@@ -96,11 +112,14 @@
   box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .merchant-list{
-  
+  align-items: flex-start;
   justify-content: flex-start;
+  padding: 0 20rpx 0 0;
+  box-sizing: border-box;
 }
 .merchant-item{
   margin: 40rpx 0;
+  width: 100%;
 }
 .merchant-tabs.active{
   border-bottom: #e5e5e5;
@@ -199,19 +218,22 @@
   font-size: 1em;
   line-height: 1.8em
 }
-.merchant-detail .merchant-name{
-  font-size: 1.1em;
+.merchant-name{
+  font-size: 1.2em;
 }
 .merchant-detail .merchant-address{
   color: #7f7f7f;
 }
 .merchant-quote{
   justify-content: flex-start;
+  align-items:flex-start;
+
 }
 .merchant-quote-text{
   width: 68rpx;
 }
 .merchant-quote-price-item{
+  font-size: 1.2em;
   color: #ff7878;
 }
 .quote-price-label{

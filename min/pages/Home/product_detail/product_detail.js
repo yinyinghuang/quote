@@ -58,6 +58,9 @@ Page({
       data: comm.requestData(glbd),
       success: function (res) {
         let detail = res.data.data
+        if (detail.rating == 0 && detail.meta_data&&detail.meta_data.comment_score_total && detail.meta_data.comment_count) {
+          detail.rating = Math.cell(detail.meta_data.comment_score_total / detail.meta_data.comment_count)
+        }
         detail.albums.forEach((item) => {
           item.middle = glbd.hosts + item.middle
           item.full = glbd.hosts + item.full
@@ -135,7 +138,8 @@ Page({
   },
   //保存浏览记录
   _saveTrack: function (){
-    const { id, album, name} = this.data
+    const { id, name} = this.data
+    const album = this.data.albums.length ? this.data.albums[0].thumb :'/static/images/icon-red/nopic.png'
     let recent = wx.getStorageSync('recent')
     recent = recent ? recent : []
 
@@ -252,6 +256,14 @@ Page({
     wx.navigateTo({
       url: '/pages/Home/merchant_detail/merchant_detail?id='+merchant_id,
     }) 
+  },
+  //图片不存在
+  hanlderImageError: function (e) {
+    const index = e.currentTarget.dataset.index
+    console.log(index)
+    this.setData({
+      [index]: '/static/images/icon-red/nopic.png'
+    })
   },
   //用户点击右上角分享
   onShareAppMessage: function () {

@@ -7,9 +7,9 @@
     <view class='product-detail-primary'>
       <view class='product-name'>{{name}}</view>
       <view class='product-albums'>
-        <swiper class='product-albums-swiper' wx:for='{{albums}}' wx:key='{{index}}'>
-          <swiper-item class='flex-column product-album-item'>
-            <image src="{{item.middle}}" class="slide-image" width="345" />
+        <swiper class='product-albums-swiper' autoplay interval='2000' circular>
+          <swiper-item class='flex-column product-album-item' wx:for='{{albums}}' wx:key='{{index}}'>
+            <image src="{{item.middle}}" class="slide-image" width="345" binderror='hanlderImageError' data-index='albums.{{index}}.middle'/>
           </swiper-item>
         </swiper>
       </view>
@@ -70,8 +70,8 @@
     <view class='product-detail-attr'>
       <view class='product-title'>产品参数</view>
       <view class='flex-row product-attr-list'>
-        <view wx:for='{{attribute_group}}' wx:key='{{index}}' wx:for-item='group'>
-          <view class='flex-column' wx:for='{{group}}' wx:for-item='attribute' wx:key='{{id}}'>
+        <view class='product-attr-column' wx:for='{{attribute_group}}' wx:key='{{index}}' wx:for-item='group'>
+          <view class='flex-column product-attr-item' wx:for='{{group}}' wx:for-item='attribute' wx:key='{{id}}'>
             {{attribute.attribute_name}}:{{attribute.value}}
           </view>
         </view>

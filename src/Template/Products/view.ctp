@@ -55,7 +55,7 @@
                                 <div class="layui-inline">
                                     <label class="layui-form-label">评分</label>
                                     <div class="layui-input-block">
-                                        <input type="hidden" name="rating" value="<?=$product->rating?>">
+                                        <input type="hidden" name="rating" value="<?=$product->rating?>" placeholder="显示优先级高于系统计算的用户评论分数">
                                         <div id="rate"></div>
                                     </div>
                                 </div>

@@ -150,7 +150,7 @@ class AppController extends Controller
         //         ->where(['id' => $cate_id])
         //         ->execute();
 
-        // }
+        // }        
         $Navs  = $this->navs;
         $token = $this->request->getParam('_csrfToken');
         $this->set(compact('Navs', 'token'));
@@ -337,8 +337,8 @@ class AppController extends Controller
             if (isset($data['quote_count'])) {
                 $data['quote_count'] = $quote_count+$data['quote_count'];
             }
-            $values = array_merge(['view_count' =>0,'collect_count'=>0,'comment_count'=>0,'share_count'=>0,'quote_count'=>$quote_count],$data,$conditions);
-            $query->insert(['view_count','collect_count','comment_count','product_id','quote_count','share_count'])->values($values)->execute();
+            $values = array_merge(['view_count' =>0,'collect_count'=>0,'comment_count'=>0,'comment_score_total'=>0,'share_count'=>0,'quote_count'=>$quote_count],$data,$conditions);
+            $query->insert(['view_count','collect_count','comment_count','comment_score_total','product_id','quote_count','share_count'])->values($values)->execute();
         }
     }
 }
