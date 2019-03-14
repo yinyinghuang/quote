@@ -14,13 +14,13 @@ class ProductsController extends AppController
 {
     public function lists()
     {
-        $params  = $this->request->getData();
-        $fields  = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max'];
-        $conditions   = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
-        $contain = ['Categories'];
-        $order   = ['Products.sort desc', 'Products.id desc'];
-        $limit   = 20;
-        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        $params     = $this->request->getData();
+        $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max'];
+        $conditions = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
+        $contain    = ['Categories'];
+        $order      = ['Products.sort desc', 'Products.id desc'];
+        $limit      = 20;
+        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
         if (isset($params['category_id']) && $params['category_id']) {
             $conditions['Products.category_id'] = $params['category_id'];
@@ -77,7 +77,7 @@ class ProductsController extends AppController
             }
         }
         $products = $this->Products
-            ->find('all',compact('fields','conditions','contain','order','offset','limit'))
+            ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
                 $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
@@ -162,11 +162,11 @@ class ProductsController extends AppController
             'price_hong'    => 'Quotes.price_hong',
             'price_water'   => 'Quotes.price_water',
         ];
-        $conditions   = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
-        $contain = ['Merchants'];
-        $order   = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.id desc', 'Merchants.id desc'];
-        $limit   = 20;
-        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        $conditions = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
+        $contain    = ['Merchants'];
+        $order      = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.id desc', 'Merchants.id desc'];
+        $limit      = 20;
+        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
         //存在地区筛选项
         $area_id     = isset($params['area_id']) ? intval($params['area_id']) : 0;
@@ -192,10 +192,10 @@ class ProductsController extends AppController
             isset($merchant_ids) && $conditions['Merchants.id in'] = $merchant_ids;
 
             $merchants = $this->loadModel('Quotes')
-                ->find('all',compact('fields','conditions','contain','order','offset','limit'))
+                ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
                 ->map(function ($row) {
-                    $conditions    = ['merchant_id' => $row->merchant_id, 'address is not null'];
-                    $location = $this->loadModel('MerchantLocations')->find('all', [
+                    $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                    $location   = $this->loadModel('MerchantLocations')->find('all', [
                         'conditions' => $conditions,
                     ])->first();
                     if ($location) {
@@ -234,21 +234,22 @@ class ProductsController extends AppController
         if (empty($product_id)) {
             $this->ret(1, null, '产品id缺失');
         }
-        $fields = ['fan_name' => 'Fans.nickName', 'fan_avatar' => 'Fans.avatarUrl','created' => 'Comments.created','rating' => 'Comments.rating','content' => 'Comments.content'];
+        $params     = $this->request->getData();
+        $fields     = ['fan_name' => 'Fans.nickName', 'fan_avatar' => 'Fans.avatarUrl', 'created' => 'Comments.created', 'rating' => 'Comments.rating', 'content' => 'Comments.content'];
         $conditions = ['product_id' => $product_id/*,'is_checked' => 1*/];
-        $contain = ['Fans'];
-        $order   = ['Comments.sort desc','Comments.id desc'];
-        $limit   = 20;
-        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        $contain    = ['Fans'];
+        $order      = ['Comments.sort desc', 'Comments.id desc'];
+        $limit      = 20;
+        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
         $comments = $this->loadModel('Comments')
-            ->find('all',compact('fields','conditions','contain','order','offset','limit'))
-            ->map(function($row){
+            ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+            ->map(function ($row) {
                 $row->created = (new Time($row->created))->i18nFormat('yyyy-MM-dd');
                 return $row;
             })
-            ->toArray();        
-        $this->ret(0, $params['page'], '加载成功');
+            ->toArray();
+        $this->ret(0, $comments, '加载成功');
     }
     public function addComment($product_id)
     {
@@ -256,15 +257,15 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params = $this->request->getData();
-        
+
         if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
-        $fan_id            = $params['pkey'];
-        $rating            = $params['rating'];
-        $content           = $params['content'];
-        $created           = date('Y-m-d H:i:s');
-        $fields            = ['product_id', 'fan_id', 'rating', 'content', 'created'];
+        $fan_id  = $params['pkey'];
+        $rating  = $params['rating'];
+        $content = $params['content'];
+        $created = date('Y-m-d H:i:s');
+        $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
 
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
         $this->ret(0, 1, '提交成功');
