@@ -191,7 +191,7 @@ class ProductsController extends AppController
             isset($merchant_ids) && $conditions['Merchants.id in'] = $merchant_ids;
 
             $merchants = $this->loadModel('Quotes')
-                ->find('all', ,compact('fields','conditions','contain','order','offset','limit'))
+                ->find('all',compact('fields','conditions','contain','order','offset','limit'))
                 ->map(function ($row) {
                     $conditions    = ['merchant_id' => $row->merchant_id, 'address is not null'];
                     $location = $this->loadModel('MerchantLocations')->find('all', [
@@ -233,7 +233,7 @@ class ProductsController extends AppController
         if (empty($product_id)) {
             $this->ret(1, null, '产品id缺失');
         }
-        $fields = ['fan_name' => 'Fans.nickname', 'fan_avatar' => 'Fans.avatar','created' => 'Comments.created','rating' => 'Comments.rating','content' => 'Comments.content'];
+        $fields = ['fan_name' => 'Fans.nickName', 'fan_avatar' => 'Fans.avatarUrl','created' => 'Comments.created','rating' => 'Comments.rating','content' => 'Comments.content'];
         $conditions = ['product_id' => $product_id,'is_checked' => 1];
         $contain = ['Fans'];
         $order   = ['Comments.sort desc','Comments.id desc'];

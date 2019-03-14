@@ -9,8 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Comments Model
  *
- * @property \App\Model\Table\FansTable|\Cake\ORM\Association\BelongsTo $Fans
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\BelongsTo $Products
+ * @property \App\Model\Table\FansTable|\Cake\ORM\Association\BelongsTo $Fans
  *
  * @method \App\Model\Entity\Comment get($primaryKey, $options = [])
  * @method \App\Model\Entity\Comment newEntity($data = null, array $options = [])
@@ -42,12 +42,12 @@ class CommentsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Fans', [
-            'foreignKey' => 'fan_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('Products', [
             'foreignKey' => 'product_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Fans', [
+            'foreignKey' => 'fan_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -65,17 +65,22 @@ class CommentsTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
+            ->integer('rating')
+            ->requirePresence('rating', 'create')
+            ->allowEmptyString('rating', false);
+
+        $validator
             ->scalar('content')
+            ->maxLength('content', 5000)
             ->requirePresence('content', 'create')
             ->allowEmptyString('content', false);
 
         $validator
-            ->requirePresence('is_visible', 'create')
-            ->allowEmptyString('is_visible', false);
+            ->requirePresence('is_checked', 'create')
+            ->allowEmptyString('is_checked', false);
 
         $validator
-            ->requirePresence('sort', 'create')
-            ->allowEmptyString('sort', false);
+            ->allowEmptyString('sort');
 
         return $validator;
     }
@@ -89,8 +94,8 @@ class CommentsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['fan_id'], 'Fans'));
         $rules->add($rules->existsIn(['product_id'], 'Products'));
+        $rules->add($rules->existsIn(['fan_id'], 'Fans'));
 
         return $rules;
     }

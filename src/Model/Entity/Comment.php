@@ -7,12 +7,13 @@ use Cake\ORM\Entity;
  * Comment Entity
  *
  * @property int $id
- * @property int $fan_id
  * @property int $product_id
+ * @property int $fan_id
+ * @property int $rating
  * @property string $content
- * @property int $is_visible
- * @property int $sort
- * @property \Cake\I18n\FrozenTime $created
+ * @property int $is_checked
+ * @property int|null $sort
+ * @property \Cake\I18n\FrozenTime|null $created
  *
  * @property \App\Model\Entity\Fan $fan
  * @property \App\Model\Entity\Product $product
@@ -30,10 +31,11 @@ class Comment extends Entity
      * @var array
      */
     protected $_accessible = [
-        'fan_id' => true,
         'product_id' => true,
+        'fan_id' => true,
+        'rating' => true,
         'content' => true,
-        'is_visible' => true,
+        'is_checked' => true,
         'sort' => true,
         'created' => true,
         'fan' => true,

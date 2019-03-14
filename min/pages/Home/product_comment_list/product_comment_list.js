@@ -26,7 +26,7 @@ Page({
   },
   initPage:function(){
     const _this = this
-
+    _this.getCommentList()
   },
   getCommentList:function(){
     const { product_id, page, comment_reach_bottom} = this.data
