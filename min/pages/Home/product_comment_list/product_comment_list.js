@@ -74,6 +74,16 @@ Page({
   },
   //用户点击右上角分享
   onShareAppMessage: function () {
-
+    if (this.data.albums.length){
+      return {
+        title: this.data.name,
+        imageUrl: this.data.albums[0].middle
+      }
+    }else{
+      return {
+        title: this.data.name
+      }
+    }
+    
   }
 })

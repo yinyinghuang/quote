@@ -1,4 +1,7 @@
 /* pages/Home/product_detail/product_detail.wxss */
+.split{
+  padding: 0 6rpx;
+}
 .product-detail-primary{
   background: #fff;
   box-sizing: border-box;

@@ -221,8 +221,10 @@ class ProductsController extends AppController
         $type       = $params['type'];
         $conditions = compact('product_id', 'fan_id');
         if ($type === 'dislike') {
+            $delt = -1;
             $this->loadModel('Likes')->deleteAll($conditions);
         } else {
+            $delt = 1;
             $like = $this->loadModel('Likes')->find('all')->where($conditions)->first();
             if (!$like) {
                 $conditions['created'] = date('Y-m-d H:i:s');
@@ -230,7 +232,7 @@ class ProductsController extends AppController
             }
         }
         //更新产品数据统计
-        $this->setProductMetaData($product_id,['collect_count' => 1]);
+        $this->setProductMetaData($product_id,['collect_count' =>$delt]);
         $this->ret(0, 1, '加载成功');
     }
     public function commentLists($product_id)

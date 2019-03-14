@@ -64,7 +64,7 @@
       </view>
       <view class='product-comment flex-row' bindtap='handlerNavigatorToCommentList' data-id='{{id}}' data-name='{{name}}' data-thumb='{{albums[0]}}' data-price_hong_max='{{price_hong_max}}' data-price_hong_min='{{price_hong_min}}' data-price_water_max='{{price_water_max}}' data-price_water_min='{{price_water_min}}' data-comment_count='{{meta_data?meta_data.comment_count:0}}' data-commented='{{commented}}'>
         <image src='/static/images/icon/home.png' class='write-icon'></image>
-        <view class='product-rate-write'>用户评价|{{meta_data?meta_data.comment_count:0}}</view>
+        <view class='product-rate-write'>用户评价<text class='split'>|</text>{{meta_data?meta_data.comment_count:0}}</view>
       </view>
     </view>
     <view class='product-detail-attr'>
@@ -79,7 +79,7 @@
     </view>
   </view>
   <view class='section section-merchant-list'>
-    <view class='product-title'>在售商家</view>    
+    <view class='product-title'>在售商家<text class='split'>|</text>{{meta_data.quote_count}}</view>    
     <view class='merchant-tabs flex-row {{style.show_merchant_filter?"active":""}}'>
       <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy'>附近</view>
       <view class='merchant-tab-item {{style.show_merchant_filter||style.merchant_filtered?"active":""}}' bindtap='handlerShowMerchantFilter'>筛选</view>
