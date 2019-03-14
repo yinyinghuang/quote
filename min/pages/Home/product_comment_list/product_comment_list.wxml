@@ -61,5 +61,6 @@
       </view>
       <view class='comment-item-content'>{{comment.content}}</view>
     </view>
+    <view class='comment-no-more' wx:if='{{comment_reach_bottom}}'>暂无更多数据</view>
   </view>
 </view>

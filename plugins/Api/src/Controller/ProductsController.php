@@ -236,7 +236,7 @@ class ProductsController extends AppController
         }
         $params     = $this->request->getData();
         $fields     = ['fan_name' => 'Fans.nickName', 'fan_avatar' => 'Fans.avatarUrl', 'created' => 'Comments.created', 'rating' => 'Comments.rating', 'content' => 'Comments.content'];
-        $conditions = ['product_id' => $product_id/*,'is_checked' => 1*/];
+        $conditions = ['product_id' => $product_id,'is_checked' => 1];
         $contain    = ['Fans'];
         $order      = ['Comments.sort desc', 'Comments.id desc'];
         $limit      = 20;
@@ -268,6 +268,7 @@ class ProductsController extends AppController
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
 
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
+        $this->setProductMetaData($product_id,['comment_count' => 1])
         $this->ret(0, 1, '提交成功');
     }
     //获取产品图片文件夹
@@ -279,5 +280,16 @@ class ProductsController extends AppController
     private function getLogoDir($merchant_id)
     {
         return intval($merchant_id / 100) . '00' . '/';
+    }
+    private function setProductMetaData($product_id,$data)
+    {
+        $conditions = compact('product');
+        $metaData = $this->loadModel('ProductData')->find('all')->where($conditions)->first();
+        $query = $this->ProductData->query();
+        if($metaData){
+            $query->update()->set($data)->where($conditions)->execute();
+        }else{
+            $query->insert(['view_count','collect_count','comment_count','product_id'])->values($data+$conditions)->execute();
+        }
     }
 }
