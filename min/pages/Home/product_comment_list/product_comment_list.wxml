@@ -59,6 +59,7 @@
           <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
         </view>
       </view>
+      <view class='comment-item-content'>{{comment.content}}</view>
     </view>
   </view>
 </view>

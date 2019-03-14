@@ -29,3 +29,31 @@
   height: 25rpx;
   vertical-align: middle;
 }
+.comment-item{
+  box-sizing: border-box;
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  width: 100%;
+  background: #fff;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.comment-item-header{
+  justify-content: space-between;
+}
+.comment-item-user-avatar{
+  width: 64rpx;
+  height: 64rpx;
+  margin-right:20rpx;
+  border-radius: 50%;
+}
+.comment-item-username{
+  font-size: 1.4em;
+  line-height: 1.4;
+}
+.comment-item-time{
+  color: #7f7f7f;
+}
+.comment-item-content{
+  margin-top: 20rpx;
+  font-size: 1.4em;
+}
