@@ -130,7 +130,9 @@ class ProductsController extends AppController
         ])->map(function ($row) {
             $row->attribute_name = $this->loadModel('Attributes')->find()->where(['id' => $row->attribute_id])->first()->name;
             return $row;
-        });
+        });        
+        //更新产品数据统计
+        $this->setProductMetaData($product_id,['view_count' => 'view_count'+1]);
         $this->ret(0, $product, '产品加载成功');
     }
     private function _getProductAlbumUrl($product_id, $product_album)
@@ -227,6 +229,8 @@ class ProductsController extends AppController
                 $this->loadModel('Likes')->query()->insert(['fan_id', 'product_id', 'created'])->values($conditions)->execute();
             }
         }
+        //更新产品数据统计
+        $this->setProductMetaData($product_id,['collect_count' => 'collect_count'+1]);
         $this->ret(0, 1, '加载成功');
     }
     public function commentLists($product_id)
