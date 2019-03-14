@@ -114,9 +114,9 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品不存在或已被删除');
         }
         $product->albums        = $this->_getProductAlbumUrl($product->id, $product->album);
-        $product->comment_count = $this->loadModel('Comments')->find('all', [
-            'conditions' => ['product_id' => $product->id, 'is_checked' => 1],
-        ])->count();
+        $product->meta_data = $this->loadModel('Comments')->find('all', [
+            'conditions' => ['product_id' => $product->id],
+        ])->first();
         $product->commented = $this->loadModel('Comments')->find('all', [
             'conditions' => compact('product_id', 'fan_id'),
         ])->count();
@@ -132,7 +132,7 @@ class ProductsController extends AppController
             return $row;
         });        
         //更新产品数据统计
-        $this->setProductMetaData($id,['view_count' => 'view_count'+2]);
+        $this->setProductMetaData($id,['view_count' => 1]);
         $this->ret(0, $product, '产品加载成功');
     }
     private function _getProductAlbumUrl($product_id, $product_album)
@@ -230,7 +230,7 @@ class ProductsController extends AppController
             }
         }
         //更新产品数据统计
-        $this->setProductMetaData($product_id,['collect_count' => 'collect_count'+1]);
+        $this->setProductMetaData($product_id,['collect_count' => 1]);
         $this->ret(0, 1, '加载成功');
     }
     public function commentLists($product_id)
@@ -271,8 +271,8 @@ class ProductsController extends AppController
         $created = date('Y-m-d H:i:s');
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
-        //更新产品数据统计
-        $this->setProductMetaData($product_id,['comment_count' => 'comment_count'+1]);
+        // //更新产品数据统计
+        // $this->setProductMetaData($product_id,['comment_count' => 1]);
         $this->ret(0, 1, '提交成功');
     }
     //获取产品图片文件夹
@@ -291,10 +291,14 @@ class ProductsController extends AppController
         $metaData = $this->loadModel('ProductData')->find('all')->where($conditions)->first();
         $query = $this->ProductData->query();
         if($metaData){
+            foreach ($data as $key => &$value) {
+                $value = $metaData->$key+$value;
+            }
             $query->update()->set($data)->where($conditions)->execute();
         }else{
-            $values = array_merge(['view_count' =>0,'collect_count'=>0,'comment_count'=>0],$data,$conditions);
-            $query->insert(['view_count','collect_count','comment_count','product_id'])->values($values)->execute();
+            $quote_count = $this->loadModel('Quotes')->find()->where(['product_id' => $product_id])->count();
+            $values = array_merge(['view_count' =>0,'collect_count'=>0,'comment_count'=>0,'quote_count'=>$quote_count],$data,$conditions);
+            $query->insert(['view_count','collect_count','comment_count','product_id','quote_count'])->values($values)->execute();
         }
     }
 }

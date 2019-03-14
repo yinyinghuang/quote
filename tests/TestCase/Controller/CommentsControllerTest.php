@@ -19,8 +19,8 @@ class CommentsControllerTest extends TestCase
      */
     public $fixtures = [
         'app.Comments',
-        'app.Fans',
-        'app.Products'
+        'app.Products',
+        'app.Fans'
     ];
 
     /**

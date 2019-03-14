@@ -2,16 +2,16 @@
 
 <div class="layui-tab">
     <ul class="layui-tab-title">
-        <li class="layui-this">产品详情</li>
+        <li<?php if (!isset($active) || !$active): ?> class="layui-this"<?php endif ?>>产品详情</li>
         <?php if (!$product->isNew()): ?>
-        <li>产品报价<span class="layui-badge"><?=$product->quoteCount?></span></li>    
-        <li>产品评论列表<span class="layui-badge"><?=$product->commentCount?></span></li>    
+        <li<?php if (isset($active) && $active=='quotes'): ?> class="layui-this"<?php endif ?>>产品报价<span class="layui-badge"><?=$product->quoteCount?></span></li>    
+        <li<?php if (isset($active) && $active=='comments'): ?> class="layui-this"<?php endif ?>>产品评论列表<span class="layui-badge"><?=$product->commentCount?></span></li>    
         <?php endif ?>
         
     </ul>
     <div class="layui-tab-content">
         <!-- 产品信息 -->
-        <div class="layui-tab-item layui-show product_info">
+        <div class="layui-tab-item product_info<?php if (!isset($active) || !$active): ?> layui-show<?php endif ?>">
             <form class="layui-form" action="" id="productDetail" enctype="multipart/form-data">
                 <?php if ($product->isNew()): ?>
                 <input type="hidden" name="type" value="add">
@@ -176,7 +176,7 @@
         </div>
         <?php if (!$product->isNew()): ?>
         <!-- 产品报价 -->
-        <div class="layui-tab-item product_quotes">
+        <div class="layui-tab-item product_quotes<?php if (isset($active) && $active=='quotes'): ?> layui-show<?php endif ?>">
             <form class="search-box layui-form">
                 <div class="layui-form-item">
                     <div class="layui-inline">
@@ -235,7 +235,7 @@
             <?=$this->element('table', $tableParams['quotes'])?>
         </div>
         <!-- 产品评论列表 -->
-        <div class="layui-tab-item product_comments">
+        <div class="layui-tab-item product_comments<?php if (isset($active) && $active=='comments'): ?> layui-show<?php endif ?>">
             <?=$this->element('table', $tableParams['comments'])?>
         </div>     
         <?php endif ?>

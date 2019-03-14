@@ -117,18 +117,19 @@ class ProductsController extends AppController
             'editUrl'     => '/comments/api-save',
             'can_search'  => true,
             'tableFields' => [
-                ['field' => '\'fan_name\'', 'title' => '\'粉丝\'', 'fixed' => '\'left\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/fans/view/\'+res.fan_id+\'">\'+res.merchant_name+\'</a>\')'],
-                ['field' => '\'content\'', 'title' => '\'内容\'', 'minWidth' => 280, 'unresize' => true, 'sort' => true],
-                ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
+                ['field' => '\'fan_name\'', 'title' => '\'粉丝\'', 'fixed' => '\'left\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/fans/view/\'+res.fan_id+\'">\'+res.fan_name+\'</a>\')'],
+                ['field' => '\'content\'', 'title' => '\'内容\'', 'minWidth' => 280, 'unresize' => true, ],
+                ['field' => '\'rating\'', 'title' => '\'评级\'', 'unresize' => true,],
+                ['field' => '\'is_checked\'', 'title' => '\'审核通过\'', 'unresize' => true, 'templet' => '\'#switchTpl_4\''],
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
                 ['field' => '\'created\'', 'title' => '\'评论时间\'', 'unresize' => true],
             ],
-            'switchTpls'  => [['id' => 'switchTpl_3', 'name' => 'is_visible', 'text' => '是|否']],
+            'switchTpls'  => [['id' => 'switchTpl_4', 'name' => 'is_checked', 'text' => '是|否']],
         ];
 
         $tableParams = ['quotes' => $quoteTableParams, 'comments' => $commentTableParams];
-
-        $this->set(compact('product', 'category_select', 'product_attributes', 'cateAttrs', 'cateAttrFilterOptions', 'tableParams', 'district_select'));
+        $active      = $this->request->query('active');
+        $this->set(compact('product', 'category_select', 'product_attributes', 'cateAttrs', 'cateAttrFilterOptions', 'tableParams', 'district_select','active'));
     }
 
     //获取产品图片文件夹

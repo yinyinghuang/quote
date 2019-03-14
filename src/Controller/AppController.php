@@ -17,6 +17,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Utility\Inflector;
+
 /**
  * Application Controller
  *
@@ -139,7 +140,6 @@ class AppController extends Controller
         //     $price_water_max = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_water_max desc')->first()->price_water_max;
         //     $price_max = max($price_hong_max,$price_water_max);
 
-
         //     $price_hong_min = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_hong_min asc')->first()->price_hong_min;
         //     $price_water_min = $this->loadModel('Products')->find()->where(['category_id' => $cate_id])->order('Products.price_water_min asc')->first()->price_water_min;
         //     $price_min = max($price_hong_min,$price_water_min);
@@ -182,12 +182,13 @@ class AppController extends Controller
             'Districts'            => '地区',
             'Brands'               => '品牌',
             'CategoriesBrands'     => '分类品牌',
+            'Comments'             => '评价',
         ];
         $actionsMap = [
-            'add'   => '添加 ',
-            'view'  => '详情',
-            'index' => '列表',
-            'login' => '登陆',
+            'add'       => '添加 ',
+            'view'      => '详情',
+            'index'     => '列表',
+            'login'     => '登陆',
             'apiDelete' => '列表',
         ];
         $breadcrumbs = [
@@ -201,7 +202,7 @@ class AppController extends Controller
     public function apiAutocomplete()
     {
         $controllerSqlParam = [
-            'Brands' => ['keywordField' => 'brand','selectFields' => ['id' => 'brand','name' => 'brand']],
+            'Brands' => ['keywordField' => 'brand', 'selectFields' => ['id' => 'brand', 'name' => 'brand']],
         ];
 
         $data       = [];
@@ -211,9 +212,9 @@ class AppController extends Controller
         if (isset($controllerSqlParam[$controller])) {
             $keywordField = $controllerSqlParam[$controller]['keywordField'];
             $selectFields = $controllerSqlParam[$controller]['selectFields'];
-        }else{
+        } else {
             $keywordField = 'name';
-            $selectFields = ['id','name'];
+            $selectFields = ['id', 'name'];
         }
         // $sqlParam = $controllerSqlParam[$controller];
 
@@ -222,7 +223,7 @@ class AppController extends Controller
         $content = $this->$controller
             ->find()
             ->select($selectFields)
-            ->where([$keywordField .' like' => '%' . $keywords . '%'])
+            ->where([$keywordField . ' like' => '%' . $keywords . '%'])
             ->toArray();
 
         $this->resApi($code, $data, $type, ['type' => $type, 'content' => $content]);
@@ -319,5 +320,21 @@ class AppController extends Controller
         $strs = "QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm";
         $name = substr(str_shuffle($strs), mt_rand(0, strlen($strs) - 7), 6);
         return $name;
+    }
+    //更新产品数据
+    protected function setProductMetaData($product_id, $data)
+    {
+        $conditions = compact('product_id');
+        $metaData   = $this->loadModel('ProductData')->find('all')->where($conditions)->first();
+        $query      = $this->ProductData->query();
+        if ($metaData) {
+            foreach ($data as $key => &$value) {
+                $value = $metaData->$key + $value;
+            }
+            $query->update()->set($data)->where($conditions)->execute();
+        } else {
+            $values = array_merge(['view_count' => 0, 'collect_count' => 0, 'comment_count' => 0], $data, $conditions);
+            $query->insert(['view_count', 'collect_count', 'comment_count', 'product_id'])->values($values)->execute();
+        }
     }
 }

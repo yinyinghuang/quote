@@ -89,7 +89,7 @@ class QuotesController extends AppController
             $this->resApi($code, $data, $msg_arr[$data]);
         }
 
-        $quote = (isset($params['id']) && $params['id'] && $params['type'] == 'edit') ? $this->Products->find('all')
+        $quote = (isset($params['id']) && $params['id'] && $params['type'] == 'edit') ? $this->Quotes->find('all')
             ->where(['id' => $params['id']])
             ->first() : $this->Quotes->newEntity();
 
@@ -118,7 +118,7 @@ class QuotesController extends AppController
         $code = count($ids) ? ($this->Quotes->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
 
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
-        $this->resApi(0, compact('code', 'ids'), $msg_arr[$res]);
+        $this->resApi(0, compact('code', 'ids'), $msg_arr[$code]);
     }
 
     //ajax获取产品list
