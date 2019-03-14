@@ -234,7 +234,7 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $fields = ['fan_name' => 'Fans.nickName', 'fan_avatar' => 'Fans.avatarUrl','created' => 'Comments.created','rating' => 'Comments.rating','content' => 'Comments.content'];
-        $conditions = ['product_id' => $product_id,'is_checked' => 1];
+        $conditions = ['product_id' => $product_id/*,'is_checked' => 1*/];
         $contain = ['Fans'];
         $order   = ['Comments.sort desc','Comments.id desc'];
         $limit   = 20;
