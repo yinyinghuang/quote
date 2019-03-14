@@ -29,8 +29,9 @@ Page({
     _this.getCommentList()
   },
   getCommentList:function(){
-    const { product_id, page, comment_reach_bottom} = this.data
+    const { product_id, page, comment_reach_bottom} = this.data    
     if (comment_reach_bottom) return false
+    const _this = this
     comm.request({
       loadingMsg: '获取评论中...',
       url: glbd.host + 'products/comment-lists/' + product_id,
@@ -55,6 +56,20 @@ Page({
   hanlderImageError: function (e) {
     this.setData({
       'thumb.middle': '/static/images/icon-red/nopic.png'
+    })
+  },
+  //跳转至产品详情
+  handlerNavigatorToProductDetail:function(e){
+    const {id} = e.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/Home/product_detail/product_detail?id='+id,
+    })
+  },
+  //跳转至评价填写
+  handlerNavigatorToCommentAdd: function (e) {
+    const { id } = e.currentTarget.dataset
+    wx.navigateTo({
+      url: '/pages/Home/product_comment_add/product_comment_add?product_id=' + id,
     })
   },
   //用户点击右上角分享
