@@ -285,21 +285,5 @@ class ProductsController extends AppController
     {
         return intval($merchant_id / 100) . '00' . '/';
     }
-    private function setProductMetaData($product_id,$data)
-    {
-        $conditions = compact('product_id');
-        $metaData = $this->loadModel('ProductData')->find('all')->where($conditions)->first();
-        $query = $this->ProductData->query();
-        if($metaData){
-            foreach ($data as $key => &$value) {
-                $value = $metaData->$key+$value;
-            }
-            $query->update()->set($data)->where($conditions)->execute();
-        }else{
-            $quote_count = $this->loadModel('Quotes')->find()->where(['product_id' => $product_id])->count();
-            $values = array_merge(['view_count' =>0,'collect_count'=>0,'comment_count'=>0,'quote_count'=>$quote_count],$data,$conditions);
-            $query->insert(['view_count','collect_count','comment_count','product_id','quote_count'])->values($values)->execute();
-        }
-    }
 }
  
