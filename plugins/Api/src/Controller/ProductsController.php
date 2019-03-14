@@ -254,7 +254,7 @@ class ProductsController extends AppController
     public function addComment($product_id)
     {
         if (empty($product_id)) {
-            $this->ret(1, null, '产品id缺失');
+            $this->ret(1, null, '产品id缺失'); 
         }
         $params = $this->request->getData();
 
@@ -266,9 +266,9 @@ class ProductsController extends AppController
         $content = $params['content'];
         $created = date('Y-m-d H:i:s');
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
-
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
-        $this->setProductMetaData($product_id,['comment_count' => 1])
+        //更新产品数据统计
+        $this->setProductMetaData($product_id,['comment_count' => 'comment_count'+1]);
         $this->ret(0, 1, '提交成功');
     }
     //获取产品图片文件夹
@@ -283,13 +283,15 @@ class ProductsController extends AppController
     }
     private function setProductMetaData($product_id,$data)
     {
-        $conditions = compact('product');
+        $conditions = compact('product_id');
         $metaData = $this->loadModel('ProductData')->find('all')->where($conditions)->first();
         $query = $this->ProductData->query();
         if($metaData){
             $query->update()->set($data)->where($conditions)->execute();
         }else{
-            $query->insert(['view_count','collect_count','comment_count','product_id'])->values($data+$conditions)->execute();
+            $values = array_merge(['view_count' =>0,'collect_count'=>0,'comment_count'=>0],$data,$conditions);
+            $query->insert(['view_count','collect_count','comment_count','product_id'])->values($values)->execute();
         }
     }
 }
+ 
