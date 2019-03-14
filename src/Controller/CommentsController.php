@@ -107,7 +107,6 @@ class CommentsController extends AppController
         }else{
             $code=2;
         }
-
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
         $this->resApi(0, compact('code', 'ids'), $msg_arr[$code]);
     }

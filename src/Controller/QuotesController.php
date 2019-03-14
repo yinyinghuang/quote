@@ -104,8 +104,10 @@ class QuotesController extends AppController
             $params['is_visible'] = isset($params['is_visible']) ? $params['is_visible'] : 0;
         }
         $quote = $this->Quotes->patchEntity($quote, $params);
+        $isNew = $quote->isNew();
         $data  = $this->Quotes->save($quote) ? 0 : 2;
-
+        //如报价为新增且保存成功，更新产品数据统计
+        if($isNew && $data==0) $this->setProductMetaData($quote->product_id, ['quote_count' => 1]);
         $this->resApi($code, $data, $msg_arr[$data]);
 
     }
@@ -115,7 +117,24 @@ class QuotesController extends AppController
     {
         $this->allowMethod(['POST']);
         $ids  = $this->request->getData('ids');
-        $code = count($ids) ? ($this->Quotes->deleteAll(['id in' => $ids]) ? 0 : 1) : 2;
+        if (count($ids)) {
+            $code=0;
+            //更新产品数据
+            $quotes = $this->Quotes->find('all', [
+                'conditions' => ['id in ' => $ids],
+                'fields'     => ['id', 'product_id'],
+            ])
+                ->groupBy('product_id');
+            foreach ($quotes as $product_id => $value) {
+                $count = count($value);
+                if ($count) {
+                    $this->setProductMetaData($product_id, ['quote_count' => -($count)]);
+                }
+            }
+            $this->Quotes->deleteAll(['id in' => $ids]);
+        }else{
+            $code=2;
+        }
 
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
         $this->resApi(0, compact('code', 'ids'), $msg_arr[$code]);

@@ -114,7 +114,7 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品不存在或已被删除');
         }
         $product->albums        = $this->_getProductAlbumUrl($product->id, $product->album);
-        $product->meta_data = $this->loadModel('Comments')->find('all', [
+        $product->meta_data = $this->loadModel('ProductData')->find('all', [
             'conditions' => ['product_id' => $product->id],
         ])->first();
         $product->commented = $this->loadModel('Comments')->find('all', [

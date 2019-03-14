@@ -162,7 +162,7 @@
                                             }else{
                                                 if(res.data.code===0){
                                                     tableData = tableData.filter((row) => {
-                                                        return !res.data[delIndex].some((id) => id==row[delIndex])
+                                                        return !res.data[delIndex+'s'].some((id) => id==row[delIndex])
                                                     })
                                                     c(tableData)
                                                     table.reload(key,{

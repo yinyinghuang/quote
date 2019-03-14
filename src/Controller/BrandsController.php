@@ -113,7 +113,7 @@ class BrandsController extends AppController
         $this->Brands->deleteAll(['brand in' => $ids]);
         $this->Brands->CategoriesBrands->deleteAll(['brand in' => $ids]);
 
-        $data = ['code' => 0, 'brand' => $ids];
+        $data = ['code' => 0, 'brands' => $ids];
         $this->resApi(0, $data, $msg_arr[0]);
     }
 

@@ -334,6 +334,9 @@ class AppController extends Controller
             $query->update()->set($data)->where($conditions)->execute();
         }else{
             $quote_count = $this->loadModel('Quotes')->find()->where(['product_id' => $product_id])->count();
+            if (isset($data['quote_count'])) {
+                $data['quote_count'] = $quote_count+$data['quote_count'];
+            }
             $values = array_merge(['view_count' =>0,'collect_count'=>0,'comment_count'=>0,'quote_count'=>$quote_count],$data,$conditions);
             $query->insert(['view_count','collect_count','comment_count','product_id','quote_count'])->values($values)->execute();
         }
