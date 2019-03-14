@@ -240,7 +240,7 @@ class ProductsController extends AppController
         $order   = ['Comments.sort desc','Comments.id desc'];
         $limit   = 20;
         $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-debug(compact('fields','conditions','contain','order','offset','limit'));
+
         $comments = $this->loadModel('Comments')
             ->find('all',compact('fields','conditions','contain','order','offset','limit'))
             ->map(function($row){
@@ -248,7 +248,7 @@ debug(compact('fields','conditions','contain','order','offset','limit'));
                 return $row;
             })
             ->toArray();        
-        // $this->ret(0, $comments, '加载成功');
+        $this->ret(0, $comments, '加载成功');
     }
     public function addComment($product_id)
     {
