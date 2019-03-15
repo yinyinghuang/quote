@@ -267,6 +267,14 @@ Page({
   },
   //用户点击右上角分享
   onShareAppMessage: function () {
-
-  }
+    const _this = this
+    _this.shareCount()
+  },
+  shareCount:function(e){
+    const _this= this
+    comm.request({
+      url: glbd.host + 'products/share-count/' + id,
+      method: glbd.method
+    })
+  },
 })

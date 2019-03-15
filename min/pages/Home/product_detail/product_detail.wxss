@@ -216,7 +216,7 @@
 .merchant-detail{
   margin-left: 70rpx;
   font-size: 1em;
-  line-height: 1.8em
+  line-height: 1.8em;
 }
 .merchant-name{
   font-size: 1.2em;

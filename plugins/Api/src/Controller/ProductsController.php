@@ -273,8 +273,16 @@ class ProductsController extends AppController
         $created = date('Y-m-d H:i:s');
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
+        
+        $this->ret(0, 1, '提交成功');
+    }
+    public function shareCount($product_id)
+    {
+        if (empty($product_id)) {
+            $this->ret(1, null, '产品id缺失'); 
+        }
         // //更新产品数据统计
-        // $this->setProductMetaData($product_id,['comment_count' => 1]);
+        $this->setProductMetaData($product_id,['share_count' => 1]);
         $this->ret(0, 1, '提交成功');
     }
     //获取产品图片文件夹
