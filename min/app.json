@@ -14,7 +14,8 @@
     "pages/login/login",
     "pages/Home/category_brand_list/category_brand_list",
     "pages/Home/category_price_range/category_price_range",
-    "pages/Home/product_merchant_near_by/product_merchant_near_by"
+    "pages/Home/product_merchant_near_by/product_merchant_near_by",
+    "pages/Home/search/search"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -3,9 +3,9 @@
   <view class='section section-official-account'>
     <official-account></official-account>
   </view>
-  <view class='section section-search'>
-    <view class='search-image'><image src='/static/images/icon/home.png'></image></view>
-    <view class='search-text'>请输入商品名称</view>
+  <view class='section section-search flex-row' bindtap='handlerNavigatorToSearch' data-keyword='{{keyword}}'>
+    <image src='/static/images/icon/home.png' class='search-image'></image>
+    <view class='search-text'>{{keyword?keyword:'请输入商品名称'}}</view>
   </view>
   <view class='section section-category flex-row'>
     <view  wx:for="{{category}}" wx:key="id" data-id="{{item.id}}" bindtap='handlerNavigatorToCateList'  class='category-item flex-colunm'>

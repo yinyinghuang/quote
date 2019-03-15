@@ -63,21 +63,29 @@ page {
   box-shadow:  3rpx 3rpx 5rpx #000;
   height: 80rpx;
   line-height: 80rpx;
-  padding-left: 20rpx;
+  padding: 20rpx 0;
+  justify-content: space-between;
   box-sizing:border-box;
+  overflow: hidden;
+}
+.search-input{
+  width: 100%;
 }
 .search-image,
-.search-text{
-  display: inline;
-  margin-right: 20rpx;
+.search-text,
+.search-confirm{
+  display: inline-block;
   color: #adadad
 }
-.search-image image{
-  width: 1.4em;
-  height: 1.4em;
+.search-image{
+  padding:20rpx;
+  width: 30rpx;
+  height: 30rpx;
   vertical-align: middle;
 }
-
+.search-text{
+  width: 620rpx;
+}
 
 /* 产品列表 */
 .product-item{

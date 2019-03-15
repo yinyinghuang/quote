@@ -1,0 +1,36 @@
+/* pages/Home/search/search.wxss */
+.search-text{
+  width: 490rpx;
+}
+.search-confirm{
+  width: 130rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  border-left: 1px solid #333;
+  color: #333;
+  margin:20rpx 0;
+  font-size: 1.2em;
+}
+.search-section{
+  margin-bottom: 40rpx;
+}
+.search-header{
+  font-size: 1.2em;
+  margin:16rpx 0 20rpx; 
+}
+.keyword-item{
+  display: inline-block;
+  margin-right: 20rpx;
+  padding: 16rpx;
+  font-size: 1.2em;
+  background: #fff;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.search-clear{
+  width: 100%;
+  margin: 50rpx 0;
+  text-align: center;
+  font-size: 1.4em;
+  color: #979797;
+}

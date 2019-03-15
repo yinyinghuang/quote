@@ -273,7 +273,7 @@ Page({
   shareCount:function(e){
     const _this= this
     comm.request({
-      url: glbd.host + 'products/share-count/' + id,
+      url: glbd.host + 'products/share-count/' + _this.data.id,
       method: glbd.method
     })
   },

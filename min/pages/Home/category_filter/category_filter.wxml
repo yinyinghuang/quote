@@ -1,6 +1,6 @@
 <!--pages/Home/category_filter/category_filter.wxml-->
 <view class='container'>
-  <view class='section section-filter' wx:if='{{filter.length}}'>
+  <view class='section section-filter' wx:if='{{filter_count || price_max!==0 || brand_count}}'>
     <text class='section-title'>筛选</text>
     <view class='filter-list'>
       <view class='filter-item flex-row' wx:if='{{category.price_max}}' bindtap='handlerNavigatorToPrice' data-price_max='{{category.price_max}}' data-price_min='{{category.price_min}}'>

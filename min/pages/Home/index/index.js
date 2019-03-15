@@ -10,7 +10,8 @@ Page({
   data: {
     category:{},
     recent:{},
-    last:{}
+    last:{},
+    keyword:null
   },
 
   /**
@@ -93,6 +94,11 @@ Page({
         comm.showToast('最新更新获取失败')
       }
     })
+  },
+  //跳转至产品详情
+  handlerNavigatorToSearch: function(e) {
+    const { keyword } = e.currentTarget.dataset
+    wx.navigateTo({ url: '/pages/Home/search/search?keyword=' + keyword })
   },
   //跳转至产品详情
   handlerNavigatorToProductDetail: function (e){

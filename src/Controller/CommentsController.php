@@ -14,11 +14,7 @@ use Cake\I18n\Time;
 class CommentsController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
+    //
     public function index()
     {
         $this->paginate = [
@@ -29,13 +25,7 @@ class CommentsController extends AppController
         $this->set(compact('comments'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Comment id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+    //
     public function view($id = null)
     {
         $comment = $this->Comments->get($id, [
@@ -76,7 +66,7 @@ class CommentsController extends AppController
         if ($params['is_checked'] != $comment->is_checked) {
             $comment_delt = $params['is_checked'] ? 1 : -1;
             $comment_score_delt = $params['is_checked'] ? $comment->rating : -$comment->rating;
-            $this->setProductMetaData($comment->product_id, ['comment_count' => $comment_delt,'comment_score_total' => $$comment_score_delt]);
+            $this->setProductMetaData($comment->product_id, ['comment_count' => $comment_delt,'comment_score_total' => $comment_score_delt]);
         }
         $comment = $this->Comments->patchEntity($comment, $params);
         $data    = $this->Comments->save($comment) ? 0 : 2;
@@ -94,13 +84,14 @@ class CommentsController extends AppController
             //更新产品数据
             $comments = $this->Comments->find('all', [
                 'conditions' => ['id in ' => $ids],
-                'fields'     => ['id', 'product_id'],
+                'fields'     => ['id', 'product_id','rating'],
             ])
                 ->groupBy('product_id');
             foreach ($comments as $product_id => $value) {
                 $count = count($value);
+                $comment_score_delt = -array_sum(array_column($value, 'rating'));
                 if ($count) {
-                    $this->setProductMetaData($product_id, ['comment_count' => -($count)]);
+                    $this->setProductMetaData($product_id, ['comment_count' => -($count),'comment_score_total' => $comment_score_delt]);
                 }
 
             }
