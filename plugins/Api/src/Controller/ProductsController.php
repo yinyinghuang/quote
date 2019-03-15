@@ -112,7 +112,9 @@ class ProductsController extends AppController
         ])->first();
         if (empty($product)) {
             $this->ret(1, null, '产品不存在或已被删除');
-        }
+        }       
+        //更新产品数据统计
+        $this->setProductMetaData($id,['view_count' => 1]);
         $product->albums        = $this->_getProductAlbumUrl($product->id, $product->album);
         $product->meta_data = $this->loadModel('ProductData')->find('all', [
             'conditions' => ['product_id' => $product->id],
@@ -130,9 +132,7 @@ class ProductsController extends AppController
         ])->map(function ($row) {
             $row->attribute_name = $this->loadModel('Attributes')->find()->where(['id' => $row->attribute_id])->first()->name;
             return $row;
-        });        
-        //更新产品数据统计
-        $this->setProductMetaData($id,['view_count' => 1]);
+        }); 
         $this->ret(0, $product, '产品加载成功');
     }
     private function _getProductAlbumUrl($product_id, $product_album)
