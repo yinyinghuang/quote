@@ -163,9 +163,7 @@ class ProductsController extends AppController
             'price_water'   => 'Quotes.price_water',
         ];
         $conditions = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
-        $contain    = ['Merchants' => function($query){            
-            return $query->leftJoinWith('MerchantLocations');
-        }];
+        $contain    = ['Merchants'];
         $order      = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.id desc', 'Merchants.id desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
@@ -202,13 +200,14 @@ class ProductsController extends AppController
                     ])->first();
                     if ($location) {
                         $row->address = $location->address;
+                        $location->latitude && $row->latitude = $location->latitude;
+                        $location->longtitude && $row->longtitude = $location->longtitude;
                     }
 
                     return $row;
                 })
                 ->toArray();
-        }
-
+        }   
         $this->ret(0, $merchants, '加载成功');
     }
     public function setLike($product_id)
