@@ -20,6 +20,7 @@ Page({
       },
       clickable: true
     }],
+    scale:16,
     latitude:0,
     longitude:0,
     merchants:[],
@@ -38,6 +39,11 @@ Page({
   },
   onUnload:function(){
     wx.clearStorageSync('user_location')
+  },
+  //页面上拉触底事件的处理函数
+  onReachBottom: function () {console.log('ssssss')
+    const _this = this
+    _this.getMerchantList()
   },
   initPage:function(){
     const _this = this
@@ -87,9 +93,27 @@ Page({
       }
     })
   },
+  //点击标记点，显示相应报价
   handlerMarkerTap:function(e){
     const {markerId} = e
+
     
+  },
+  //点击报价项，商店地址设为中心
+  handlerLinkMap:function(e){
+    const {id} = e.currentTarget.dataset
+    let match = this.data.markers.filter((item) => item.id==id)
+    if(!match.length) return 
+    this.setData({
+      latitude: match[0].latitude,
+      longitude:match[0].longitude,
+      scale:20,
+    }) 
+    wx.createSelectorQuery()
+      .select('.merchant-list')
+      .selectViewport()
+      .scrollOffset()
+      .exec((rect) => console.log(rect) )
   },
   //用户点击右上角分享
   onShareAppMessage: function () {
