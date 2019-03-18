@@ -201,9 +201,8 @@ class ProductsController extends AppController
                     if ($location) {
                         $row->address = $location->address;
                         $location->latitude && $row->latitude = $location->latitude;
-                        $location->longtitude && $row->longtitude = $location->longtitude;
+                        $location->longtitude && $row->longitude = $location->longtitude;
                     }
-
                     return $row;
                 })
                 ->toArray();

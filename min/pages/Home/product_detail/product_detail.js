@@ -259,11 +259,15 @@ Page({
   },
   //点击地址进入导航
   handlerIntoMap: function (e) {
-    const { latitude, longitude, name, address } = e.currentTarget.dataset
-    if(!latitude || !longitude) return;
+    let { latitude, longtitude, name, address } = e.currentTarget.dataset
+    console.log({ latitude, longtitude, name, address })
+    latitude = Number(latitude)
+    longtitude = Number(longtitude)
+    console.log({ latitude, longtitude, name, address })
+    if (!latitude || !longtitude) return;
     wx.openLocation({
       latitude,
-      longitude,
+      longtitude,
       name,
       address,
       scale: 28
