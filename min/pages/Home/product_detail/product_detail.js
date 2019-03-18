@@ -259,18 +259,17 @@ Page({
   },
   //点击地址进入导航
   handlerIntoMap: function (e) {
-    let { latitude, longtitude, name, address } = e.currentTarget.dataset
-    console.log({ latitude, longtitude, name, address })
+    let { latitude, longitude, name, address } = e.currentTarget.dataset
+    console.log({ latitude, longitude, name, address })
     latitude = Number(latitude)
-    longtitude = Number(longtitude)
-    console.log({ latitude, longtitude, name, address })
-    if (!latitude || !longtitude) return;
+    longitude = Number(longitude)
+    console.log({ latitude, longitude, name, address })
+    if (!latitude || !longitude) return;
     wx.openLocation({
       latitude,
-      longtitude,
+      longitude,
       name,
       address,
-      scale: 28
     })
   },
   //图片不存在

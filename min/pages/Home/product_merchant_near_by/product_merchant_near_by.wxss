@@ -1,1 +1,49 @@
 /* pages/Home/product_merchant_near_by/product_merchant_near_by.wxss */
+.merchant-list{
+  width: 100%;
+  height: 30%;
+
+}
+
+.map-icon{
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0 20rpx;
+  vertical-align: middle;
+}
+.merchant-detail{
+  margin-left: 70rpx;
+  font-size: 1em;
+  line-height: 1.8em;
+}
+.merchant-name{
+  font-size: 1.2em;
+}
+.merchant-detail .merchant-address{
+  color: #7f7f7f;
+}
+.merchant-quote{
+  justify-content: flex-start;
+  align-items:flex-start;
+
+}
+.merchant-quote-text{
+  width: 68rpx;
+}
+.merchant-quote-price-item{
+  font-size: 1.2em;
+  color: #ff7878;
+}
+.quote-price-label{
+  color: #333;
+  border: 1px solid #000;
+  margin-left: 20rpx;
+}
+.merchant-no-more{
+  background: #fff;
+  /* margin-top:20rpx; */
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
