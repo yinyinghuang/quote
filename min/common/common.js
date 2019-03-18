@@ -55,7 +55,7 @@ const formatPrice = (price) => {
   let result = 0
   let str = []
   while (price_positive > 1000){
-    str.push(price_positive % 1000)
+    str.push(price_positive % 1000 ? price_positive % 1000:'000')
     price_positive = Math.floor(price_positive / 1000)
   }
   return price_positive + (str.length ? ',' + str.join(',') : '') + (price[1] ? '.' + price[1]:'')

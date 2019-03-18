@@ -37,7 +37,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 8,
 			"list": [
 				{
 					"id": 0,
@@ -71,7 +71,7 @@
 					"id": 4,
 					"name": "产品详情",
 					"pathName": "pages/Home/product_detail/product_detail",
-					"query": "id=231241",
+					"query": "id=100094",
 					"scene": null
 				},
 				{
@@ -93,6 +93,13 @@
 					"name": "搜索页",
 					"pathName": "pages/Home/search/search",
 					"query": "keyword=switch",
+					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "商户地址",
+					"pathName": "pages/Home/merchant_location_map/merchant_location_map",
+					"query": "id=100094",
 					"scene": null
 				}
 			]

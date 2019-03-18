@@ -147,10 +147,12 @@ Page({
       products: this.data.products
     })
   },
-
-  /**
-   * 用户点击右上角分享
-   */
+  //跳转至产品详情
+  handlerNavigatorToSearch: function (e) {
+    const { keyword } = e.currentTarget.dataset
+    wx.navigateTo({ url: '/pages/Home/search/search?keyword=' + keyword })
+  },
+  //用户点击右上角分享
   onShareAppMessage: function () {
 
   }

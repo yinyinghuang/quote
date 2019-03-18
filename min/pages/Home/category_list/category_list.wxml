@@ -1,8 +1,8 @@
 <!--pages/Home/category_list/category_list.wxml-->
 <view class='container'>
-  <view class='section section-search'>
-    <view class='search-image'><image src='/static/images/icon/home.png'></image></view>
-    <view class='search-text'>请输入商品名称</view>
+  <view class='section section-search flex-row' bindtap='handlerNavigatorToSearch' data-keyword='{{keyword?keyword:""}}'>
+    <image src='/static/images/icon/home.png' class='search-image'></image>
+    <view class='search-text'>{{keyword?keyword:'请输入商品名称'}}</view>
   </view>
   <view class='section section-official-account'>
     <official-account></official-account>

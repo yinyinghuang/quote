@@ -13,28 +13,6 @@ use Cake\I18n\Time;
  */
 class CommentsController extends AppController
 {
-
-    //
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Products', 'Fans'],
-        ];
-        $comments = $this->paginate($this->Comments);
-
-        $this->set(compact('comments'));
-    }
-
-    //
-    public function view($id = null)
-    {
-        $comment = $this->Comments->get($id, [
-            'contain' => ['Products', 'Fans'],
-        ]);
-
-        $this->set('comment', $comment);
-    }
-
     //ajax修改产品
     public function apiSave()
     {

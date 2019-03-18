@@ -54,9 +54,7 @@ class ProductsController extends AppController
                         'Products.price_water_max >=' => $price_range[1],
                     ];
                 }
-
             }
-
         }
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
@@ -165,7 +163,9 @@ class ProductsController extends AppController
             'price_water'   => 'Quotes.price_water',
         ];
         $conditions = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
-        $contain    = ['Merchants'];
+        $contain    = ['Merchants' => function($query){            
+            return $query->leftJoinWith('MerchantLocations');
+        }];
         $order      = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.id desc', 'Merchants.id desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);

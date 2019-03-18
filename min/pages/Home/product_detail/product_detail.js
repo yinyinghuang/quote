@@ -257,10 +257,21 @@ Page({
       url: '/pages/Home/merchant_detail/merchant_detail?id='+merchant_id,
     }) 
   },
+  //点击地址进入导航
+  handlerIntoMap: function (e) {
+    const { latitude, longitude, name, address } = e.currentTarget.dataset
+    if(!latitude || !longitude) return;
+    wx.openLocation({
+      latitude,
+      longitude,
+      name,
+      address,
+      scale: 28
+    })
+  },
   //图片不存在
   hanlderImageError: function (e) {
     const index = e.currentTarget.dataset.index
-    console.log(index)
     this.setData({
       [index]: '/static/images/icon-red/nopic.png'
     })

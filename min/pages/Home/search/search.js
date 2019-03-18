@@ -1,4 +1,7 @@
 // pages/Home/search/search.js
+let app = getApp()
+let glbd = app.globalData
+const comm = require('../../../common/common.js')
 Page({
 
   /**
@@ -7,61 +10,57 @@ Page({
   data: {
     hots:['ewerwer','ererere'],
     history: ['ewerwer', 'ererere'],
+    keyword:'test',
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  //生命周期函数--监听页面加载
   onLoad: function (options) {
-
+    if (options.keyword) this.setData({ keyword: options.keyword})    
+    const history = wx.getStorageSync('search_history')
+    if (history) this.setData({ history })
+    // this.getHotKeyword()
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  getHotKeyword:function(){
+    const _this = this
+    comm.request({
+      url: glbd.host + 'products/hot-keyword-lists/',
+      method: glbd.method,
+      success: function (res) {
+        _this.setData({
+          hot: res.data.data
+        })
+      },
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  //输入
+  handlerInput:function(e){
+    const keyword = e.detail.value
+    this.setData({
+      keyword
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  //搜索框确认
+  handlerSearch:function(){
+    this._navToProductList()   
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  //关键词条点击
+  handlerKeywordItem:function(e){
+    const {keyword} = e.currentTarget.dataset
+    this.setData({keyword})
+    this._navToProductList()
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
+  //清空搜索历史
+  handlerClearHistoryKeyword:function(){
+    wx.clearStorageSync('search_history')
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
+  //跳转至产品列表
+  _navToProductList: function () {
+    const {keyword} = this.data
+    if(!keyword){
+      comm.showToast('关键词不能为空')
+    }else{
+      wx.navigateTo({
+        url: '/pages/Home/product_list/product_list?keyword=' + keyword,
+      })
+    }    
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })
