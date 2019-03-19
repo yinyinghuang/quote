@@ -112,6 +112,7 @@ class MerchantsController extends AppController
         }
         $merchant = $this->loadModel('Merchants')->find('all', [
             'conditions' => ['Merchants.id' => $id, 'Merchants.is_visible' => 1],
+            'fields' => ['id','name','logo','logo_ext','wechat','email','website','intro'],
         ])->first();
         if (empty($merchant)) {
             $this->ret(1, null, '商户不存在或已被删除');
