@@ -78,7 +78,7 @@
       </view>
     </view>
   </view>
-  <view class='section section-merchant-list'>
+  <view class='section section-merchant-list' wx:if='{{merchants.length}}'>
     <view class='product-title'>在售商家<text class='split'>|</text>{{meta_data.quote_count}}</view>    
     <view class='merchant-tabs flex-row {{style.show_merchant_filter?"active":""}}'>
       <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy'>附近</view>
@@ -117,7 +117,7 @@
           <text class='merchant-name-text'>{{merchant.merchant_name}}</text>
         </view>
         <view class='merchant-detail'>
-          <view class='merchant-address' catchtap='handlerIntoMap' data-latitude='{{merchant.latitude}}' data-longitude='{{merchant.longitude}}' data-name='{{merchant.merchant_name}}' data-address='{{merchant.address}}'>{{merchant.address}}</view>
+          <view class='merchant-address' catchtap='handlerOpenLocation' data-latitude='{{merchant.latitude}}' data-longitude='{{merchant.longitude}}' data-name='{{merchant.merchant_name}}' data-address='{{merchant.address}}'>{{merchant.address}}</view>
           <view class='merchant-quote flex-row'>
             <view class='merchant-quote-text'>售价:</view>
             <view class='merchant-quote-price'>

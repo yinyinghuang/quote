@@ -14,15 +14,15 @@ class MerchantsController extends AppController
 
     public function areaLists()
     {
-        $areas = $this->loadModel('Areas')->find('all',[
-            'fields' => ['Areas.id','Areas.name'],
-            'contain'=> ['Districts' => function($query){
-                return $query->select(['Districts.name','Districts.id','Districts.area_id'])->where(['Districts.is_visible' => 1])->order(['Districts.sort']);
+        $areas = $this->loadModel('Areas')->find('all', [
+            'fields'     => ['Areas.id', 'Areas.name'],
+            'contain'    => ['Districts' => function ($query) {
+                return $query->select(['Districts.name', 'Districts.id', 'Districts.area_id'])->where(['Districts.is_visible' => 1])->order(['Districts.sort']);
             }],
             'conditions' => ['Areas.is_visible' => 1],
-            'order' => ['Areas.sort']
+            'order'      => ['Areas.sort'],
         ])
-        ->toArray();
+            ->toArray();
         $this->ret(0, $areas, '加载成功');
     }
 
@@ -58,14 +58,14 @@ class MerchantsController extends AppController
             if (count($price_range) === 2) {
                 if (!empty($price_range[0])) {
                     $where['or'] = [
-                        'Merchants.price_hong_min >=' => $price_range[0],
-                        'Merchants.price_water_min >=' => $price_range[0]
+                        'Merchants.price_hong_min >='  => $price_range[0],
+                        'Merchants.price_water_min >=' => $price_range[0],
                     ];
                 }
                 if (!empty($price_range[1])) {
                     $where['or'] = [
-                        'Merchants.price_hong_max >=' => $price_range[1],
-                        'Merchants.price_water_max >=' => $price_range[1]
+                        'Merchants.price_hong_max >='  => $price_range[1],
+                        'Merchants.price_water_max >=' => $price_range[1],
                     ];
                 }
 
@@ -103,6 +103,129 @@ class MerchantsController extends AppController
                 return $row;
             })
             ->toArray();
+        $this->ret(0, $merchants, '加载成功');
+    }
+    public function detail($id)
+    {
+        if (empty($id)) {
+            $this->ret(1, null, '商户id缺失');
+        }
+        $merchant = $this->loadModel('Merchants')->find('all', [
+            'conditions' => ['Merchants.id' => $id, 'Merchants.is_visible' => 1],
+        ])->first();
+        if (empty($merchant)) {
+            $this->ret(1, null, '商户不存在或已被删除');
+        }
+        $merchant->logos = $this->_getMerchantLogoUrl($merchant);
+        $this->ret(0, $merchant, '产品加载成功');
+    }
+    public function locationLists($merchant_id)
+    {
+        if (empty($merchant_id)) {
+            $this->ret(1, null, '商户id缺失');
+        }
+        $params = $this->request->getData();
+        $fields = [
+            'area_id'       => 'Areas.id',
+            'area_name'     => 'Areas.name',
+            'district_id'   => 'Districts.id',
+            'district_name' => 'Districts.name',
+            'openhour'      => 'MerchantLocations.openhour',
+            'contact'       => 'MerchantLocations.contact',
+            'address'       => 'MerchantLocations.address',
+            'latitude'      => 'MerchantLocations.latitude',
+            'longitude'     => 'MerchantLocations.longtitude',
+        ];
+        $conditions        = ['MerchantLocations.is_visible' => 1, 'MerchantLocations.merchant_id' => $merchant_id];
+        $order             = ['MerchantLocations.sort desc','MerchantLocations.id desc',];
+        $limit             = 20;
+        $offset            = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        $merchantLocations = $this->loadModel('MerchantLocations')
+            ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+            ->leftJoinWith('Areas')
+            ->leftJoinWith('Districts')
+            ->toArray();
+        $this->ret(0, $merchantLocations, '产品加载成功');
+    }
+    private function _getMerchantLogoUrl($merchant)
+    {
+        $logos = [];
+        if (empty($merchant->logo) || empty($merchant->logo_ext)) {
+            return $logos;
+        }
+
+        $logoDir = $this->_getLogoDir($merchant->id);
+        $logos   = [
+            'thumb'  => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_1.' . $merchant->logo_ext,
+            'middle' => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_2.' . $merchant->logo_ext,
+            'full'   => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_0.' . $merchant->logo_ext,
+        ];
+        return $logos;
+    }
+    //获取产品图片文件夹
+    private function _getLogoDir($merchant_id)
+    {
+        return intval($merchant_id / 100) . '00' . '/';
+    }
+
+    public function quoteLists($merchant_id)
+    {
+        if (empty($merchant_id)) {
+            $this->ret(1, null, '商户id缺失');
+        }
+
+        $params = $this->request->getData();
+        $fields = [
+            'product_id'   => 'Products.id',
+            'product_name' => 'Products.name',
+            'price_hong'   => 'Quotes.price_hong',
+            'price_water'  => 'Quotes.price_water',
+        ];
+        $conditions = ['Quotes.is_visible' => 1, 'Quotes.merchant_id' => $merchant_id];
+        $contain    = ['Products'];
+        $order      = ['Quotes.sort desc', 'Products.sort desc', 'Quotes.id desc', 'Products.id desc'];
+        $limit      = 20;
+        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+
+        //存在地区筛选项
+        $area_id     = isset($params['area_id']) ? intval($params['area_id']) : 0;
+        $district_id = isset($params['district_id']) ? intval($params['district_id']) : 0;
+        if ($area_id || $district_id) {
+            $locationWhere                                = [];
+            $area_id && $locationWhere['area_id']         = $area_id;
+            $district_id && $locationWhere['district_id'] = $district_id;
+            $merchant_ids                                 = $this->loadModel('MerchantLocations')->find('all', [
+                'conditions' => $locationWhere,
+            ])->extract('id')->toArray();
+        }
+        //存在水货/行货筛选项
+        if (isset($params['price_type']) && in_array($params['price_type'], ['1', '2'])) {
+            $params['price_type'] == 1 && $conditions['Quotes.price_hong !=']  = 0;
+            $params['price_type'] == 2 && $conditions['Quotes.price_water !='] = 0;
+        }
+
+        //存在地区筛选项且无满足该条件的商户
+        if (isset($merchant_ids) && empty($merchant_ids)) {
+            $merchants = [];
+        } else {
+            isset($merchant_ids) && $conditions['Merchants.id in'] = $merchant_ids;
+
+            $merchants = $this->loadModel('Quotes')
+                ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+                ->map(function ($row) {
+                    $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                    $location   = $this->loadModel('MerchantLocations')->find('all', [
+                        'conditions' => $conditions,
+                    ])->first();
+                    if ($location) {
+                        $row->address                            = $location->address;
+                        $location->latitude && $row->latitude    = $location->latitude;
+                        $location->longtitude && $row->longitude = $location->longtitude;
+                    }
+                    return $row;
+                })
+                ->toArray();
+        }
         $this->ret(0, $merchants, '加载成功');
     }
 }

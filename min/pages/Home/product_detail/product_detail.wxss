@@ -235,11 +235,14 @@
 .merchant-quote-price-item{
   font-size: 1.2em;
   color: #ff7878;
+  margin-bottom:6rpx;
 }
 .quote-price-label{
+  display: inline-block;
   color: #333;
   border: 1px solid #000;
   margin-left: 20rpx;
+  padding: 0 6rpx;
 }
 .merchant-no-more{
   background: #fff;

@@ -289,7 +289,7 @@ class ProductsController extends AppController
         return intval($product_id / 1000) . '000' . '/';
     }
     //获取产品图片文件夹
-    private function getLogoDir($merchant_id)
+    private function _getLogoDir($merchant_id)
     {
         return intval($merchant_id / 100) . '00' . '/';
     }

@@ -3,7 +3,6 @@
   id="map"
   longitude="{{longitude}}"
   latitude="{{latitude}}"
-  controls="{{controls}}"
   bindcontroltap="controltap"
   markers="{{markers}}"
   bindmarkertap="handlerMarkerTap"
@@ -11,22 +10,24 @@
   scale='{{scale}}'
   style="width: 100%; height: 70%;"
 ></map>
-    <view class='merchant-list' id='merchant_list'>      
-      <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerLinkMap' data-merchant_id='{{merchant.merchant_id}}' data-id='{{index}}'>  
-        <view class='merchant-name'>
-          <image class='map-icon' src='/static/images/icon/home.png'></image>
-          <text class='merchant-name-text'>{{merchant.merchant_name}}</text>
-        </view>
-        <view class='merchant-detail'>
-          <view class='merchant-address' data-latitude='{{merchant.latitude}}' data-longitude='{{merchant.longitude}}' data-name='{{merchant.merchant_name}}' data-address='{{merchant.address}}'>{{merchant.address}}</view>
-          <view class='merchant-quote flex-row'>
-            <view class='merchant-quote-text'>售价:</view>
-            <view class='merchant-quote-price'>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='quote-price-label'>行</text></view>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='quote-price-label'>水</text></view>
-            </view>
-          </view>
+<scroll-view class='merchant-list' id='merchant_list' scroll-y scroll-top='{{ scrollTop }}'>      
+  <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerLinkMap' data-merchant_id='{{merchant.merchant_id}}' data-id='{{index}}' wx:if='{{merchant.latitude&&merchant.longitude}}'>  
+    <view class='merchant-name'>
+      <image class='map-icon' src='/static/images/icon/home.png'></image>
+      <text class='merchant-name-text'>{{merchant.merchant_name}}</text>
+    </view>
+    <view class='merchant-detail'>
+      <view class='merchant-address' data-latitude='{{merchant.latitude}}' data-longitude='{{merchant.longitude}}' data-name='{{merchant.merchant_name}}' data-address='{{merchant.address}}'>{{merchant.address}}</view>
+      <view class='merchant-quote flex-row'>
+        <view class='merchant-quote-text'>售价:</view>
+        <view class='merchant-quote-price'>
+          <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='quote-price-label'>行</text></view>
+          <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='quote-price-label'>水</text></view>
         </view>
       </view>
     </view>
-    <view class='merchant-no-more' wx:if='{{merchant_reach_bottom}}'>暂无更多数据</view>
+  </view>
+  <view class='merchant-no-more' wx:if='{{merchant_reach_bottom}}'>暂无更多数据</view>
+</scroll-view>
+<cover-image class='go-to' src='/static/images/icon/home.png' catchtap='handlerOpenLocation' hidden='{{!show_goto_button}}'> </cover-image>
+<cover-image class='my-location' src='/static/images/icon/home.png' catchtap='handlerSwithToMyLocation' hidden='{{!show_goto_button}}'> </cover-image>

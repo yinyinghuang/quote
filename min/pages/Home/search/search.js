@@ -51,6 +51,9 @@ Page({
   //清空搜索历史
   handlerClearHistoryKeyword:function(){
     wx.clearStorageSync('search_history')
+    this.setData({
+      history:[]
+    })
   },
   //跳转至产品列表
   _navToProductList: function () {

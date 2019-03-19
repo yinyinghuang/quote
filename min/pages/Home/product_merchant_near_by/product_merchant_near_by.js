@@ -9,23 +9,16 @@ Page({
    */
   data: {
     markers: [],
-    controls: [{
-      id: 1,
-      iconPath: '/static/images/icon/home.png',
-      position: {
-        left: 0,
-        top: 300 - 50,
-        width: 50,
-        height: 50
-      },
-      clickable: true
-    }],
     scale:16,
     latitude:0,
-    longitude:0,
+    longitude: 0,
+    name: '',
+    address: '',
     merchants:[],
     page:1,
-    merchant_reach_bottom:false
+    merchant_reach_bottom:false,
+    show_goto_button:false,
+    scrollTop:0,
   },
 
   /**
@@ -41,7 +34,7 @@ Page({
     wx.clearStorageSync('user_location')
   },
   //页面上拉触底事件的处理函数
-  onReachBottom: function () {console.log('ssssss')
+  onReachBottom: function () {
     const _this = this
     _this.getMerchantList()
   },
@@ -81,7 +74,7 @@ Page({
               latitude: quote.latitude,
               longitude: quote.longitude
             })
-          }          
+          }         
         })       
 
         _this.setData({
@@ -93,27 +86,75 @@ Page({
       }
     })
   },
-  //点击标记点，显示相应报价
+  //点击标记点，修改标价滚动条
   handlerMarkerTap:function(e){
+    const _this = this
     const {markerId} = e
-
-    
+    const query = wx.createSelectorQuery()
+    query.selectAll('.merchant-item').boundingClientRect()    
+    query.exec(function (res) {
+      if(!res.length) return 
+      let scrollTop = 0
+      const margin_bottom = 10
+      for(let i=0;i<res[0].length;i++){
+        const cur = res[0][i]
+        if(cur.dataset.id>=markerId) break
+        scrollTop += cur.height + margin_bottom
+      }
+      _this.setData({
+        scrollTop
+      })
+    })
   },
   //点击报价项，商店地址设为中心
   handlerLinkMap:function(e){
     const {id} = e.currentTarget.dataset
-    let match = this.data.markers.filter((item) => item.id==id)
-    if(!match.length) return 
+    let match = this.data.merchants[id] 
+    if (!match) return 
     this.setData({
-      latitude: match[0].latitude,
-      longitude:match[0].longitude,
-      scale:20,
+      latitude: match.latitude,
+      longitude: match.longitude,
+      name: match.merchant_name,
+      address:match.address,
+      scale: 20,
+      show_goto_button: 1,
     }) 
-    wx.createSelectorQuery()
-      .select('.merchant-list')
-      .selectViewport()
-      .scrollOffset()
-      .exec((rect) => console.log(rect) )
+  },
+  //打开地图
+  handlerOpenLocation: function (e) {
+    let { latitude, longitude, name, address } = this.data
+    latitude = Number(latitude)
+    longitude = Number(longitude)
+    if (!latitude || !longitude) return;
+    wx.openLocation({
+      latitude,
+      longitude,
+      name,
+      address,
+    })
+  },
+  //显示我的位置
+  handlerSwithToMyLocation: function (e) {
+    const user_location = wx.getStorageSync('user_location')
+    const _this =this
+    if (!user_location){
+      wx.getLocation({
+        success: function(res) {
+          _this.setData({
+            ...res,
+            show_goto_button:false,
+            scale: 16,
+          })
+        },
+      })
+    }else{
+      _this.setData({
+        ...user_location,
+        show_goto_button: false,
+        scale: 16,
+      })
+    }
+    
   },
   //用户点击右上角分享
   onShareAppMessage: function () {

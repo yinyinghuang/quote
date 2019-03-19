@@ -257,13 +257,11 @@ Page({
       url: '/pages/Home/merchant_detail/merchant_detail?id='+merchant_id,
     }) 
   },
-  //点击地址进入导航
-  handlerIntoMap: function (e) {
+  //打开地图
+  handlerOpenLocation: function (e) {
     let { latitude, longitude, name, address } = e.currentTarget.dataset
-    console.log({ latitude, longitude, name, address })
     latitude = Number(latitude)
     longitude = Number(longitude)
-    console.log({ latitude, longitude, name, address })
     if (!latitude || !longitude) return;
     wx.openLocation({
       latitude,

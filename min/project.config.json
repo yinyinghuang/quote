@@ -37,7 +37,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -100,6 +100,13 @@
 					"name": "附近商户",
 					"pathName": "pages/Home/product_merchant_near_by/product_merchant_near_by",
 					"query": "product_id=100094",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "商户详情",
+					"pathName": "pages/Home/merchant_detail/merchant_detail",
+					"query": "id=1238",
 					"scene": null
 				}
 			]

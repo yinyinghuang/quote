@@ -4,7 +4,7 @@
 </view>
 <view class='section section-merchant-detail'>
   <view class='merchant-detail-header flex-row'>
-    <image class='merchant-logo' src='{{logo}}' binderror='handlerImageError'></image>
+    <image class='merchant-logo' src='{{logo}}' binderror='handlerImageError' src='/static/images/icon/home.png'></image>
     <view class='merchant-name-address'>
       <view class='merchant-name'>{{name}}</view>
       <view class='merchant-address flex-row'>
@@ -16,36 +16,5 @@
   <view class='merchant-detail-body'>
   
   </view> 
-</view>
-<view class='section section-quote-list'>
-  <view class='comment-list-header flex-row'>
-    <view class='section-title'>用户评价|{{comment_count}}</view>
-    <view class='comment-list-header-add flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
-      <image src='/static/images/icon/home.png' class='write-icon'></image>
-      <view class='product-rate-write'>发表意见</view>
-    </view>
-  </view>
-  <view class='comment-list-body flex-column'>
-    <view class='comment-item' wx:for='{{comment_list}}' wx:key='{{index}}' wx:for-item='comment'>
-      <view class='comment-item-header flex-row'>
-        <view class='comment-item-userinfo flex-row'>
-          <image class='comment-item-user-avatar' src='{{comment.fan_avatar}}'></image>
-          <view class='comment-item-user-name-time'>
-            <view class='comment-item-username'>{{comment.fan_name}}</view>
-            <view class='comment-item-time'>{{comment.created}}</view>
-          </view>
-        </view>
-        <view class='comment-item-rating'>          
-          <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
-        </view>
-      </view>
-      <view class='comment-item-content'>{{comment.content}}</view>
-    </view>
-    <view class='comment-no-more' wx:if='{{comment_reach_bottom}}'>暂无更多数据</view>
-  </view>
 </view>
 
