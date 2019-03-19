@@ -5,7 +5,7 @@
 <view class='section section-product-info'>
   <view data-id='{{id}}' data-name='{{name}}' data-album='{{album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
     <view class='product-icon'>
-      <image src='{{thumb.middle}}' lazy-load binderror='hanlderImageError'></image>
+      <image src='{{thumb.middle}}' lazy-load binderror='handlerImageError'></image>
     </view>
     <view class='product-info'>
       <view class='product-item-text'>{{name}}</view>

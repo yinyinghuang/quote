@@ -1,11 +1,35 @@
 /* pages/Home/merchant_detail/merchant_detail.wxss */
+.section-merchant-detail{
+  background: #fff;
+  box-sizing: border-box;
+  padding: 20rpx;
+  margin-bottom: 40rpx;  
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
 .merchant-detail-header{
   justify-content: flex-start;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 20rpx;
 }
 .merchant-logo{
   display: inline-block;
-  width: 126rpx;
-  height: 126rpx;
+  width: 130rpx;
+  height: 130rpx;
+}
+.merchant-name-address{
+  width: 480rpx;
+  margin-left: 40rpx;
+}
+.merchant-name{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.merchant-address{
+  align-items: flex-start;
+}
+.merchant-address-text{
+  width: 430rpx;
+  font-size: 1.2em;
 }
 .map-icon{  
   display: inline-block;
@@ -13,4 +37,29 @@
   height: 30rpx;
   margin-right:20rpx;
   vertical-align: middle;
+}
+.merchant-detail-body{
+  justify-content: space-between;
+}
+.merchant-details{
+  width: 540rpx;
+}
+.merchant-detail-action{
+  width: 110rpx;
+}
+.merchant-detail-item{
+  justify-content: flex-start;
+  align-items:flex-start;
+  font-size: 1.2em;
+  margin-top: 16rpx;
+}
+.merchant-detail-icon{
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  margin: 8rpx 20rpx;
+  vertical-align: middle;
+}
+.merchant-detail-text{
+  width: 490rpx;
 }

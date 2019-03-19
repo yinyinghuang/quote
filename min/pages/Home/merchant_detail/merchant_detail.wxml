@@ -4,7 +4,7 @@
 </view>
 <view class='section section-merchant-detail'>
   <view class='merchant-detail-header flex-row'>
-    <image class='merchant-logo' src='{{logo}}' binderror='handlerImageError' src='/static/images/icon/home.png'></image>
+    <image class='merchant-logo' src='{{logo}}' binderror='handlerImageError' src='{{logos.full}}' data-index='logos.full'></image>
     <view class='merchant-name-address'>
       <view class='merchant-name'>{{name}}</view>
       <view class='merchant-address flex-row'>
@@ -13,8 +13,75 @@
       </view>
     </view>
   </view>
-  <view class='merchant-detail-body'>
-  
+  <view class='merchant-detail-body flex-row'>
+    <view class='merchant-details'>
+      <view class='merchant-detail-item flex-row'>
+        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <view class='merchant-detail-text'>{{contact}}</view>
+      </view>
+      <view class='merchant-detail-item flex-row'>
+        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <view class='merchant-detail-text'>{{openhour}}</view>
+      </view>
+      <view class='merchant-detail-item flex-row'>
+        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <view class='merchant-detail-text'>{{email}}</view>
+      </view>
+      <view class='merchant-detail-item flex-row'>
+        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <view class='merchant-detail-text'>{{address}}</view>
+      </view>
+      <view class='merchant-detail-item flex-row'>
+        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <view class='merchant-detail-text'>{{wechat}}</view>
+      </view>
+      <view class='merchant-detail-item flex-row'>
+        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <view class='merchant-detail-text'>{{intro}}</view>
+      </view>
+    </view>
+    <view class='merchant-detail-action flex-row'>
+      <button bindtap='handlerLike' data-id='{{id}}'>
+        <image src='/static/images/icon{{liked?"-red":""}}/home.png' class='action-icon'></image>
+      </button>          
+      <button open-type='share'>
+        <image src='/static/images/icon/home.png' class='action-icon'></image>
+      </button>
+    </view>
   </view> 
+</view>
+<view class='section section-quote-list' wx:if='{{quotes.length}}'>
+    <view class='title'>在售产品<text class='split'>|</text>{{quotes.length}}</view> 
+    <view wx:for="{{quotes}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
+      <view class='product-icon'>
+        <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-id='{{index}}'></image>
+      </view>
+      <view class='product-info'>
+        <view class='product-item-text'>{{item.name}}</view>
+        <block wx:if='{{ item.price_hong_max===0 && item.price_hong_min===0 && item.price_water_max===0 && item.price_water_min===0}}'>
+          <view class='product-item-price'>暂无报价</view>
+        </block>
+        <block wx:else>
+          <block wx:if='{{item.price_hong_max!==0 || item.price_hong_min!==0}}'>
+            <view class='product-item-price'>
+              HK${{item.price_hong_min?item.price_hong_min:''}}
+              <block wx:if='{{item.price_hong_max && item.price_hong_min}}'>-</block>
+              {{item.price_hong_max?item.price_hong_max:''}}
+              <text class='product-price-label'>行</text>
+            </view>
+          </block>
+          <block wx:if='{{item.price_water_max!==0 || item.price_water_min!==0}}'>
+            <view class='product-item-price'>
+              HK${{item.price_water_min?item.price_water_min:''}}
+              <block wx:if='{{item.price_water_max && item.price_water_min}}'>-</block>
+              {{item.price_water_max?item.price_water_max:''}}
+              <text class='product-price-label'>水</text>
+            </view>
+          </block>
+        </block>
+        
+      </view>   
+    </view>
+    <view class='merchant-no-more' wx:if='{{quote_param.reach_bottom}}'>暂无更多数据</view>
 </view>
 

@@ -126,3 +126,14 @@ page {
   border: 1px solid #333;
 }
 
+.action-icon{
+  width: 45rpx;
+  height: 45rpx;
+  margin-left: 20rpx;
+}
+.title{
+  font-size: 1.4em;
+  line-height: 1.5em;
+  margin-bottom: 30rpx;
+}
+

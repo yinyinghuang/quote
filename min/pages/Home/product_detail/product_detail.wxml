@@ -39,12 +39,11 @@
         </view>
         <view class='product-action flex-row'>
           <button bindtap='handlerLike' data-id='{{id}}'>
-            <image src='/static/images/icon{{liked?"-red":""}}/home.png' class='product-action-icon'></image>
+            <image src='/static/images/icon{{liked?"-red":""}}/home.png' class='action-icon'></image>
           </button>          
           <button open-type='share'>
-            <image src='/static/images/icon/home.png' class='product-action-icon'></image>
-          </button>
-          
+            <image src='/static/images/icon/home.png' class='action-icon'></image>
+          </button>          
         </view>
       </view>
     </view>

@@ -18,7 +18,7 @@
     <scroll-view class='product-list-recent flex-row' scroll-x>
       <view wx:for="{{recent}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='product-item '>
         <view class='flex-column product-item-container'>
-          <image class='product-item-icon' src='{{item.album}}' lazy-load binderror='hanlderImageError' data-id='{{index}}'></image>
+          <image class='product-item-icon' src='{{item.album}}' lazy-load binderror='handlerImageError' data-id='{{index}}'></image>
           <text class='prodcut-item-split'></text>
           <view class='product-item-text'>{{item.name}}</view>
         </view>
@@ -35,7 +35,7 @@
     <view class='product-list-last flex-column'>
       <view wx:for="{{last}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
         <view class='product-icon'>
-          <image src='{{item.album}}' lazy-load binderror='hanlderImageError' data-id='{{index}}'></image>
+          <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-id='{{index}}'></image>
         </view>
         <view class='product-info'>
           <view class='product-item-text'>{{item.name}}</view>

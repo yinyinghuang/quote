@@ -111,7 +111,7 @@ Page({
     wx.navigateTo({ url: '/pages/Home/category_list/category_list?type=zone_children&id=' + id })
   },
   //产品图片不存在
-  hanlderImageError:function(e){
+  handlerImageError:function(e){
     this.data.last[e.currentTarget.dataset.id].album = '/static/images/icon-red/nopic.png';
     this.setData({
       last:this.data.last

@@ -187,46 +187,22 @@ class MerchantsController extends AppController
         $order      = ['Quotes.sort desc', 'Products.sort desc', 'Quotes.id desc', 'Products.id desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-
-        //存在地区筛选项
-        $area_id     = isset($params['area_id']) ? intval($params['area_id']) : 0;
-        $district_id = isset($params['district_id']) ? intval($params['district_id']) : 0;
-        if ($area_id || $district_id) {
-            $locationWhere                                = [];
-            $area_id && $locationWhere['area_id']         = $area_id;
-            $district_id && $locationWhere['district_id'] = $district_id;
-            $merchant_ids                                 = $this->loadModel('MerchantLocations')->find('all', [
-                'conditions' => $locationWhere,
-            ])->extract('id')->toArray();
-        }
-        //存在水货/行货筛选项
-        if (isset($params['price_type']) && in_array($params['price_type'], ['1', '2'])) {
-            $params['price_type'] == 1 && $conditions['Quotes.price_hong !=']  = 0;
-            $params['price_type'] == 2 && $conditions['Quotes.price_water !='] = 0;
-        }
-
-        //存在地区筛选项且无满足该条件的商户
-        if (isset($merchant_ids) && empty($merchant_ids)) {
-            $merchants = [];
-        } else {
-            isset($merchant_ids) && $conditions['Merchants.id in'] = $merchant_ids;
-
-            $merchants = $this->loadModel('Quotes')
-                ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
-                ->map(function ($row) {
-                    $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
-                    $location   = $this->loadModel('MerchantLocations')->find('all', [
-                        'conditions' => $conditions,
-                    ])->first();
-                    if ($location) {
-                        $row->address                            = $location->address;
-                        $location->latitude && $row->latitude    = $location->latitude;
-                        $location->longtitude && $row->longitude = $location->longtitude;
-                    }
-                    return $row;
-                })
-                ->toArray();
-        }
+        
+        $merchants = $this->loadModel('Quotes')
+            ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+            ->map(function ($row) {
+                $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                $location   = $this->loadModel('MerchantLocations')->find('all', [
+                    'conditions' => $conditions,
+                ])->first();
+                if ($location) {
+                    $row->address                            = $location->address;
+                    $location->latitude && $row->latitude    = $location->latitude;
+                    $location->longtitude && $row->longitude = $location->longtitude;
+                }
+                return $row;
+            })
+            ->toArray();
         $this->ret(0, $merchants, '加载成功');
     }
 }

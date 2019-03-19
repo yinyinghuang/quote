@@ -271,7 +271,7 @@ Page({
     })
   },
   //图片不存在
-  hanlderImageError: function (e) {
+  handlerImageError: function (e) {
     const index = e.currentTarget.dataset.index
     this.setData({
       [index]: '/static/images/icon-red/nopic.png'
