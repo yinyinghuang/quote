@@ -102,6 +102,7 @@ Page({
         data.forEach((quote) => {
           if (quote.price_hong) quote.price_hong = comm.formatPrice(quote.price_hong)
           if (quote.price_water) quote.price_water = comm.formatPrice(quote.price_water)
+          if (quote.cover) quote.cover = glbd.hosts+quote.cover
         })
         _this.setData({
           quotes: page == 1 ? data : _this.data.quotes.concat(data),
