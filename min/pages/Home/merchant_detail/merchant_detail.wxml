@@ -7,7 +7,7 @@
     <image class='merchant-logo' src='{{logo}}' binderror='handlerImageError' src='{{logos.full}}' data-index='logos.full'></image>
     <view class='merchant-name-address'>
       <view class='merchant-name'>{{name}}</view>
-      <view class='merchant-address flex-row'>
+      <view class='merchant-address flex-row' bindtap='handlerOpenLocation' data-latitude='{{latitude}}' data-longitude='{{longitude}}' data-name='{{name}}' data-address='{{address}}'>
         <image class='map-icon' src='/static/images/icon/home.png'></image>
         <view class='merchant-address-text'>{{address}}</view>
       </view>
@@ -15,21 +15,17 @@
   </view>
   <view class='merchant-detail-body flex-row'>
     <view class='merchant-details'>
-      <view class='merchant-detail-item flex-row'>
+      <view class='merchant-detail-item flex-row' wx:if='{{contact}}'bindtap='handlerMakePhoneCall' data-phone='{{location.contact}}'>
         <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
         <view class='merchant-detail-text'>{{contact}}</view>
       </view>
-      <view class='merchant-detail-item flex-row'>
+      <view class='merchant-detail-item flex-row' wx:if='{{openhour}}'>
         <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
         <view class='merchant-detail-text'>{{openhour}}</view>
       </view>
       <view class='merchant-detail-item flex-row'>
         <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
         <view class='merchant-detail-text'>{{email}}</view>
-      </view>
-      <view class='merchant-detail-item flex-row'>
-        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
-        <view class='merchant-detail-text'>{{address}}</view>
       </view>
       <view class='merchant-detail-item flex-row'>
         <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
@@ -50,25 +46,47 @@
     </view>
   </view> 
 </view>
-<view class='section section-quote-list' wx:if='{{quotes.length}}'>
-    <view class='title'>在售产品<text class='split'>|</text>{{quotes.length}}</view> 
-    <view class='flex-row product-item ' wx:for="{{quotes}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail'>
-      <view class='product-icon'>
-        <image src='{{item.cover}}' lazy-load binderror='handlerImageError' data-id='{{index}}'></image>
-      </view>
-      <view class='product-info'>
-        <view class='product-item-text'>{{item.name}}</view>
-        <view class='product-item-price' wx:if='{{!item.price_hong&&!item.price_water}}'>暂无报价</view>
-        <view class='product-item-price' wx:if='{{item.price_hong}}'>
-          HK${{item.price_hong}}
-          <text class='product-price-label'>行</text>
-        </view>
-        <view class='product-item-price' wx:if='{{item.price_water}}'>
-          HK${{item.price_water}}
-          <text class='product-price-label'>水</text>
-        </view>
-      </view>   
+<view class='section section-quote-address-list' wx:if='{{quotes.length}}'>
+    <view class='quote-location-header flex-row'>
+      <view class='title {{active=="quote"?"active":""}}' bindtap='handlerToggleActive' data-active='quote'>在售产品</view> 
+      <view class='title {{active=="location"?"active":""}}' bindtap='handlerToggleActive' data-active='location' wx:if='{{locations.length>1}}'>营业地址</view>
     </view>
-    <view class='merchant-no-more' wx:if='{{quote_param.reach_bottom}}'>暂无更多数据</view>
+    <view class='quote-list' hidden='{{active!=="quote"}}'>
+      <view class='flex-row product-item ' wx:for="{{quotes}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail'>
+        <view class='product-icon'>
+          <image src='{{item.cover}}' lazy-load binderror='handlerImageError' data-index='quotes.{{index}}.cover'></image>
+        </view>
+        <view class='product-info'>
+          <view class='product-item-text'>{{item.name}}</view>
+          <view class='product-item-price' wx:if='{{!item.price_hong&&!item.price_water}}'>暂无报价</view>
+          <view class='product-item-price' wx:if='{{item.price_hong}}'>
+            HK${{item.price_hong}}
+            <text class='product-price-label'>行</text>
+          </view>
+          <view class='product-item-price' wx:if='{{item.price_water}}'>
+            HK${{item.price_water}}
+            <text class='product-price-label'>水</text>
+          </view>
+        </view>   
+      </view>
+      <view class='no-more' wx:if='{{quote_param.reach_bottom}}'>暂无更多数据</view>
+    </view>
+    <view class='location-list' hidden='{{active!=="location"}}' wx:if='{{locations.length>1}}'>
+      <view class='location-item' wx:for="{{locations}}" wx:key="id" wx:for-item='location' data-id='{{location.id}}'>
+        <view class='location-item-row  flex-row' wx:if='{{location.address}}' bindtap='handlerOpenLocation' data-latitude='{{location.latitude}}' data-longitude='{{location.longitude}}' data-name='{{location.name}}' data-address='{{location.address}}'>
+          <image class='location-icon' src='/static/images/icon/home.png'></image>
+          <view class='location-item-text'>{{location.address}}</view>
+        </view>
+        <view class='location-item-row flex-row' wx:if='{{location.contact}}' bindtap='handlerMakePhoneCall' data-phone='{{location.contact}}'>
+          <image class='location-icon' src='/static/images/icon/home.png'></image>
+          <view class='location-item-text'> {{location.contact}}</view>
+         </view>
+        <view class='location-item-row flex-row' wx:if='{{location.openhour}}' >
+          <image class='location-icon' src='/static/images/icon/home.png'></image>
+          <view class='location-item-text'> {{location.openhour}}</view>          
+        </view>
+      </view>
+      <view class='no-more' wx:if='{{location_param.reach_bottom}}'>暂无更多数据</view>
+    </view>
 </view>
 

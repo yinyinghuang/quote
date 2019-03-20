@@ -137,3 +137,11 @@ page {
   margin-bottom: 30rpx;
 }
 
+.no-more{
+  background: #fff;
+  /* margin-top:20rpx; */
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+

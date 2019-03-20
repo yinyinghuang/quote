@@ -9,7 +9,7 @@
       <view class='product-albums'>
         <swiper class='product-albums-swiper' autoplay interval='2000' circular>
           <swiper-item class='flex-column product-album-item' wx:for='{{albums}}' wx:key='{{index}}'>
-            <image src="{{item.middle}}" class="slide-image" width="345" binderror='hanlderImageError' data-index='albums.{{index}}.middle'/>
+            <image src="{{item.middle}}" class="slide-image" width="345" binderror='handlerImageError' data-index='albums.{{index}}.middle'/>
           </swiper-item>
         </swiper>
       </view>

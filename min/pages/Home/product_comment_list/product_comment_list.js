@@ -53,7 +53,7 @@ Page({
     _this.getCommentList()
   },
   //产品图片不存在
-  hanlderImageError: function (e) {
+  handlerImageError: function (e) {
     this.setData({
       'thumb.middle': '/static/images/icon-red/nopic.png'
     })

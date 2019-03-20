@@ -198,24 +198,4 @@ class MerchantsController extends AppController
             ->toArray();
         $this->ret(0, $quotes, '加载成功');
     }
-    private function _getProductCover($product_id, $product_album)
-    {
-
-        $cover = '';
-        if ($product_album) {
-            $albumDir = $this->_getAlbumDir($product_id);
-            $albums   = json_decode($product_album, true);
-            if (count($albums)) {
-                $album = $albums[0];
-                $cover = 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_2.' . $album[1];
-            }
-        }
-        return $cover;
-
-    }
-    //获取产品图片文件夹
-    private function _getAlbumDir($product_id)
-    {
-        return intval($product_id / 1000) . '000' . '/';
-    }
 }

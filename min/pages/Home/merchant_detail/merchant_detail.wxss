@@ -47,13 +47,15 @@
 .merchant-detail-action{
   width: 110rpx;
 }
-.merchant-detail-item{
+.merchant-detail-item,
+.location-item{
   justify-content: flex-start;
   align-items:flex-start;
   font-size: 1.2em;
   margin-top: 10rpx;
 }
-.merchant-detail-icon{
+.merchant-detail-icon,
+.location-icon{
   display: inline-block;
   width: 30rpx;
   height: 30rpx;
@@ -62,4 +64,37 @@
 }
 .merchant-detail-text{
   width: 490rpx;
+}
+.quote-location-header{
+  justify-content: flex-start;
+}
+.quote-location-header .title{
+  display: inline-block;
+  padding-right: 40rpx;
+  border-right: 1px solid #d2d2d2;
+  color: #a2a2a2
+}
+.quote-location-header .title.active{
+  color: #333;
+}
+.quote-location-header .title:last-child{
+  border-right: none;
+  margin-left: 40rpx;
+}
+.no-more{
+  background: #fff;
+  padding: 30rpx;
+  text-align: center;
+}
+.location-item{
+  padding: 30rpx 20rpx;
+  background: #fff;
+  margin-bottom: 10rpx;
+}
+.location-item-row{
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.location-item-text{
+  width: 590rpx;
 }

@@ -93,6 +93,10 @@ Page({
         res.data.data.map((item) => {
           item.album = item.cover ? glbd.hosts + item.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
           delete (item.albums)
+          if (item.price_hong_max) item.price_hong_max = comm.formatPrice(item.price_hong_max)
+          if (item.price_hong_min) item.price_hong_min = comm.formatPrice(item.price_hong_min)
+          if (item.price_water_max) item.price_water_max = comm.formatPrice(item.price_water_max)
+          if (item.price_water_min) item.price_water_min = comm.formatPrice(item.price_water_min)
         })
         const page = _this.data.options.page
         _this.setData({
@@ -141,7 +145,7 @@ Page({
     wx.navigateTo({ url: '/pages/Home/product_detail/product_detail?id=' + id })
   },
   //产品图片不存在
-  hanlderImageError: function (e) {
+  handlerImageError: function (e) {
     this.data.products[e.currentTarget.dataset.id].album = '/static/images/icon-red/nopic.png';
     this.setData({
       products: this.data.products
