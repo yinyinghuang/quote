@@ -177,9 +177,9 @@ class MerchantsController extends AppController
 
         $params = $this->request->getData();
         $fields = [
-            'product_id'   => 'Products.id',
-            'product_name' => 'Products.name',
-            'product_album' => 'Products.album',
+            'id'   => 'Products.id',
+            'name' => 'Products.name',
+            'album' => 'Products.album',
             'price_hong'   => 'Quotes.price_hong',
             'price_water'  => 'Quotes.price_water',
         ];
@@ -192,7 +192,7 @@ class MerchantsController extends AppController
         $quotes = $this->loadModel('Quotes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
-                $row->cover = $this->_getProductCover($row->prodcut_id, $row->product_album);
+                $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
             })
             ->toArray();
