@@ -51,7 +51,7 @@
   justify-content: flex-start;
   align-items:flex-start;
   font-size: 1.2em;
-  margin-top: 16rpx;
+  margin-top: 10rpx;
 }
 .merchant-detail-icon{
   display: inline-block;

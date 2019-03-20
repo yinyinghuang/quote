@@ -147,7 +147,11 @@ class ProductsController extends AppController
             }
         }
         return $albums;
-
+    }
+    //获取产品图片文件夹
+    private function _getAlbumDir($product_id)
+    {
+        return intval($product_id / 1000) . '000' . '/';
     }
     public function quoteLists($product_id)
     {
@@ -282,11 +286,6 @@ class ProductsController extends AppController
         // //更新产品数据统计
         $this->setProductMetaData($product_id,['share_count' => 1]);
         $this->ret(0, 1, '提交成功');
-    }
-    //获取产品图片文件夹
-    private function _getAlbumDir($product_id)
-    {
-        return intval($product_id / 1000) . '000' . '/';
     }
     //获取产品图片文件夹
     private function _getLogoDir($merchant_id)

@@ -179,6 +179,7 @@ class MerchantsController extends AppController
         $fields = [
             'product_id'   => 'Products.id',
             'product_name' => 'Products.name',
+            'product_album' => 'Products.album',
             'price_hong'   => 'Quotes.price_hong',
             'price_water'  => 'Quotes.price_water',
         ];
@@ -188,21 +189,33 @@ class MerchantsController extends AppController
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
         
-        $merchants = $this->loadModel('Quotes')
+        $quotes = $this->loadModel('Quotes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
-                $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
-                $location   = $this->loadModel('MerchantLocations')->find('all', [
-                    'conditions' => $conditions,
-                ])->first();
-                if ($location) {
-                    $row->address                            = $location->address;
-                    $location->latitude && $row->latitude    = $location->latitude;
-                    $location->longtitude && $row->longitude = $location->longtitude;
-                }
+                $row->cover = $this->_getProductCover($row->prodcut_id, $row->product_album);
                 return $row;
             })
             ->toArray();
-        $this->ret(0, $merchants, '加载成功');
+        $this->ret(0, $quotes, '加载成功');
+    }
+    private function _getProductCover($product_id, $product_album)
+    {
+
+        $cover = '';
+        if ($product_album) {
+            $albumDir = $this->_getAlbumDir($product_id);
+            $albums   = json_decode($product_album, true);
+            if (count($albums)) {
+                $album = $albums[0];
+                $cover = 'album/product/' . $albumDir . $product_id . '_' . $album[0] . '_2.' . $album[1];
+            }
+        }
+        return $cover;
+
+    }
+    //获取产品图片文件夹
+    private function _getAlbumDir($product_id)
+    {
+        return intval($product_id / 1000) . '000' . '/';
     }
 }

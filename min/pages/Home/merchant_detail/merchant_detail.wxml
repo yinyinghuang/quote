@@ -52,7 +52,7 @@
 </view>
 <view class='section section-quote-list' wx:if='{{quotes.length}}'>
     <view class='title'>在售产品<text class='split'>|</text>{{quotes.length}}</view> 
-    <view wx:for="{{quotes}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
+    <view wx:for="{{quotes}}" wx:key="id" data-id='{{item.product_id}}' data-name='{{item.product_name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
       <view class='product-icon'>
         <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-id='{{index}}'></image>
       </view>
