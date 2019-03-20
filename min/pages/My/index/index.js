@@ -96,7 +96,7 @@ Page({
     const { page, reach_bottom } = this.data.params.collections
     if (reach_bottom) return false
     comm.request({
-      url: glbd.host + 'fans/products/' + glbd.pkey,
+      url: glbd.host + 'products/lists/',
       method: glbd.method,
       data: {
         page
