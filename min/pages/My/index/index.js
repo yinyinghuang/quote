@@ -83,8 +83,38 @@ Page({
   },
   //获取最近浏览记录
   _getRecentView:function(){
-    const recents = wx.getStorageSync('recent')
-    this.setData({recents})
+    const localStorage = wx.getStorageSync('recent')
+    if (localStorage && localStorage.length>0){
+      let product_ids = [];
+      localStorage.forEach((item) => {
+        product_ids.push(item.id)
+      })
+      if(product_ids.length>0){
+        comm.request({
+          url: glbd.host + 'products/lists/',
+          method: glbd.method,
+          data: { product_ids },
+          success: function (res) {
+            let data = res.data.data
+            data.forEach((product) => {
+              product.album = product.cover ? glbd.hosts + product.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
+              delete (product.albums)
+              if (product.price_hong_max) product.price_hong_max = comm.formatPrice(product.price_hong_max)
+              if (product.price_hong_min) product.price_hong_min = comm.formatPrice(product.price_hong_min)
+              if (product.price_water_max) product.price_water_max = comm.formatPrice(product.price_water_max)
+              if (product.price_water_min) product.price_water_min = comm.formatPrice(product.price_water_min)
+            })
+            _this.setData({
+              recents: page == 1 ? data : _this.data.recents.concat(data),
+              'params.recents.page': page + 1,
+              'params.recents.reach_bottom': !data.length,
+            })
+          }
+        })
+      }
+      this.setData({ recents })
+    }
+    
   },
   //获取收藏店铺
   getMerchants: function () {
