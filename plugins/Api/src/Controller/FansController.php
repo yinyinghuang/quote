@@ -78,17 +78,15 @@ class FansController extends AppController
         $order   = ['Merchants.sort desc', 'Merchants.id desc'];
         $limit   = 20;
         $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        if(isset($params['pkey'])){
-            $merchant_ids = $this->loadModel('MerchantLikes')->find('all',[
+        $merchant_ids = $this->loadModel('MerchantLikes')->find('all',[
                 'conditions' => ['fan_id' => $fan_id],
-            ])->extract('merchant_id')->toArray();
-            if(empty($merchant_ids)) {
-                $conditions=['1!=1'];
-            }else{
-                $conditions['id in']=$merchant_ids;
-            }
+        ])->extract('merchant_id')->toArray();
+        if(empty($merchant_ids)) {
+            $conditions=['1!=1'];
+        }else{
+            $conditions['Merchants.id in']=$merchant_ids;
         }
-        $merchants = $this->Merchants
+        $merchants = $this->loadModel('Merchants')
             ->find('all',compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
                 $row->logos = $this->_getMerchantLogoUrl($row);
@@ -127,7 +125,7 @@ class FansController extends AppController
         }else{
             $conditions['Products.id in']=$product_ids;
         }
-        $products = $this->Products
+        $products = $this->loadModel('Products')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
                 $row->cover = $this->_getProductCover($row->id, $row->album);

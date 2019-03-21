@@ -71,7 +71,7 @@ Page({
     const {page,reach_bottom} = this.data.params.merchants
     if (reach_bottom) return false
     comm.request({
-      url: glbd.host + 'merchants/lists/',
+      url: glbd.host + 'fans/merchant-lists/' + glbd.pkey,
       method: glbd.method,
       data: comm.requestData(glbd,{page}),
       success: function (res) {
@@ -97,7 +97,7 @@ Page({
     const { page, reach_bottom } = this.data.params.collections
     if (reach_bottom) return false
     comm.request({
-      url: glbd.host + 'products/lists/',
+      url: glbd.host + 'fans/product-lists/' + glbd.pkey,
       method: glbd.method,
       data: comm.requestData(glbd, { page }),
       success: function (res) {
