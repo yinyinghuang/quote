@@ -39,6 +39,9 @@ Page({
   },
   initPage:function(){
     this.getList('recents')
+    this.getList('merchants')
+    this.getList('collections')
+    this.getList('comments')
   },
   //获取各种列表
   getList:function(active){
@@ -70,7 +73,7 @@ Page({
     comm.request({
       url: glbd.host + 'merchants/lists/',
       method: glbd.method,
-      data: { page},
+      data: comm.requestData(glbd,{page}),
       success: function (res) {
         let data = res.data.data
         data.forEach((merchant) => {
@@ -96,9 +99,7 @@ Page({
     comm.request({
       url: glbd.host + 'products/lists/',
       method: glbd.method,
-      data: {
-        page
-      },
+      data: comm.requestData(glbd, { page }),
       success: function (res) {
         let data = res.data.data
         data.forEach((product) => {

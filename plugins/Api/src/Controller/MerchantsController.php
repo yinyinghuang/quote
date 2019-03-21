@@ -49,7 +49,7 @@ class MerchantsController extends AppController
             ->find('all',compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
                 $row->logos = $this->_getMerchantLogoUrl($row);
-                $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                $conditions = ['merchant_id' => $row->id, 'address is not null'];
                 $location   = $this->loadModel('MerchantLocations')->find('all', [
                     'conditions' => $conditions,
                 ])->first();
