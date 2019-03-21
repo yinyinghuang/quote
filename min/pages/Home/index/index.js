@@ -11,7 +11,7 @@ Page({
     category:{},
     recent:{},
     last:{},
-    keyword:null
+    keyword:''
   },
 
   /**
