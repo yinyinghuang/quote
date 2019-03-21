@@ -65,6 +65,10 @@ class MerchantsController extends AppController
         if (empty($merchant)) {
             $this->ret(1, null, '商户不存在或已被删除');
         }
+        $fan_id  = $this->request->getData('pkey');
+        $merchant->liked = $this->loadModel('MerchantLikes')->find('all', [
+            'conditions' => ['merchant_id' => $merchant->id,'fan_id' => $fan_id],
+        ])->count();
         $merchant->logos = $this->_getMerchantLogoUrl($merchant);
         $this->ret(0, $merchant, '产品加载成功');
     }
