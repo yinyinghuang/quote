@@ -64,4 +64,28 @@ class FansController extends AppController
         return $response;
         die;
     }
+
+    public function commentLists($fan_id)
+    {
+        if (empty($fan_id)) {
+            $this->ret(1, null, 'fan_id缺失');
+        }
+        $params     = $this->request->getData();
+        $fields     = ['Products.id', 'Products.name', 'Products.album','created' => 'Comments.created', 'rating' => 'Comments.rating', 'content' => 'Comments.content','is_checked' => 'Comments.is_checked'];
+        $conditions = ['fan_id' => $fan_id,];
+        $contain    = ['Products'];
+        $order      = ['Comments.created desc', 'Comments.sort desc', 'Comments.id desc'];
+        $limit      = 20;
+        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+
+        $comments = $this->loadModel('Comments')
+            ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+            ->map(function ($row) {
+                $row->cover = $this->_getProductCover($row->id, $row->album);
+                $row->created = (new Time($row->created))->i18nFormat('yyyy-MM-dd');
+                return $row;
+            })
+            ->toArray();
+        $this->ret(0, $comments, '加载成功');
+    }
 }
