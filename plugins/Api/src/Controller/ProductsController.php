@@ -75,7 +75,7 @@ class ProductsController extends AppController
         }
         //关键词存在
         if(isset($params['keyword']) && !empty($params['keyword'])){
-            $conditions['Products.name like'] = '%'.$params['product_ids'].'%';
+            $conditions['Products.name like'] = '%'.$params['keyword'].'%';
         }
         //最近浏览
         if (isset($params['product_ids']) && is_array($params['product_ids']) && count($params['product_ids'])) {
