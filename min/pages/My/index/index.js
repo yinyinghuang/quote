@@ -68,11 +68,9 @@ Page({
     const {page,reach_bottom} = this.data.params.merchants
     if (reach_bottom) return false
     comm.request({
-      url: glbd.host + 'fans/merchants/' + glbd.pkey,
+      url: glbd.host + 'merchants/lists/',
       method: glbd.method,
-      data: {
-        page
-      },
+      data: { page},
       success: function (res) {
         let data = res.data.data
         data.forEach((merchant) => {

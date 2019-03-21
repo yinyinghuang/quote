@@ -164,6 +164,24 @@ Page({
       name,
       address,
     })
+  },//点赞收藏
+  handlerLike: function (e) {
+    const { id } = e.currentTarget.dataset
+    const _this = this
+    const type = _this.data.liked ? 'dislike' : 'like'
+    comm.request({
+      loadingMsg: type == 'like' ? '收藏中...' : '取消收藏中...',
+      url: glbd.host + 'merchants/setLike/' + id,
+      method: glbd.method,
+      data: comm.requestData(glbd, {
+        type
+      }),
+      success: function (res) {
+        if (res.data.data) _this.setData({
+          liked: !_this.data.liked
+        })
+      }
+    })
   },
   //页面上拉触底事件的处理函数
   onReachBottom: function () {

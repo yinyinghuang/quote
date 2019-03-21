@@ -29,77 +29,25 @@ class MerchantsController extends AppController
     public function lists()
     {
         $params  = $this->request->getData();
-        $select  = ['Merchants.id', 'Merchants.name', 'Merchants.album', 'Merchants.price_hong_min', 'Merchants.price_hong_max', 'Merchants.price_water_min', 'Merchants.price_water_max'];
-        $where   = ['Merchants.is_visible' => 1, 'Categories.is_visible' => 1];
-        $contain = ['Categories'];
+        $fields  = ['Merchants.id','Merchants.name','Merchants.logo','Merchants.logo_ext','Merchants.wechat','Merchants.email','Merchants.website','Merchants.intro'],
+        $where   = ['Merchants.is_visible' => 1];
+        
         $order   = ['Merchants.sort desc', 'Merchants.id desc'];
         $limit   = 20;
         $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-
-        if (isset($params['category_id']) && $params['category_id']) {
-            $where['Merchants.category_id'] = $params['category_id'];
-        }
-
-        //最新更新
-        if (isset($params['type'])) {
-            switch ($params['type']) {
-                case 'last':
-                    $order = ['Merchants.modified desc'] + $order;
-                    break;
-            }
-        }
-        //获取品牌
-        if (isset($params['brand']) && !empty($params['brand'])) {
-            $where['Merchants.brand'] = $params['brand'];
-        }
-        //获取价格
-        if (isset($params['price']) && !empty($params['price'])) {
-            $price_range = explode('-', $params['price']);
-            if (count($price_range) === 2) {
-                if (!empty($price_range[0])) {
-                    $where['or'] = [
-                        'Merchants.price_hong_min >='  => $price_range[0],
-                        'Merchants.price_water_min >=' => $price_range[0],
-                    ];
-                }
-                if (!empty($price_range[1])) {
-                    $where['or'] = [
-                        'Merchants.price_hong_max >='  => $price_range[1],
-                        'Merchants.price_water_max >=' => $price_range[1],
-                    ];
-                }
-
-            }
-
-        }
-        //获取筛选条件
-        if (isset($params['filter']) && !empty($params['filter'])) {
-            foreach ($params['filter'] as $filter) {
-                $where[] = 'Merchants.filter LIKE "%' . $filter . ',%"';
-            }
-        }
-        //获取排序
-        if (isset($params['sort'])) {
-            switch ($params['sort']) {
-                case 'hotest':
-
-                    break;
-
-                default:
-                    # code...
-                    break;
-            }
-        }
         $merchants = $this->Merchants
-            ->find()
-            ->select($select)
-            ->where($where)
-            ->contain($contain)
-            ->order($order)
-            ->offset($offset)
-            ->limit($limit)
+            ->find('all',compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
-                $row->cover = $this->_getProductCover($row->id, $row->album);
+                $row->logos = $this->_getMerchantLogoUrl($row);
+                $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                $location   = $this->loadModel('MerchantLocations')->find('all', [
+                    'conditions' => $conditions,
+                ])->first();
+                if ($location) {
+                    $row->address = $location->address;
+                    $location->latitude && $row->latitude = $location->latitude;
+                    $location->longtitude && $row->longitude = $location->longtitude;
+                }
                 return $row;
             })
             ->toArray();
@@ -197,5 +145,25 @@ class MerchantsController extends AppController
             })
             ->toArray();
         $this->ret(0, $quotes, '加载成功');
+    }
+    public function setLike($mercahnt_id)
+    {
+        if (empty($merchant_id)) {
+            $this->ret(1, null, '商户id缺失');
+        }
+        $params     = $this->request->getData();
+        $fan_id     = $params['pkey'];
+        $type       = $params['type'];
+        $conditions = compact('mercahnt_id', 'fan_id');
+        if ($type === 'dislike') {
+            $this->loadModel('MerchantLikes')->deleteAll($conditions);
+        } else {
+            $like = $this->loadModel('MerchantLikes')->find('all')->where($conditions)->first();
+            if (!$like) {
+                $conditions['created'] = date('Y-m-d H:i:s');
+                $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'mercahnt_id', 'created'])->values($conditions)->execute();
+            }
+        }
+        $this->ret(0, 1, '加载成功');
     }
 }

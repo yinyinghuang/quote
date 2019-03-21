@@ -25,7 +25,6 @@ class ProductsController extends AppController
         if (isset($params['category_id']) && $params['category_id']) {
             $conditions['Products.category_id'] = $params['category_id'];
         }
-
         //最新更新
         if (isset($params['type'])) {
             switch ($params['type']) {
