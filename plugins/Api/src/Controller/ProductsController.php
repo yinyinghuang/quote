@@ -73,17 +73,6 @@ class ProductsController extends AppController
                     break;
             }
         }
-        //获取粉丝收藏的产品列表
-        if(isset($params['pkey'])){
-            $product_ids = $this->loadModel('Likes')->find('all',[
-                'conditions' => ['fan_id' => $params['pkey']],
-            ])->extract('product_id')->toArray();
-            if(empty($product_ids)) {
-                $conditions=['1!=1'];
-            }else{
-                $conditions['Products.id in']=$product_ids;
-            }
-        }
         $products = $this->Products
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
