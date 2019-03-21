@@ -1,2 +1,39 @@
 <!--pages/My/index/index.wxml-->
-<text>pages/My/index/index.wxml</text>
+<view class='section setion-header flex-column'>
+  <image class='user-avatar' src='{{userInfo.avatarUrl}}'></image>
+  <text class='user-name'>{{userInfo.nickName}}</text>
+</view>
+<view class='section section-tabs flex-row'>
+  <view class='tab-item' bindtap='handlerToggleAtice' data-active='recents'>最近浏览</view>
+  <view class='tab-item' bindtap='handlerToggleAtice' data-active='merchants'>关注店铺</view>
+  <view class='tab-item' bindtap='handlerToggleAtice' data-active='collections'>收藏</view>
+  <view class='tab-item' bindtap='handlerToggleAtice' data-active='comments'>我的评论</view>
+</view>
+<view class='section section-lists'>
+  <view class='list-item' hidden='{{active!=="recents"}}'>
+    <view wx:for="{{recents}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
+      <view class='product-icon'>
+        <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-id='{{index}}'></image>
+      </view>
+      <view class='product-info'>
+        <view class='product-item-text'>{{item.name}}</view>
+        <view class='product-item-price' wx:if='{{ item.price_hong_max===0 && item.price_hong_min===0 && item.price_water_max===0 && item.price_water_min===0}}'>暂无报价</view>
+        <view class='product-item-price' wx:if='{{item.price_hong_max!==0 || item.price_hong_min!==0}}'>
+          HK${{item.price_hong_min?item.price_hong_min:''}}
+          <block wx:if='{{item.price_hong_max && item.price_hong_min}}'>-</block>
+          {{item.price_hong_max?item.price_hong_max:''}}
+          <text class='product-price-label'>行</text>
+        </view>
+        <view class='product-item-price' wx:if='{{item.price_water_max!==0 || item.price_water_min!==0}}'>
+          HK${{item.price_water_min?item.price_water_min:''}}
+          <block wx:if='{{item.price_water_max && item.price_water_min}}'>-</block>
+          {{item.price_water_max?item.price_water_max:''}}
+          <text class='product-price-label'>水</text>
+        </view>
+      </view>   
+    </view>
+  </view>
+  <view class='list-item' hidden='{{active!=="merchants"}}'></view>
+  <view class='list-item' hidden='{{active!=="collections"}}'></view>
+  <view class='list-item' hidden='{{active!=="comments"}}'></view>
+</view>

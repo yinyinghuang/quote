@@ -30,7 +30,8 @@ Page({
         reach_bottom: false
       },
     },
-    active:'recents'
+    active:'recents',
+    userInfo:null
   },
 
   //生命周期函数--监听页面加载
@@ -38,7 +39,30 @@ Page({
     app.openSetting(this.initPage)
   },
   initPage:function(){
+    this.getUserInfo()
     this.getList('recents')
+  },
+  //获取用户详情
+  getUserInfo:function(){
+    const _this = this
+    if (wx.getStorageSync('user_info')) {
+      _this.setData({
+        userInfo: wx.getStorageSync('user_info')
+      })
+    }else{
+      wx.getUserInfo({
+        success: (res) => {
+          _this.setData({
+            userInfo: res.userInfo
+          })
+        },
+        fail: (res) => {
+          wx.redirectTo({
+            url: '/pages/login/login',
+          })
+        }
+      })
+    }
   },
   //获取各种列表
   getList:function(active){
