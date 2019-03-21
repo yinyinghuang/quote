@@ -29,7 +29,7 @@ class MerchantsController extends AppController
     public function lists()
     {
         $params  = $this->request->getData();
-        $fields  = ['Merchants.id','Merchants.name','Merchants.logo','Merchants.logo_ext','Merchants.wechat','Merchants.email','Merchants.website','Merchants.intro'],
+        $fields  = ['Merchants.id','Merchants.name','Merchants.logo','Merchants.logo_ext','Merchants.wechat','Merchants.email','Merchants.website','Merchants.intro'];
         $where   = ['Merchants.is_visible' => 1];
         
         $order   = ['Merchants.sort desc', 'Merchants.id desc'];
