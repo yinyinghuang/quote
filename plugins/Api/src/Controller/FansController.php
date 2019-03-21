@@ -72,7 +72,7 @@ class FansController extends AppController
             $this->ret(1, null, 'fan_id缺失');
         }
         $params     = $this->request->getData();
-        $fields     = ['Products.id', 'Products.name', 'Products.album','created' => 'Comments.created', 'rating' => 'Comments.rating', 'content' => 'Comments.content','is_checked' => 'Comments.is_checked'];
+        $fields     = ['id' => 'Products.id', 'name' => 'Products.name', 'album' => 'Products.album','created' => 'Comments.created', 'rating' => 'Comments.rating', 'content' => 'Comments.content','is_checked' => 'Comments.is_checked'];
         $conditions = ['fan_id' => $fan_id,];
         $contain    = ['Products'];
         $order      = ['Comments.created desc', 'Comments.sort desc', 'Comments.id desc'];
