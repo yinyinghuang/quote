@@ -149,6 +149,12 @@ page {
   text-align: center;
   box-shadow: 3rpx 3rpx 5rpx #000;
 }
+.no-more{
+  display: none;
+}
+.no-more.active{
+  display: block;
+}
 .more{
   width: 92%;
 }

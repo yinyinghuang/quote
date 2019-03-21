@@ -65,11 +65,11 @@ class ProductsController extends AppController
         if (isset($params['sort'])) {
             switch ($params['sort']) {
                 case 'hotest':
-
+                    $order = array_merge(['ProductData.collect_count' => 'Desc'],$order);
                     break;
 
-                default:
-                    # code...
+                case 'newest':
+                    $order = array_merge(['Products.modified' => 'Desc'],$order);
                     break;
             }
         }
@@ -87,6 +87,7 @@ class ProductsController extends AppController
                 $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
             })
+            ->leftJoin('ProductData')
             ->toArray();
         $this->ret(0, $products, '加载成功');
     }    

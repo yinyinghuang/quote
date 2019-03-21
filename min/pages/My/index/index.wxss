@@ -1,4 +1,7 @@
 /* pages/My/index/index.wxss */
+.setion-header{
+  height: 294rpx;
+}
 .user-avatar{
   width: 120rpx;
   height: 120rpx;
@@ -116,4 +119,7 @@
 .merchant-name-action,
 .product-item-text-action{
   justify-content: space-between;
+}
+.section-tabs{
+  padding-bottom: 60rpx;
 }

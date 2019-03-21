@@ -21,7 +21,7 @@
   width: 100%;
   text-align: center;
   padding: 30rpx 0 20rpx;
-  height: 50rpx;
+  min-height: 50rpx;
 }
 .product-albums{
   height: 460rpx;
@@ -92,6 +92,8 @@
 }
 .product-attr-list{
   justify-content: flex-start;
+  text-align: left;
+  align-content: flex-start;
 }
 .product-attr-column{
   width: 50%;
@@ -100,6 +102,9 @@
   align-items: left;
   line-height: 1.7;
   font-size: 1.1em;
+  text-align: left;
+  justify-content: flex-start;
+  align-content: flex-end;
 }
 /* 在售商家 */
 .section-merchant-list{

@@ -9,7 +9,7 @@
       <view class='product-albums'>
         <swiper class='product-albums-swiper' autoplay interval='2000' circular>
           <swiper-item class='flex-column product-album-item' wx:for='{{albums}}' wx:key='{{index}}'>
-            <image src="{{item.middle}}" class="slide-image" width="345" binderror='handlerImageError' data-index='albums.{{index}}.middle'/>
+            <image src="{{item.full}}" class="slide-image" width="345" binderror='handlerImageError' data-index='albums.{{index}}.full'/>
           </swiper-item>
         </swiper>
       </view>
@@ -48,17 +48,17 @@
       </view>
     </view>
     <view class='product-detail-rate-comment'>
-      <view class='product-rate flex-row'>
+      <view class='product-rate flex-row'>        
+        <view class='flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
+          <image src='/static/images/icon/home.png' class='write-icon'></image>
+          <view class='product-rate-write'>发表意见</view>
+        </view>
         <view class=''>
           <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
           <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon'></image>
           <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon'></image>
           <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon'></image>
           <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
-        </view>
-        <view class='flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
-          <image src='/static/images/icon/home.png' class='write-icon'></image>
-          <view class='product-rate-write'>发表意见</view>
         </view>
       </view>
       <view class='product-comment flex-row' bindtap='handlerNavigatorToCommentList' data-id='{{id}}' data-name='{{name}}' data-thumb='{{albums[0]}}' data-price_hong_max='{{price_hong_max}}' data-price_hong_min='{{price_hong_min}}' data-price_water_max='{{price_water_max}}' data-price_water_min='{{price_water_min}}' data-comment_count='{{meta_data?meta_data.comment_count:0}}' data-commented='{{commented}}'>
@@ -77,10 +77,10 @@
       </view>
     </view>
   </view>
-  <view class='section section-merchant-list' wx:if='{{merchants.length}}'>
+  <view class='section section-merchant-list'>
     <view class='product-title'>在售商家<text class='split'>|</text>{{meta_data.quote_count}}</view>    
-    <view class='merchant-tabs flex-row {{style.show_merchant_filter?"active":""}}'>
-      <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy'>附近</view>
+    <view class='merchant-tabs flex-row'>
+      <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy' data-id='{{id}}'>附近</view>
       <view class='merchant-tab-item {{style.show_merchant_filter||style.merchant_filtered?"active":""}}' bindtap='handlerShowMerchantFilter'>筛选</view>
     </view>
     <view class='merchant-filter {{style.show_merchant_filter?"active":""}}'>
@@ -127,7 +127,7 @@
         </view>
       </view>
     </view>
-    <view class='merchant-no-more' wx:if='{{merchant_reach_bottom}}'>暂无更多数据</view>
+    <view class='no-more {{merchant_reach_bottom?"active":""}}'>暂无更多数据</view>
   </view>
 
 </view>

@@ -2,7 +2,7 @@
 <view class='container'>
   <view class='section section-search flex-row'>
     <image src='/static/images/icon/home.png' class='search-image'></image>
-    <input class='search-text' bindinput='handlerInput' bindconfirm="handlerSearch" placeholder='{{keyword?keyword:"请输入商品名称"}}'></input>
+    <input class='search-text' bindinput='handlerInput' bindconfirm="handlerSearch" placeholder='{{keyword?keyword:"请输入商品名称"}}' value='{{keyword}}'></input>
     <view class='search-confirm' bindtap='handlerSearch'>搜索</view>
   </view>
   <view class='section section-search-body'>
@@ -10,7 +10,7 @@
       <view class='search-header'>热门关键词</view>
       <view class='search-keywords'>
         <view class='keyword-item' wx:for='{{hots}}' wx:key='{{index}}' wx:for-item='keyword' bindtap='handlerKeywordItem' data-keyword='{{keyword}}'>{{keyword}}</view>
-      </view>
+      </view >
     </view>
     <view class='search-section'>
       <view class='search-header'>搜索历史</view>

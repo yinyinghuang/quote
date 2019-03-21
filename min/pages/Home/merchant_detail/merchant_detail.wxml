@@ -69,7 +69,7 @@
           </view>
         </view>   
       </view>
-      <view class='no-more' wx:if='{{quote_param.reach_bottom}}'>暂无更多数据</view>
+      <view class='no-more {{quote_param.reach_bottom?"active":""}}'>暂无更多数据</view>
     </view>
     <view class='location-list' hidden='{{active!=="location"}}' wx:if='{{locations.length>1}}'>
       <view class='location-item' wx:for="{{locations}}" wx:key="id" wx:for-item='location' data-id='{{location.id}}'>
@@ -86,7 +86,7 @@
           <view class='location-item-text'> {{location.openhour}}</view>          
         </view>
       </view>
-      <view class='no-more' wx:if='{{location_param.reach_bottom}}'>暂无更多数据</view>
+      <view class='no-more {{location_param.reach_bottom?"active":""}}'>暂无更多数据</view>
     </view>
 </view>
 

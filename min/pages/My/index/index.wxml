@@ -98,6 +98,6 @@
         <view class='comment-container'>{{item.content}}</view>
       </view>
     </view>
-    <view class='no-more' hidden='{{!params[active].reach_bottom}}'>暂无更多数据</view>
+    <view class='no-more {{params[active].reach_bottom?"active":""}}'>暂无更多数据</view>
   </view>
 </view>
