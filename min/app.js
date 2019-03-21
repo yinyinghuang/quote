@@ -57,6 +57,7 @@ App({
       success:(res) => {
         _this.globalData.islogin = true
         _this.globalData.userInfo = res.userInfo
+        wx.setStorageSync('user_info', res.userInfo)
         _this.getNoStr(_fn)
       },
       fail:(res) => {

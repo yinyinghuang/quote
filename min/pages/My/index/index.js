@@ -39,9 +39,6 @@ Page({
   },
   initPage:function(){
     this.getList('recents')
-    this.getList('merchants')
-    this.getList('collections')
-    this.getList('comments')
   },
   //获取各种列表
   getList:function(active){
@@ -147,7 +144,7 @@ Page({
   },
   //页面上拉触底事件的处理函数
   onReachBottom: function () {
-
+    this.getList()
   },
   //用户点击右上角分享
   onShareAppMessage: function () {

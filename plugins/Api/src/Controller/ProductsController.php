@@ -261,10 +261,5 @@ class ProductsController extends AppController
         $this->setProductMetaData($product_id,['share_count' => 1]);
         $this->ret(0, 1, '提交成功');
     }
-    //获取产品图片文件夹
-    private function _getLogoDir($merchant_id)
-    {
-        return intval($merchant_id / 100) . '00' . '/';
-    }
 }
  

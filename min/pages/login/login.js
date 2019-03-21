@@ -36,7 +36,7 @@ Page({
     if (res.detail.errMsg === "getUserInfo:fail auth deny"){
       return false
     }else{
-      const fn = _this.data.pb === ('/pages/Home/index/index' || '/pages/My/index/index') ? wx.switchTab:wx.redirectTo
+      const fn = (_this.data.pb === '/pages/Home/index/index' || _this.data.pb ==='/pages/My/index/index') ? wx.switchTab:wx.redirectTo
       fn({
         url: _this.data.pb+_this.data.op,
       })
