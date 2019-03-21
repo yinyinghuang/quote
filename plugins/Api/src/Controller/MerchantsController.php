@@ -29,12 +29,22 @@ class MerchantsController extends AppController
     public function lists()
     {
         $params  = $this->request->getData();
-        $fields  = ['Merchants.id','Merchants.name','Merchants.logo','Merchants.logo_ext','Merchants.wechat','Merchants.email','Merchants.website','Merchants.intro'];
-        $where   = ['Merchants.is_visible' => 1];
+        $fields  = ['Merchants.id','Merchants.name','Merchants.logo','Merchants.logo_ext',];
+        $conditions   = ['Merchants.is_visible' => 1];
         
         $order   = ['Merchants.sort desc', 'Merchants.id desc'];
         $limit   = 20;
         $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        if(isset($params['pkey'])){
+            $merchant_ids = $this->loadModel('MerchantLikes')->find('all',[
+                'conditions' => ['fan_id' => $params['pkey']],
+            ])->extract('merchant_id')->toArray();
+            if(empty($merchant_ids)) {
+                $conditions=['1!=1'];
+            }else{
+                $conditions['id in']=$merchant_ids;
+            }
+        }
         $merchants = $this->Merchants
             ->find('all',compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
