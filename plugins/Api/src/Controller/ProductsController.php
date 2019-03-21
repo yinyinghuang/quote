@@ -73,6 +73,10 @@ class ProductsController extends AppController
                     break;
             }
         }
+        //最近浏览
+        if (isset($params['product_ids']) && is_array($params['product_ids']) && count($params['product_ids'])) {
+            $conditions['Products.id in'] = $params['product_ids'];
+        }
         $products = $this->Products
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
