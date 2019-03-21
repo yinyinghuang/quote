@@ -154,14 +154,14 @@ class MerchantsController extends AppController
         $params     = $this->request->getData();
         $fan_id     = $params['pkey'];
         $type       = $params['type'];
-        $conditions = compact('mercahnt_id', 'fan_id');
+        $conditions = compact('merchant_id', 'fan_id');
         if ($type === 'dislike') {
             $this->loadModel('MerchantLikes')->deleteAll($conditions);
         } else {
             $like = $this->loadModel('MerchantLikes')->find('all')->where($conditions)->first();
             if (!$like) {
                 $conditions['created'] = date('Y-m-d H:i:s');
-                $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'mercahnt_id', 'created'])->values($conditions)->execute();
+                $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'merchant_id', 'created'])->values($conditions)->execute();
             }
         }
         $this->ret(0, 1, '加载成功');
