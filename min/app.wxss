@@ -131,17 +131,25 @@ page {
   height: 45rpx;
   margin-left: 20rpx;
 }
+.rate-icon{
+  width: 30rpx;
+  height: 30rpx;
+  vertical-align: middle
+}
 .title{
   font-size: 1.4em;
   line-height: 1.5em;
   margin-bottom: 30rpx;
 }
-
+.more,
 .no-more{
   background: #fff;
   /* margin-top:20rpx; */
   padding: 30rpx;
   text-align: center;
   box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.more{
+  width: 92%;
 }
 

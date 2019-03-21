@@ -26,7 +26,46 @@ Page({
   },
   initPage:function(){
     const _this = this
+    if(!this.data.name) _this.getProductDetail()
     _this.getCommentList()
+  },
+  //获取产品详情
+  getProductDetail: function () {
+    const _this = this
+    comm.request({
+      loadingMsg: '获取产品详情中...',
+      url: glbd.host + 'products/detail/' + _this.data.id,
+      method: glbd.method,
+      data: comm.requestData(glbd),
+      success: function (res) {
+        let detail = res.data.data
+        if (detail.rating == 0 && detail.meta_data && detail.meta_data.comment_score_total && detail.meta_data.comment_count) {
+          detail.rating = Math.cell(detail.meta_data.comment_score_total / detail.meta_data.comment_count)
+        }
+        detail.albums.forEach((item) => {
+          item.middle = glbd.hosts + item.middle
+          item.full = glbd.hosts + item.full
+          item.thumb = glbd.hosts + item.thumb
+        })
+        detail.thumb = detail.albums[0]
+        if (detail.price_hong_max) detail.price_hong_max = comm.formatPrice(detail.price_hong_max)
+        if (detail.price_hong_min) detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
+        if (detail.price_water_max) detail.price_water_max = comm.formatPrice(detail.price_water_max)
+        if (detail.price_water_min) detail.price_water_min = comm.formatPrice(detail.price_water_min)
+
+        let attribute_group = []
+        if (detail.attributes.length) {
+          const half = Math.ceil(detail.attributes.length / 2)
+          attribute_group.push(detail.attributes.slice(0, half))
+          attribute_group.push(detail.attributes.slice(half))
+        }
+        _this.setData({
+          ...detail,
+          attribute_group
+        })
+        _this._saveTrack()
+      }
+    })
   },
   getCommentList:function(){
     const { product_id, page, comment_reach_bottom} = this.data    

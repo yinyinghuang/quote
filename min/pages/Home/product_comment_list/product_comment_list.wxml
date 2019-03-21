@@ -35,7 +35,7 @@
 </view>
 <view class='section section-comment-list'>
   <view class='comment-list-header flex-row'>
-    <view class='section-title'>用户评价|{{comment_count}}</view>
+    <view class='section-title'>用户评价|{{comment_count?comment_count:meta_data.comment_count}}</view>
     <view class='comment-list-header-add flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
       <image src='/static/images/icon/home.png' class='write-icon'></image>
       <view class='product-rate-write'>发表意见</view>

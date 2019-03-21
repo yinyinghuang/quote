@@ -1,1 +1,119 @@
 /* pages/My/index/index.wxss */
+.user-avatar{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  margin-top: 110rpx;
+}
+.user-name{
+  font-size: 1.2em;
+  margin-top: 20rpx;
+}
+.tabs-container{
+  width: 690rpx;
+  margin: 0 auto 24rpx;
+  padding: 25rpx 0;
+  background: #fff;
+  justify-content: stretch;
+  box-shadow: 3rpx 3rpx 5rpx #000;
+}
+.tab-item{
+  width: 25%;
+  font-size: 1.4em;
+  padding: 10rpx 0;
+  text-align: center;
+  border-right: #d2d2d2
+}
+.tab-item:last-child{
+  border-right: none;
+}
+.tab-item.active{  
+  background: #ff7878;
+  color: #fff;
+}
+.lists-container{
+  /* background: #fff; */
+}
+
+.merchant-detail-header{
+  position: relative;
+  justify-content: flex-start;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 20rpx;
+  background: #fff;
+}
+.merchant-logo{
+  display: inline-block;
+  width: 130rpx;
+  height: 130rpx;
+}
+.merchant-name-address{
+  width: 480rpx;
+  margin-left: 40rpx;
+}
+.merchant-name{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.merchant-address{
+  /* align-items: flex-start; */
+}
+.merchant-address-text{
+  width: 430rpx;
+  font-size: 1.2em;
+}
+.map-icon{  
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  margin-right:20rpx;
+  vertical-align: middle;
+}
+.merchant-detail-body{
+  justify-content: space-between;
+}
+.merchant-details{
+  width: 540rpx;
+}
+.merchant-detail-action{
+  width: 110rpx;
+}
+.merchant-detail-item,
+.location-item{
+  justify-content: flex-start;
+  align-items:flex-start;
+  font-size: 1.2em;
+  margin-top: 10rpx;
+}
+.merchant-detail-icon,
+.location-icon{
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  margin: 8rpx 20rpx;
+  vertical-align: middle;
+}
+.merchant-detail-text{
+  width: 490rpx;
+}
+.comment-item{
+  margin-bottom: 16rpx;
+  background: #fff;
+  padding:30rpx 20rpx ;
+}
+.product-container{
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 10rpx;
+}
+.comment-rating-time{
+  justify-content: space-between;
+}
+.comment-container{
+  font-size: 1.2em
+}
+.merchant-name-action,
+.product-item-text-action{
+  justify-content: space-between;
+}

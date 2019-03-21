@@ -121,6 +121,12 @@ Page({
       last:this.data.last
     })
   },
+  //跳转至产品列表
+  handlerNavigatorToProductList: function (e) {
+    wx.navigateTo({
+      url: '/pages/Home/product_list/product_list',
+    })
+  },
 
   /**
    * 用户点击右上角分享

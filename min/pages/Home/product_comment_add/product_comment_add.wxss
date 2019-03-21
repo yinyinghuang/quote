@@ -18,11 +18,6 @@
   font-size: 1.4em;
   line-height:2
 }
-.rate-icon{
-  width: 30rpx;
-  height: 30rpx;
-  vertical-align: middle
-}
 textarea{
   width: 100%;
   border: 1px solid #333;
