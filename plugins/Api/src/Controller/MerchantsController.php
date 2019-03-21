@@ -146,7 +146,7 @@ class MerchantsController extends AppController
             ->toArray();
         $this->ret(0, $quotes, '加载成功');
     }
-    public function setLike($mercahnt_id)
+    public function setLike($merchant_id)
     {
         if (empty($merchant_id)) {
             $this->ret(1, null, '商户id缺失');
