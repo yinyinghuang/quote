@@ -3,6 +3,7 @@ namespace Api\Controller;
 
 use Api\Controller\AppController;
 use Cake\Http\Client;
+use Cake\I18n\Time;
 
 /**
  * Fans Controller
@@ -86,6 +87,6 @@ class FansController extends AppController
                 return $row;
             })
             ->toArray();
-        // $this->ret(0, $comments, '加载成功');
+        $this->ret(0, $comments, '加载成功');
     }
 }
