@@ -26,43 +26,6 @@ class MerchantsController extends AppController
         $this->ret(0, $areas, '加载成功');
     }
 
-    public function lists()
-    {
-        $params  = $this->request->getData();
-        $fields  = ['Merchants.id','Merchants.name','Merchants.logo','Merchants.logo_ext',];
-        $conditions   = ['Merchants.is_visible' => 1];
-        
-        $order   = ['Merchants.sort desc', 'Merchants.id desc'];
-        $limit   = 20;
-        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        if(isset($params['pkey'])){
-            $merchant_ids = $this->loadModel('MerchantLikes')->find('all',[
-                'conditions' => ['fan_id' => $params['pkey']],
-            ])->extract('merchant_id')->toArray();
-            if(empty($merchant_ids)) {
-                $conditions=['1!=1'];
-            }else{
-                $conditions['id in']=$merchant_ids;
-            }
-        }
-        $merchants = $this->Merchants
-            ->find('all',compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
-            ->map(function ($row) {
-                $row->logos = $this->_getMerchantLogoUrl($row);
-                $conditions = ['merchant_id' => $row->id, 'address is not null'];
-                $location   = $this->loadModel('MerchantLocations')->find('all', [
-                    'conditions' => $conditions,
-                ])->first();
-                if ($location) {
-                    $row->address = $location->address;
-                    $location->latitude && $row->latitude = $location->latitude;
-                    $location->longtitude && $row->longitude = $location->longtitude;
-                }
-                return $row;
-            })
-            ->toArray();
-        $this->ret(0, $merchants, '加载成功');
-    }
     public function detail($id)
     {
         if (empty($id)) {
@@ -109,26 +72,6 @@ class MerchantsController extends AppController
             ->leftJoinWith('Districts')
             ->toArray();
         $this->ret(0, $merchantLocations, '产品加载成功');
-    }
-    private function _getMerchantLogoUrl($merchant)
-    {
-        $logos = [];
-        if (empty($merchant->logo) || empty($merchant->logo_ext)) {
-            return $logos;
-        }
-
-        $logoDir = $this->_getLogoDir($merchant->id);
-        $logos   = [
-            'thumb'  => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_1.' . $merchant->logo_ext,
-            'middle' => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_2.' . $merchant->logo_ext,
-            'full'   => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_0.' . $merchant->logo_ext,
-        ];
-        return $logos;
-    }
-    //获取产品图片文件夹
-    private function _getLogoDir($merchant_id)
-    {
-        return intval($merchant_id / 100) . '00' . '/';
     }
 
     public function quoteLists($merchant_id)

@@ -66,6 +66,77 @@ class FansController extends AppController
         die;
     }
 
+    public function merchantLists($fan_id)
+    {
+        if (empty($fan_id)) {
+            $this->ret(1, null, 'fan_id缺失');
+        }
+        $params  = $this->request->getData();
+        $fields  = ['Merchants.id','Merchants.name','Merchants.logo','Merchants.logo_ext',];
+        $conditions   = ['Merchants.is_visible' => 1];
+        
+        $order   = ['Merchants.sort desc', 'Merchants.id desc'];
+        $limit   = 20;
+        $offset  = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        if(isset($params['pkey'])){
+            $merchant_ids = $this->loadModel('MerchantLikes')->find('all',[
+                'conditions' => ['fan_id' => $fan_id],
+            ])->extract('merchant_id')->toArray();
+            if(empty($merchant_ids)) {
+                $conditions=['1!=1'];
+            }else{
+                $conditions['id in']=$merchant_ids;
+            }
+        }
+        $merchants = $this->Merchants
+            ->find('all',compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+            ->map(function ($row) {
+                $row->logos = $this->_getMerchantLogoUrl($row);
+                $conditions = ['merchant_id' => $row->id, 'address is not null'];
+                $location   = $this->loadModel('MerchantLocations')->find('all', [
+                    'conditions' => $conditions,
+                ])->first();
+                if ($location) {
+                    $row->address = $location->address;
+                    $location->latitude && $row->latitude = $location->latitude;
+                    $location->longtitude && $row->longitude = $location->longtitude;
+                }
+                return $row;
+            })
+            ->toArray();
+        $this->ret(0, $merchants, '加载成功');
+    }
+    public function productLists($fan_id)
+    {
+        if (empty($fan_id)) {
+            $this->ret(1, null, 'fan_id缺失');
+        }
+        $params     = $this->request->getData();        
+        $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max'];
+        $conditions = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
+        $contain    = ['Categories'];
+        $order      = ['Products.sort desc', 'Products.id desc'];
+        $limit      = 20;
+        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        //获取粉丝收藏的产品列表
+        $product_ids = $this->loadModel('Likes')->find('all',[
+            'conditions' => ['fan_id' => $fan_id],
+        ])->extract('product_id')->toArray();
+        if(empty($product_ids)) {
+            $conditions=['1!=1'];
+        }else{
+            $conditions['Products.id in']=$product_ids;
+        }
+        $products = $this->Products
+            ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+            ->map(function ($row) {
+                $row->cover = $this->_getProductCover($row->id, $row->album);
+                return $row;
+            })
+            ->toArray();
+        $this->ret(0, $products, '加载成功');
+    }  
+
     public function commentLists($fan_id)
     {
         if (empty($fan_id)) {

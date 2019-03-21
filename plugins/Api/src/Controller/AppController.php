@@ -61,4 +61,25 @@ class AppController extends BaseController
     {
         return intval($product_id / 1000) . '000' . '/';
     }
+    //获取商户logo
+    private function _getMerchantLogoUrl($merchant)
+    {
+        $logos = [];
+        if (empty($merchant->logo) || empty($merchant->logo_ext)) {
+            return $logos;
+        }
+
+        $logoDir = $this->_getLogoDir($merchant->id);
+        $logos   = [
+            'thumb'  => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_1.' . $merchant->logo_ext,
+            'middle' => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_2.' . $merchant->logo_ext,
+            'full'   => 'album/merchant/' . $logoDir . $merchant->id . '_' . $merchant->logo . '_0.' . $merchant->logo_ext,
+        ];
+        return $logos;
+    }
+    //获取商户logo文件夹
+    private function _getLogoDir($merchant_id)
+    {
+        return intval($merchant_id / 100) . '00' . '/';
+    }
 }
