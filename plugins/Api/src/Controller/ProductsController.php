@@ -81,7 +81,7 @@ class ProductsController extends AppController
             if(empty($product_ids)) {
                 $conditions=['1!=1'];
             }else{
-                $conditions['id in']=$product_ids;
+                $conditions['Products.id in']=$product_ids;
             }
         }
         $products = $this->Products
