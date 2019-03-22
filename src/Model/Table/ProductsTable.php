@@ -58,6 +58,7 @@ class ProductsTable extends Table
             'foreignKey' => 'category_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasOne('ProductData');
         $this->hasMany('Comments', [
             'foreignKey' => 'product_id'
         ]);

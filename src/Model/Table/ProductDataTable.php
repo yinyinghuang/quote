@@ -34,6 +34,7 @@ class ProductDataTable extends Table
         $this->setTable('product_data');
         $this->setDisplayField('product_id');
         $this->setPrimaryKey('product_id');
+        
     }
 
     /**

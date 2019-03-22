@@ -107,7 +107,28 @@ class QuotesController extends AppController
         $isNew = $quote->isNew();
         $data  = $this->Quotes->save($quote) ? 0 : 2;
         //如报价为新增且保存成功，更新产品数据统计
-        if($isNew && $data==0) $this->setProductMetaData($quote->product_id, ['quote_count' => 1]);
+        if ($isNew && $data == 0) {
+            $this->setProductMetaData($quote->product_id, ['quote_count' => 1]);
+        }
+
+        //如报价有变动，更新产品价格
+        if ($data == 0) {
+            $product = $this->Quotes->Products->get($quote->product_id);
+            $save    = false;
+            if ($product->price_hong_max < $quote->price_hong) {
+                $save                    = true;
+                $product->price_hong_max = $quote->price_hong;}
+            if ($product->price_hong_min > $quote->price_hong) {
+                $save                    = true;
+                $product->price_hong_min = $quote->price_hong;}
+            if ($product->price_water_max < $quote->price_water) {
+                $save                     = true;
+                $product->price_water_max = $quote->price_water;}
+            if ($product->price_water_min > $quote->price_water) {
+                $save                     = true;
+                $product->price_water_min = $quote->price_water;}
+            $save && $this->Quotes->Products->save($product);
+        }
         $this->resApi($code, $data, $msg_arr[$data]);
 
     }
@@ -116,9 +137,9 @@ class QuotesController extends AppController
     public function apiDelete()
     {
         $this->allowMethod(['POST']);
-        $ids  = $this->request->getData('ids');
+        $ids = $this->request->getData('ids');
         if (count($ids)) {
-            $code=0;
+            $code = 0;
             //更新产品数据
             $quotes = $this->Quotes->find('all', [
                 'conditions' => ['id in ' => $ids],
@@ -132,8 +153,8 @@ class QuotesController extends AppController
                 }
             }
             $this->Quotes->deleteAll(['id in' => $ids]);
-        }else{
-            $code=2;
+        } else {
+            $code = 2;
         }
 
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中'];
@@ -158,7 +179,7 @@ class QuotesController extends AppController
                 'is_visible'    => 'Quotes.is_visible',
             ];
 
-            $contain                                                                = ['Merchants','Products'];
+            $contain                                                                = ['Merchants', 'Products'];
             $this->request->getQuery('product_id') && $where['Quotes.product_id']   = $this->request->getQuery('product_id');
             $this->request->getQuery('merchant_id') && $where['Quotes.merchant_id'] = $this->request->getQuery('merchant_id');
             $paramFn                                                                = $this->request->is('get') ? 'getQuery' : 'getData';

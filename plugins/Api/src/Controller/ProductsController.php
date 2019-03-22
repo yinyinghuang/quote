@@ -81,13 +81,13 @@ class ProductsController extends AppController
         if (isset($params['product_ids']) && is_array($params['product_ids']) && count($params['product_ids'])) {
             $conditions['Products.id in'] = $params['product_ids'];
         }
-        $products = $this->Products
+        $products = $this->loadModel('Products')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+            ->leftJoinWith('ProductData')
             ->map(function ($row) {
                 $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
-            })
-            ->leftJoin('ProductData')
+            })            
             ->toArray();
         $this->ret(0, $products, '加载成功');
     }    
