@@ -8,7 +8,7 @@
     </text>
     <view>
     </view>
-    <view class='option-list'>
+    <view class='option-list box-shadow'>
       <view  class='option-item flex-row'>
           <view class='option-item-name'>最小值</view>
           <view class='option-item-value'>
@@ -23,7 +23,7 @@
       </view>
     </view>
     <view class='option-buttons'>
-      <view class='option-confirm' bindtap='handlerNavigatorToCateFilter'>确认</view>
+      <view class='option-confirm box-shadow' bindtap='handlerNavigatorToCateFilter'>确认</view>
     </view>
     
   </view>

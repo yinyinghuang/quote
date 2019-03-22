@@ -1,7 +1,7 @@
 <!--pages/Home/product_list/product_list.wxml-->
 <view class='container'>
   <view class='section section-search flex-row' bindtap='handlerNavigatorToSearch' data-keyword='{{options.keyword?options.keyword:""}}'>
-    <image src='/static/images/icon/home.png' class='search-image'></image>
+    <image src='/static/images/icon/icon-search.png' class='search-image'></image>
     <view class='search-text'>{{options.keyword?options.keyword:'请输入商品名称'}}</view>
   </view>
   <view class='section section-official-account'>

@@ -7,16 +7,18 @@
 }
 .category-list-header{
   margin-bottom: 30rpx;
+  justify-content: flex-start;
 }
 .category-zone-icon{
-  width: 1.4em;
-  height: 1.4em;
+  width: 44rpx;
+  height: 44rpx;
+  vertical-align: middle;
 }
 .category-zone-name{
   font-size: 1.4em;
   font-weight: bold;
   line-height: 1.4em;
-  margin: 30rpx;
+  margin-left: 10rpx;
 }
 .category-list-bread{
   font-size: 1.2em;

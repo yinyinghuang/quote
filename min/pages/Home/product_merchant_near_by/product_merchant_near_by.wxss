@@ -12,13 +12,6 @@
   position: relative;
   margin-bottom: 10px;
 }
-.map-icon{
-  display: inline-block;
-  width: 30rpx;
-  height: 30rpx;
-  margin-right:20rpx;
-  vertical-align: middle;
-}
 .merchant-detail{
   margin-left: 70rpx;
   font-size: 1em;

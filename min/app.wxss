@@ -60,7 +60,7 @@ page {
 .section-search{
   border: 1px #fff solid;
   background: #fff;
-  box-shadow:  3rpx 3rpx 5rpx #000;
+  box-shadow:  0 4rpx 16rpx 0 rgba(0,0,0,0.1);
   height: 80rpx;
   line-height: 80rpx;
   padding: 20rpx 0;
@@ -94,6 +94,7 @@ page {
   margin-bottom: 15rpx;
   justify-content: flex-start;
   background: #fff;
+  box-shadow:  0 4rpx 16rpx 0 rgba(0,0,0,0.1);
 }
 .product-icon image{
   width: 136rpx;
@@ -120,21 +121,32 @@ page {
   line-height: 1.2em;
   margin-bottom: 14rpx;
 }
-.product-info .product-item-price .product-price-label{
+.product-price-label{
   margin-left: 20rpx;
   color: #333;
   border: 1px solid #333;
+  padding:  0 6rpx;
 }
 
 .action-icon{
-  width: 45rpx;
-  height: 45rpx;
+  width: 44rpx;
+  height: 44rpx;
   margin-left: 20rpx;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 16rpx 0 rgba(0,0,0,0.1);
 }
 .rate-icon{
   width: 30rpx;
   height: 30rpx;
-  vertical-align: middle
+  vertical-align: middle;
+  margin-right: 6rpx;
+}
+.map-icon{  
+  display: inline-block;
+  width: 23rpx;
+  height: 32rpx;
+  margin-right:20rpx;
+  vertical-align: middle;
 }
 .title{
   font-size: 1.4em;
@@ -147,7 +159,7 @@ page {
   /* margin-top:20rpx; */
   padding: 30rpx;
   text-align: center;
-  box-shadow: 3rpx 3rpx 5rpx #000;
+  box-shadow:  0 4rpx 16rpx 0 rgba(0,0,0,0.1);
 }
 .no-more{
   display: none;
@@ -157,5 +169,8 @@ page {
 }
 .more{
   width: 92%;
+}
+.box-shadow{
+  box-shadow: 0 4rpx 16rpx 0 rgba(0,0,0,0.1);
 }
 

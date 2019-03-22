@@ -4,12 +4,12 @@
     <official-account></official-account>
   </view>
   <view class='section section-search flex-row' bindtap='handlerNavigatorToSearch' data-keyword='{{keyword}}'>
-    <image src='/static/images/icon/home.png' class='search-image'></image>
+    <image src='/static/images/icon/icon-search.png' class='search-image'></image>
     <view class='search-text'>{{keyword?keyword:'请输入商品名称'}}</view>
   </view>
   <view class='section section-category flex-row'>
     <view  wx:for="{{category}}" wx:key="id" data-id="{{item.id}}" bindtap='handlerNavigatorToCateList'  class='category-item flex-colunm'>
-      <image class='category-item-icon' src='/static/images/icon/home.png'></image>
+      <image class='category-item-icon icon-{{item.id}}' src='/static/images/icon/zone-{{item.id}}.png'></image>
       <view class='category-item-text'>{{item.name}}</view>
     </view>
   </view>

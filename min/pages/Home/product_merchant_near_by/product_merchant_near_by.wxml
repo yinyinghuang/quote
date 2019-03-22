@@ -13,7 +13,7 @@
 <scroll-view class='merchant-list' id='merchant_list' scroll-y scroll-top='{{ scrollTop }}'>      
   <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerLinkMap' data-merchant_id='{{merchant.merchant_id}}' data-id='{{index}}' wx:if='{{merchant.latitude&&merchant.longitude}}'>  
     <view class='merchant-name'>
-      <image class='map-icon' src='/static/images/icon/home.png'></image>
+      <image class='map-icon' src='/static/images/icon/icon-map.png'></image>
       <text class='merchant-name-text'>{{merchant.merchant_name}}</text>
     </view>
     <view class='merchant-detail'>

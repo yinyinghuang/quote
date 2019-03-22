@@ -4,7 +4,7 @@
     <official-account></official-account>
   </view>  
   <view class='section section-product-detail'>
-    <view class='product-detail-primary'>
+    <view class='product-detail-primary box-shadow'>
       <view class='product-name'>{{name}}</view>
       <view class='product-albums'>
         <swiper class='product-albums-swiper' autoplay interval='2000' circular>
@@ -39,10 +39,10 @@
         </view>
         <view class='product-action flex-row'>
           <button bindtap='handlerLike' data-id='{{id}}'>
-            <image src='/static/images/icon{{liked?"-red":""}}/home.png' class='action-icon'></image>
+            <image src='/static/images/icon{{liked?"-red":""}}/icon-fav.png' class='action-icon box-shadow'></image>
           </button>          
           <button open-type='share'>
-            <image src='/static/images/icon/home.png' class='action-icon'></image>
+            <image src='/static/images/icon/icon-share.png' class='action-icon box-shadow'></image>
           </button>          
         </view>
       </view>
@@ -50,19 +50,19 @@
     <view class='product-detail-rate-comment'>
       <view class='product-rate flex-row'>        
         <view class='flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
-          <image src='/static/images/icon/home.png' class='write-icon'></image>
+          <image src='/static/images/icon-red/icon-write.png' class='write-icon'></image>
           <view class='product-rate-write'>发表意见</view>
         </view>
         <view class=''>
-          <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=1?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=2?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=3?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=4?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{rating>=5?"-red":""}}/icon-star.png' class='rate-icon'></image>
         </view>
       </view>
       <view class='product-comment flex-row' bindtap='handlerNavigatorToCommentList' data-id='{{id}}' data-name='{{name}}' data-thumb='{{albums[0]}}' data-price_hong_max='{{price_hong_max}}' data-price_hong_min='{{price_hong_min}}' data-price_water_max='{{price_water_max}}' data-price_water_min='{{price_water_min}}' data-comment_count='{{meta_data?meta_data.comment_count:0}}' data-commented='{{commented}}'>
-        <image src='/static/images/icon/home.png' class='write-icon'></image>
+        <image src='/static/images/icon-red/icon-arrow-left.png' class='left-icon'></image>
         <view class='product-rate-write'>用户评价<text class='split'>|</text>{{meta_data?meta_data.comment_count:0}}</view>
       </view>
     </view>
@@ -79,11 +79,11 @@
   </view>
   <view class='section section-merchant-list'>
     <view class='product-title'>在售商家<text class='split'>|</text>{{meta_data.quote_count}}</view>    
-    <view class='merchant-tabs flex-row'>
+    <view class='merchant-tabs box-shadow flex-row'>
       <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy' data-id='{{id}}'>附近</view>
       <view class='merchant-tab-item {{style.show_merchant_filter||style.merchant_filtered?"active":""}}' bindtap='handlerShowMerchantFilter'>筛选</view>
     </view>
-    <view class='merchant-filter {{style.show_merchant_filter?"active":""}}'>
+    <view class='merchant-filter box-shadow {{style.show_merchant_filter?"active":""}}'>
       <view class='merchant-filter-option'>
         <view class='merchant-filter-selected flex-row' bindtap='handlerShowMerchantFilterOption' data-type='price_type'>
           <view class='merchant-filter-name {{merchant_filter_name.price_type!=default_merchant_filter_name.price_type?"active":""}}'>{{merchant_filter_name.price_type}}</view>
@@ -105,14 +105,14 @@
         </view>
       </view>
       <view class='merchant-filter-buttons'>
-        <view class='merchant-filter-confirm' bindtap='handlerMerchantFilterConfirm'>确认</view>
-        <view class='merchant-filter-reset' bindtap='handlerMerchantFilterReset'>重置</view>
+        <view class='merchant-filter-confirm box-shadow' bindtap='handlerMerchantFilterConfirm'>确认</view>
+        <view class='merchant-filter-reset box-shadow' bindtap='handlerMerchantFilterReset'>重置</view>
       </view>
     </view>
-    <view class='merchant-list flex-column'>      
+    <view class='merchant-list flex-column box-shadow'>      
       <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerNavigatorToMerchantDetail' data-merchant_id='{{merchant.merchant_id}}'>  
         <view class='merchant-name'>
-          <image class='map-icon' src='/static/images/icon/home.png'></image>
+          <image class='map-icon' src='/static/images/icon/icon-map.png'></image>
           <text class='merchant-name-text'>{{merchant.merchant_name}}</text>
         </view>
         <view class='merchant-detail'>

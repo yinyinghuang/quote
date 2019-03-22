@@ -11,7 +11,6 @@
 .option-list{
   background: #fff;
   padding: 0 20rpx;
-  box-shadow: 3rpx 3rpx 5rpx #000;
   margin-bottom: 200rpx;
 }
 .option-item{
@@ -34,7 +33,7 @@
   position: fixed;
   left:0;
   bottom: 0;
-  background: #fff;
+  /* background: #fff; */
 }
 .option-confirm{
   position: relative;
@@ -46,7 +45,6 @@
   text-align: center;
   background: #fff;
   margin: 15rpx 30rpx 30rpx;
-  box-shadow: 3rpx 3rpx 5rpx #000;  
 }
 .section-official-account{
   

@@ -2,7 +2,7 @@
 <view class='container'>
   <view class='section section-filter' wx:if='{{filter_count || price_max!==0 || brand_count}}'>
     <text class='section-title'>筛选</text>
-    <view class='filter-list'>
+    <view class='filter-list box-shadow'>
       <view class='filter-item flex-row' wx:if='{{category.price_max}}' bindtap='handlerNavigatorToPrice' data-price_max='{{category.price_max}}' data-price_min='{{category.price_min}}'>
           <view class='filter-item-name'>价格</view>
           <view class='filter-item-selected'>{{price}} <text class='filter-item-arrow'>></text></view>
@@ -17,13 +17,13 @@
       </view>
     </view>
     <view class='filter-buttons'>
-      <view class='filter-reset' bindtap='handlerReset'>重置</view>
-      <view class='filter-confirm' bindtap='handlerNavigatorToProductList'>确认</view>
+      <view class='filter-reset box-shadow' bindtap='handlerReset'>重置</view>
+      <view class='filter-confirm box-shadow' bindtap='handlerNavigatorToProductList'>确认</view>
     </view>
     
     
   </view>
-  <view class='section section-official-account'>
+  <view class='section section-official-account box-shadow'>
     <official-account></official-account>
   </view>
 </view>

@@ -8,13 +8,13 @@
     </text>
     <view>
     </view>
-    <view class='option-list'>
+    <view class='option-list box-shadow'>
       <view wx:for="{{option}}" wx:key="id" data-index='{{index}}' bindtap='handlerSelect' class='option-item'>
           <view class='option-item-name {{item.selected?"active":""}}'>{{item.name}}</view>
       </view>
     </view>
     <view class='option-buttons'>
-      <view class='option-confirm' bindtap='handlerNavigatorToCateFilter'>确认</view>
+      <view class='option-confirm box-shadow' bindtap='handlerNavigatorToCateFilter'>确认</view>
     </view>
     
   </view>

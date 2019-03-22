@@ -31,13 +31,6 @@
   width: 430rpx;
   font-size: 1.2em;
 }
-.map-icon{  
-  display: inline-block;
-  width: 30rpx;
-  height: 30rpx;
-  margin-right:20rpx;
-  vertical-align: middle;
-}
 .merchant-detail-body{
   justify-content: space-between;
 }

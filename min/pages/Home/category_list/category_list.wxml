@@ -1,15 +1,15 @@
 <!--pages/Home/category_list/category_list.wxml-->
 <view class='container'>
   <view class='section section-search flex-row' bindtap='handlerNavigatorToSearch' data-keyword='{{keyword?keyword:""}}'>
-    <image src='/static/images/icon/home.png' class='search-image'></image>
+    <image src='/static/images/icon/icon-search.png' class='search-image'></image>
     <view class='search-text'>{{keyword?keyword:'请输入商品名称'}}</view>
   </view>
-  <view class='section section-official-account'>
+  <view class='section section-official-account box-shadow'>
     <official-account></official-account>
   </view>  
   <view class='section section-category-list'>
-    <view class='category-list-header' wx:if='{{zone}}'>
-      <image src='/static/images/icon/home.png' class='category-zone-icon'></image>
+    <view class='category-list-header flex-row' wx:if='{{zone}}'>
+      <image src='/static/images/icon/icon-pc-outline.png' class='category-zone-icon'></image>
       <text class='category-zone-name'>{{zone.name}}</text>
     </view>
     <view class='category-list-bread' wx:if='{{groups[0].zone}}'>
@@ -19,7 +19,7 @@
       <text class='split'>></text>
       <text class='active'>分类列表</text>
     </view>
-    <view class='category-list-content'>
+    <view class='category-list-content box-shadow'>
       <view class='category-group' wx:for='{{groups}}' wx:key='id' wx:for-item='group'>
         <view class='category-group-name'>{{group.name}}</view>
         <view class='category-category-list'>

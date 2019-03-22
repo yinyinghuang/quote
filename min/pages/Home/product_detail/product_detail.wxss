@@ -11,8 +11,7 @@
   background: #fff;
   box-sizing: border-box;
   padding: 20rpx;
-  margin-bottom: 40rpx;  
-  box-shadow: 3rpx 3rpx 5rpx #000;
+  margin-bottom: 40rpx; 
 }
 .product-name{
   font-size: 1.5em;
@@ -43,7 +42,7 @@
 }
 .product-item-price .product-price-label{
   font-weight: normal;
-  border: 1px solid #000;
+  border: 1px solid #333;
   margin-left: 20rpx;
 }
 .product-price,
@@ -79,10 +78,15 @@
   width: 30rpx;
   height: 30rpx;
 }
+.left-icon{
+  width: 15rpx;
+  height: 21rpx;
+}
 .rate-icon{
   width: 25rpx;
   height: 25rpx;
   vertical-align: middle;
+  margin-right: 6rpx;
 }
 
 .product-title{
@@ -114,16 +118,15 @@
 .merchant-list{
   width: 100%;
   background: #fff;
-  box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .merchant-list{
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 0 20rpx 0 0;
+  padding: 0 20rpx;
   box-sizing: border-box;
 }
 .merchant-item{
-  margin: 40rpx 0;
+  margin: 40rpx auto;
   width: 100%;
 }
 .merchant-tabs.active{
@@ -155,7 +158,6 @@
   background: #fff;
   width: 100%;
   padding: 0 20rpx;
-  box-shadow: 3rpx 3rpx 5rpx #000;
   box-sizing: border-box;
 }
 .merchant-filter.active{
@@ -198,6 +200,9 @@
 .merchant-filter-option-item.active{
   color: #ff7878;
 }
+.merchant-filter-buttons{
+  margin-top: 40rpx;
+}
 .merchant-filter-reset,
 .merchant-filter-confirm{
   position: relative;
@@ -208,15 +213,7 @@
   font-weight: bold;
   text-align: center;
   background: #fff;
-  margin: 40rpx 30rpx 30rpx;
-  box-shadow: 3rpx 3rpx 5rpx #000;
-}
-.map-icon{
-  display: inline-block;
-  width: 30rpx;
-  height: 30rpx;
-  margin: 0 20rpx;
-  vertical-align: middle;
+  margin: 16rpx 30rpx;
 }
 .merchant-detail{
   margin-left: 70rpx;
@@ -248,11 +245,4 @@
   border: 1px solid #000;
   margin-left: 20rpx;
   padding: 0 6rpx;
-}
-.merchant-no-more{
-  background: #fff;
-  /* margin-top:20rpx; */
-  padding: 30rpx;
-  text-align: center;
-  box-shadow: 3rpx 3rpx 5rpx #000;
 }
