@@ -184,6 +184,7 @@ class AppController extends Controller
             'Brands'               => '品牌',
             'CategoriesBrands'     => '分类品牌',
             'Comments'             => '评价',
+            'Keywords'             => '关键词',
         ];
         $actionsMap = [
             'add'       => '添加 ',

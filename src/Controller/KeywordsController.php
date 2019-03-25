@@ -20,11 +20,13 @@ class KeywordsController extends AppController
             'name'        => 'keywords',
             'renderUrl'   => '/keywords/api-lists',
             'deleteUrl'   => '/keywords/api-delete',
+            'editUrl'   => '/keywords/api-save',
+            'addUrl'      => '/keywords/add',
             'can_search'  => true,
             'tableFields' => [
                 ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
                 ['field' => '\'name\'', 'title' => '\'关键词\'', 'fixed' => '\'left\'', 'unresize' => true],
-                ['field' => '\'count\'', 'title' => '\'搜索次数\'', 'unresize' => true],
+                ['field' => '\'count\'', 'title' => '\'搜索次数\'', 'edit' => '\'number\'','unresize' => true],
                 ['field' => '\'is_visible\'', 'title' => '\'可见\'', 'unresize' => true, 'templet' => '\'#switchTpl_3\''],
                 ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
             ],
@@ -43,6 +45,15 @@ class KeywordsController extends AppController
         $keyword = $this->Keywords->get($id);
 
         $this->set('keyword', $keyword);
+    }
+
+    //浏览
+    public function add()
+    {
+        $keyword = $this->Keywords->newEntity();
+
+        $this->set('keyword', $keyword);
+        $this->render('view');
     }
 
     //ajax修改

@@ -31,14 +31,14 @@
       {
         "pagePath": "pages/Home/index/index",
         "text": "首页",
-        "iconPath": "static/images/icon/home.png",
-        "selectedIconPath": "static/images/icon-red/home.png"
+        "iconPath": "static/images/icon/icon-home.png",
+        "selectedIconPath": "static/images/icon-red/icon-home.png"
       },
       {
         "pagePath": "pages/My/index/index",
         "text": "个人中心",
-        "iconPath": "static/images/icon/home.png",
-        "selectedIconPath": "static/images/icon-red/home.png"
+        "iconPath": "static/images/icon/icon-user.png",
+        "selectedIconPath": "static/images/icon-red/icon-user.png"
       }
     ]
   },

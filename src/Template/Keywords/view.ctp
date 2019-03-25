@@ -1,22 +1,28 @@
 
 <form class="layui-form" action="" id="zoneDetail" enctype="multipart/form-data">
-    <?php if ($fan->isNew()): ?>
+    <?php if ($keyword->isNew()): ?>
     <input type="hidden" name="type" value="add">
     <?php endif ?>
     <input type="hidden" name="detail" value="1">
-    <input type="hidden" name="id" value="<?= $fan->id?>">   
-    <div class="layui-step-content-item fan_info">
+    <input type="hidden" name="id" value="<?= $keyword->id?>">   
+    <div class="layui-step-content-item keyword_info">
         <div class="layui-form-item">
-            <label class="layui-form-label">粉丝名称</label>
+            <label class="layui-form-label">关键词</label>
             <div class="layui-input-block">
-                <input type="text" name="name" autocomplete="off" placeholder="请输入粉丝名称" class="layui-input" value="<?= $fan->name?>">
+                <input type="text" name="name" autocomplete="off" class="layui-input" value="<?= $keyword->name?>">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">次数</label>
+            <div class="layui-input-block">
+                <input type="number" name="count" autocomplete="off" class="layui-input" value="<?= $keyword->count?:0?>">
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">前台可见</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="is_visible" value="1" lay-skin="switch" lay-text="是|否" <?php if (!($fan->is_visible===false)): ?>checked
+                    <input type="checkbox" name="is_visible" value="1" lay-skin="switch" lay-text="是|否" <?php if (!($keyword->is_visible===false)): ?>checked
                 <?php endif?>>
                 </div>
             </div>
@@ -25,7 +31,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">排序</label>
                 <div class="layui-input-block">
-                    <input type="text" name="sort" autocomplete="off" class="layui-input" value="<?=$fan->sort?>">
+                    <input type="number" name="sort" autocomplete="off" class="layui-input" value="<?=$keyword->sort?:0?>">
                 </div>
             </div>
         </div>
@@ -51,7 +57,7 @@ layui.config({
         $('#save').attr('disabled',true) 
         ajax($,{
             token,
-            url: '/fans/api-save',
+            url: '/keywords/api-save',
             type: 'post',
             data: data.field,
             success: (res) => { 
