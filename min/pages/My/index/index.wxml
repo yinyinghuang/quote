@@ -40,10 +40,10 @@
         <view class='merchant-name-address'>
           <view class='merchant-name-action flex-row'>
             <view class='merchant-name'>{{item.name}}</view>
-            <image class='action-icon cover-icon' src='{{item.liked?"/static/images/icon-red/home.png":"/static/images/icon/home.png"}}' data-index='{{index}}' catchtap='handlerLike' data-model='merchants'></image>
+            <image class='action-icon cover-icon' src='/static/images/icon{{item.liked?"-red":""}}/icon-fav.png' data-index='{{index}}' catchtap='handlerLike' data-model='merchants'></image>
           </view>
           <view class='merchant-address flex-row' bindtap='handlerOpenLocation' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}' data-name='{{item.name}}' data-address='{{item.address}}'>
-            <image class='map-icon' src='/static/images/icon/home.png'></image>
+            <image class='map-icon' src='/static/images/icon/icon-map.png'></image>
             <view class='merchant-address-text'>{{item.address}}</view>
           </view>
         </view>        
@@ -52,12 +52,12 @@
     <view class='list-item' hidden='{{active!=="products"}}'>
       <view wx:for="{{products}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
         <view class='product-icon'>
-          <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-id='{{index}}'></image>
+          <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-id='{{index}}' data-index='products.{{index}}.album'></image>
         </view>
         <view class='product-info'>
           <view class='product-item-text-action flex-row'>
             <view class='product-item-text'>{{item.name}}</view>
-            <image class='action-icon cover-icon' src='{{item.liked?"/static/images/icon-red/home.png":"/static/images/icon/home.png"}}' data-index='{{index}}' catchtap='handlerLike' data-model='products'></image>
+            <image class='action-icon cover-icon' src='/static/images/icon{{item.liked?"-red":""}}/icon-fav.png' data-index='{{index}}' catchtap='handlerLike' data-model='products'></image>
           </view>
           <view class='product-item-price' wx:if='{{ item.price_hong_max===0 && item.price_hong_min===0 && item.price_water_max===0 && item.price_water_min===0}}'>暂无报价</view>
           <view class='product-item-price' wx:if='{{item.price_hong_max!==0 || item.price_hong_min!==0}}'>
@@ -76,20 +76,20 @@
       </view>
     </view>
     <view class='list-item' hidden='{{active!=="comments"}}'>
-      <view class='comment-item' wx:for="{{comments}}" wx:key="id" data-id='{{item.id}}' bindtap='handlerNavigatorToCommentList'>
+      <view class='comment-item' wx:for="{{comments}}" wx:key="id" data-id='{{index}}' bindtap='handlerNavigatorToCommentList'>
         <view class='product-container flex-row'>
           <view class='product-icon'>
-            <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-index='recents.{{index}}.album'></image>
+            <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-index='comments.{{index}}.album'></image>
           </view>
           <view class='product-info'>
             <view class='product-item-text'>{{item.name}}</view>
             <view class='comment-rating-time flex-row'>
               <view class='comment-rating'>
-                <image src='/static/images/icon{{item.rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
-                <image src='/static/images/icon{{item.rating>=2?"-red":""}}/home.png' class='rate-icon'></image>
-                <image src='/static/images/icon{{item.rating>=3?"-red":""}}/home.png' class='rate-icon'></image>
-                <image src='/static/images/icon{{item.rating>=4?"-red":""}}/home.png' class='rate-icon'></image>
-                <image src='/static/images/icon{{item.rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
+                <image src='/static/images/icon{{item.rating>=1?"-red":""}}/icon-star.png' class='rate-icon'></image>
+                <image src='/static/images/icon{{item.rating>=2?"-red":""}}/icon-star.png' class='rate-icon'></image>
+                <image src='/static/images/icon{{item.rating>=3?"-red":""}}/icon-star.png' class='rate-icon'></image>
+                <image src='/static/images/icon{{item.rating>=4?"-red":""}}/icon-star.png' class='rate-icon'></image>
+                <image src='/static/images/icon{{item.rating>=5?"-red":""}}/icon-star.png' class='rate-icon'></image>
               </view>
               <view class='comment-time'>{{item.created}}</view>
             </view>

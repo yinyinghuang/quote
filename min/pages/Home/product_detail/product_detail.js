@@ -270,12 +270,21 @@ Page({
       address,
     })
   },
-  //图片不存在
+  //产品图片不存在
   handlerImageError: function (e) {
-    const index = e.currentTarget.dataset.index
-    this.setData({
-      [index]: '/static/images/icon-red/nopic.png'
-    })
+    const index = e.currentTarget.dataset.index.split('.')
+    switch (index.length) {
+      case 1:
+        this.data[index[0]] = '/static/images/icon-red/nopic.png'
+        break
+      case 2:
+        this.data[index[0]][index[1]] = '/static/images/icon-red/nopic.png'
+        break
+      case 3:
+        this.data[index[0]][index[1]][index[2]] = '/static/images/icon-red/nopic.png'
+        break
+    }
+    this.setData(this.data)
   },
   //用户点击右上角分享
   onShareAppMessage: function () {

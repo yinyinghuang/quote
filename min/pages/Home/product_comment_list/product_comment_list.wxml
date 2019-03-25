@@ -37,11 +37,11 @@
   <view class='comment-list-header flex-row'>
     <view class='section-title'>用户评价|{{comment_count?comment_count:meta_data.comment_count}}</view>
     <view class='comment-list-header-add flex-row' wx:if='{{!commented}}' bindtap='handlerNavigatorToCommentAdd' data-id='{{id}}'>
-      <image src='/static/images/icon/home.png' class='write-icon'></image>
+      <image src='/static/images/icon/icon-write.png' class='write-icon'></image>
       <view class='product-rate-write'>发表意见</view>
     </view>
   </view>
-  <view class='comment-list-body flex-column'>
+  <view class='comment-list-body'>
     <view class='comment-item' wx:for='{{comment_list}}' wx:key='{{index}}' wx:for-item='comment'>
       <view class='comment-item-header flex-row'>
         <view class='comment-item-userinfo flex-row'>
@@ -52,11 +52,11 @@
           </view>
         </view>
         <view class='comment-item-rating'>          
-          <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon'></image>
-          <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{comment.rating>=1?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{comment.rating>=2?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{comment.rating>=3?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{comment.rating>=4?"-red":""}}/icon-star.png' class='rate-icon'></image>
+          <image src='/static/images/icon{{comment.rating>=5?"-red":""}}/icon-star.png' class='rate-icon'></image>
         </view>
       </view>
       <view class='comment-item-content'>{{comment.content}}</view>

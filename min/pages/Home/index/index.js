@@ -8,9 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    category:{},
-    recent:{},
-    last:{},
+    category:[],
+    recent:[],
+    last:[],
     keyword:''
   },
 
@@ -115,11 +115,20 @@ Page({
     wx.navigateTo({ url: '/pages/Home/category_list/category_list?type=zone_children&id=' + id })
   },
   //产品图片不存在
-  handlerImageError:function(e){
-    this.data.last[e.currentTarget.dataset.id].album = '/static/images/icon-red/nopic.png';
-    this.setData({
-      last:this.data.last
-    })
+  handlerImageError: function (e) {
+    const index = e.currentTarget.dataset.index.split('.')
+    switch (index.length) {
+      case 1:
+        this.data[index[0]] = '/static/images/icon-red/nopic.png'
+        break
+      case 2:
+        this.data[index[0]][index[1]] = '/static/images/icon-red/nopic.png'
+        break
+      case 3:
+        this.data[index[0]][index[1]][index[2]] = '/static/images/icon-red/nopic.png'
+        break
+    }
+    this.setData(this.data)
   },
   //跳转至产品列表
   handlerNavigatorToProductList: function (e) {

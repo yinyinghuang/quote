@@ -25,7 +25,6 @@
   padding: 16rpx;
   font-size: 1.2em;
   background: #fff;
-  box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .search-clear{
   width: 100%;

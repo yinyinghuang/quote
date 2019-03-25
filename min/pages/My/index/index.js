@@ -38,6 +38,30 @@ Page({
   onLoad: function (options) {
     app.openSetting(this.initPage)
   },
+  //下拉刷新
+  onPullDownRefresh:function(){
+    this.setData({
+      params:{
+        recents:{
+          page:1,
+          reach_bottom:false
+        },
+        merchants: {
+          page: 1,
+          reach_bottom: false
+        },
+        products: {
+          page: 1,
+          reach_bottom: false
+        },
+        comments: {
+          page: 1,
+          reach_bottom: false
+        },
+      },
+    })
+    this.getList()
+  },
   initPage:function(){
     this.getUserInfo()
     this.getList()

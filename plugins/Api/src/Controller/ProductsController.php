@@ -76,6 +76,12 @@ class ProductsController extends AppController
         //关键词存在
         if(isset($params['keyword']) && !empty($params['keyword'])){
             $conditions['Products.name like'] = '%'.$params['keyword'].'%';
+            //保存记录
+            $keyword = $this->loadModel('Keywords')->find('all',[
+                'conditions' => ['name' => $params['keyword']]
+            ])->first()?:$this->loadModel('Keywords')->newEntity(['name' => $params['keyword'],'count' => 0]);
+            $keyword->count =$keyword->count+1;
+            $this->loadModel('Keywords')->save($keyword);
         }
         //最近浏览
         if (isset($params['product_ids']) && is_array($params['product_ids']) && count($params['product_ids'])) {
@@ -258,6 +264,14 @@ class ProductsController extends AppController
         // //更新产品数据统计
         $this->setProductMetaData($product_id,['share_count' => 1]);
         $this->ret(0, 1, '提交成功');
+    }
+    public function hotKeywordLists()
+    {
+        $keywords = $this->loadModel('Keywords')->find('all',[
+            'limit' => 10,
+            'offset' => 0,
+        ])->extract('name')->toArray();
+        $this->ret(0, $keywords, '加载成功');
     }
 }
  

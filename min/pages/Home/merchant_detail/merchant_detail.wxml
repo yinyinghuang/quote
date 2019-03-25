@@ -8,7 +8,7 @@
     <view class='merchant-name-address'>
       <view class='merchant-name'>{{name}}</view>
       <view class='merchant-address flex-row' bindtap='handlerOpenLocation' data-latitude='{{latitude}}' data-longitude='{{longitude}}' data-name='{{name}}' data-address='{{address}}'>
-        <image class='map-icon' src='/static/images/icon/home.png'></image>
+        <image class='map-icon' src='/static/images/icon/icon-map.png'></image>
         <view class='merchant-address-text'>{{address}}</view>
       </view>
     </view>
@@ -16,32 +16,36 @@
   <view class='merchant-detail-body flex-row'>
     <view class='merchant-details'>
       <view class='merchant-detail-item flex-row' wx:if='{{contact}}'bindtap='handlerMakePhoneCall' data-phone='{{location.contact}}'>
-        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <image class='merchant-detail-icon' src='/static/images/icon/icon-call.png'></image>
         <view class='merchant-detail-text'>{{contact}}</view>
       </view>
       <view class='merchant-detail-item flex-row' wx:if='{{openhour}}'>
-        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <image class='merchant-detail-icon' src='/static/images/icon/icon-clock.png'></image>
         <view class='merchant-detail-text'>{{openhour}}</view>
       </view>
       <view class='merchant-detail-item flex-row'>
-        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <image class='merchant-detail-icon' src='/static/images/icon/icon-email.png'></image>
         <view class='merchant-detail-text'>{{email}}</view>
       </view>
       <view class='merchant-detail-item flex-row'>
-        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <image class='merchant-detail-icon' src='/static/images/icon/icon-wechat.png'></image>
         <view class='merchant-detail-text'>{{wechat}}</view>
       </view>
       <view class='merchant-detail-item flex-row'>
-        <image class='merchant-detail-icon' src='/static/images/icon/home.png'></image>
+        <image class='merchant-detail-icon' src='/static/images/icon/icon-website.png'></image>
+        <navigator class='merchant-detail-text' url='{{website}}'>{{website}}</navigator>
+      </view>
+      <view class='merchant-detail-item flex-row'>
+        <image class='merchant-detail-icon' src='/static/images/icon/icon-intro.png'></image>
         <view class='merchant-detail-text'>{{intro}}</view>
       </view>
     </view>
     <view class='merchant-detail-action flex-row'>
       <button bindtap='handlerLike' data-id='{{id}}'>
-        <image src='/static/images/icon{{liked?"-red":""}}/home.png' class='action-icon'></image>
+        <image src='/static/images/icon{{liked?"-red":""}}/icon-fav.png' class='action-icon'></image>
       </button>          
       <button open-type='share'>
-        <image src='/static/images/icon/home.png' class='action-icon'></image>
+        <image src='/static/images/icon/icon-share.png' class='action-icon'></image>
       </button>
     </view>
   </view> 
@@ -74,15 +78,15 @@
     <view class='location-list' hidden='{{active!=="location"}}' wx:if='{{locations.length>1}}'>
       <view class='location-item' wx:for="{{locations}}" wx:key="id" wx:for-item='location' data-id='{{location.id}}'>
         <view class='location-item-row  flex-row' wx:if='{{location.address}}' bindtap='handlerOpenLocation' data-latitude='{{location.latitude}}' data-longitude='{{location.longitude}}' data-name='{{location.name}}' data-address='{{location.address}}'>
-          <image class='location-icon' src='/static/images/icon/home.png'></image>
+          <image class='location-icon map' src='/static/images/icon/icon-map.png'></image>
           <view class='location-item-text'>{{location.address}}</view>
         </view>
         <view class='location-item-row flex-row' wx:if='{{location.contact}}' bindtap='handlerMakePhoneCall' data-phone='{{location.contact}}'>
-          <image class='location-icon' src='/static/images/icon/home.png'></image>
+          <image class='location-icon' src='/static/images/icon/icon-call.png'></image>
           <view class='location-item-text'> {{location.contact}}</view>
          </view>
         <view class='location-item-row flex-row' wx:if='{{location.openhour}}' >
-          <image class='location-icon' src='/static/images/icon/home.png'></image>
+          <image class='location-icon' src='/static/images/icon/icon-clock.png'></image>
           <view class='location-item-text'> {{location.openhour}}</view>          
         </view>
       </view>

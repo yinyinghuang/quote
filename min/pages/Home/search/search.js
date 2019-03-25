@@ -9,12 +9,18 @@ Page({
    */
   data: {
     hots:['ewerwer','ererere'],
-    history: ['ewerwer', 'ererere'],
+    history: [],
     keyword:'',
   },
   //生命周期函数--监听页面加载
   onLoad: function (options) {
-    if (options.keyword) this.setData({ keyword: options.keyword})    
+    if (options.keyword) this.setData({ keyword: options.keyword })
+    app.openSetting(this.initPage)    
+  },
+  onShow:function(){
+    this.initPage()
+  },
+  initPage:function(){    
     const history = wx.getStorageSync('search_history')
     if (history) this.setData({ history })
     // this.getHotKeyword()
@@ -50,7 +56,7 @@ Page({
   },
   //清空搜索历史
   handlerClearHistoryKeyword:function(){
-    wx.clearStorageSync('search_history')
+    wx.removeStorageSync('search_history')
     this.setData({
       history:[]
     })
@@ -61,6 +67,15 @@ Page({
     if(!keyword){
       comm.showToast('关键词不能为空')
     }else{
+      let {history}  = this.data
+      for(let i=0;i<history.length;i++){
+        if(history[i]===keyword){
+          history.splice(i,1)          
+          break
+        }
+      }
+      history.unshift(keyword)
+      wx.setStorageSync('search_history', history )
       wx.navigateTo({
         url: '/pages/Home/product_list/product_list?keyword=' + keyword,
       })

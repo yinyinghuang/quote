@@ -31,7 +31,7 @@ Page({
     app.openSetting(this.initPage)    
   },
   onUnload:function(){
-    wx.clearStorageSync('user_location')
+    wx.removeStorageSync('user_location')
   },
   //页面上拉触底事件的处理函数
   onReachBottom: function () {

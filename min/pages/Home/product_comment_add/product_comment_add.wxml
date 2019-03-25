@@ -6,11 +6,11 @@
         <view class='comment-field-item'>
           <view class='comment-field-name'>整体评分</view>
           <view class='comment-field-value'>
-            <image src='/static/images/icon{{rating>=1?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='1'></image>
-            <image src='/static/images/icon{{rating>=2?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='2'></image>
-            <image src='/static/images/icon{{rating>=3?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='3'></image>
-            <image src='/static/images/icon{{rating>=4?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='4'></image>
-            <image src='/static/images/icon{{rating>=5?"-red":""}}/home.png' class='rate-icon' bindtap='handlerSetRating' data-rating='5'></image>
+            <image src='/static/images/icon{{rating>=1?"-red":""}}/icon-star.png' class='rate-icon' bindtap='handlerSetRating' data-rating='1'></image>
+            <image src='/static/images/icon{{rating>=2?"-red":""}}/icon-star.png' class='rate-icon' bindtap='handlerSetRating' data-rating='2'></image>
+            <image src='/static/images/icon{{rating>=3?"-red":""}}/icon-star.png' class='rate-icon' bindtap='handlerSetRating' data-rating='3'></image>
+            <image src='/static/images/icon{{rating>=4?"-red":""}}/icon-star.png' class='rate-icon' bindtap='handlerSetRating' data-rating='4'></image>
+            <image src='/static/images/icon{{rating>=5?"-red":""}}/icon-star.png' class='rate-icon' bindtap='handlerSetRating' data-rating='5'></image>
           </view>
         </view>
         <view class='comment-field-item'>

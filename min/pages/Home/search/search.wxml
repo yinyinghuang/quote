@@ -9,16 +9,16 @@
     <view class='search-section'>
       <view class='search-header'>热门关键词</view>
       <view class='search-keywords'>
-        <view class='keyword-item' wx:for='{{hots}}' wx:key='{{index}}' wx:for-item='keyword' bindtap='handlerKeywordItem' data-keyword='{{keyword}}'>{{keyword}}</view>
+        <view class='keyword-item box-shadow' wx:for='{{hots}}' wx:key='{{index}}' wx:for-item='keyword' bindtap='handlerKeywordItem' data-keyword='{{keyword}}'>{{keyword}}</view>
       </view >
     </view>
-    <view class='search-section'>
+    <view class='search-section' wx:if='{{history.length}}'>
       <view class='search-header'>搜索历史</view>
       <view class='search-keywords'>
-        <view class='keyword-item' wx:for='{{history}}' wx:key='{{index}}' wx:for-item='keyword' bindtap='handlerKeywordItem' data-keyword='{{keyword}}'>{{keyword}}</view>
+        <view class='keyword-item box-shadow' wx:for='{{history}}' wx:key='{{index}}' wx:for-item='keyword' bindtap='handlerKeywordItem' data-keyword='{{keyword}}'>{{keyword}}</view>
       </view>
     </view>
-    <view class='search-clear' bindtap='handlerClearHistoryKeyword'>清除搜索历史</view>
+    <view class='search-clear' bindtap='handlerClearHistoryKeyword' wx:if='{{history.length}}'>清除搜索历史</view>
   </view>
   <view class='section section-official-account'>
     <official-account></official-account>

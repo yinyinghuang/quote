@@ -91,3 +91,7 @@
 .location-item-text{
   width: 590rpx;
 }
+.location-icon.map{
+  width: 23rpx;
+  height: 32rpx;
+}
