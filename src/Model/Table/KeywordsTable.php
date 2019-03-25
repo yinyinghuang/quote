@@ -59,6 +59,14 @@ class KeywordsTable extends Table
             ->requirePresence('count', 'create')
             ->allowEmptyString('count', false);
 
+        $validator
+            ->boolean('is_visible')
+            ->requirePresence('is_visible', 'create')
+            ->allowEmptyString('is_visible', false);
+
+        $validator
+            ->allowEmptyString('sort');
+
         return $validator;
     }
 }

@@ -33,6 +33,7 @@ class FansController extends AppController
             } else {
                 $fan         = $this->Fans->newEntity();
                 $fan->openid = $openid;
+                $fan->sign_up =(new Time($row->created))->i18nFormat('yyyy-MM-dd H:i:s');
                 $params      = json_decode($this->request->getData('user_msg_str'), true);
                 $fan         = $this->Fans->patchEntity($fan, $params);
                 $schema      = $this->Fans->getSchema();

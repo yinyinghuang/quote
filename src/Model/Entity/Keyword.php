@@ -9,6 +9,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property int $count
+ * @property bool $is_visible
+ * @property int|null $sort
  */
 class Keyword extends Entity
 {
@@ -24,6 +26,8 @@ class Keyword extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'count' => true
+        'count' => true,
+        'is_visible' => true,
+        'sort' => true
     ];
 }

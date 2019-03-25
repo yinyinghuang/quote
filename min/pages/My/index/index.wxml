@@ -4,7 +4,7 @@
   <text class='user-name'>{{userInfo.nickName}}</text>
 </view>
 <view class='section section-tabs'>
-  <view class='tabs-container flex-row'>
+  <view class='tabs-container box-shadow flex-row'>
     <view class='tab-item {{active=="recents"?"active":""}}' bindtap='handlerToggleAtice' data-active='recents'>最近浏览</view>
     <view class='tab-item {{active=="merchants"?"active":""}}' bindtap='handlerToggleAtice' data-active='merchants'>关注店铺</view>
     <view class='tab-item {{active=="products"?"active":""}}' bindtap='handlerToggleAtice' data-active='products'>收藏</view>
@@ -76,7 +76,7 @@
       </view>
     </view>
     <view class='list-item' hidden='{{active!=="comments"}}'>
-      <view class='comment-item' wx:for="{{comments}}" wx:key="id" data-id='{{index}}' bindtap='handlerNavigatorToCommentList'>
+      <view class='comment-item' wx:for="{{comments}}" wx:key="id" data-id='{{item.id}}' bindtap='handlerNavigatorToCommentList'>
         <view class='product-container flex-row'>
           <view class='product-icon'>
             <image src='{{item.album}}' lazy-load binderror='handlerImageError' data-index='comments.{{index}}.album'></image>

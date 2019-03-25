@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    hots:['ewerwer','ererere'],
+    hots:[],
     history: [],
     keyword:'',
   },
@@ -23,7 +23,7 @@ Page({
   initPage:function(){    
     const history = wx.getStorageSync('search_history')
     if (history) this.setData({ history })
-    // this.getHotKeyword()
+    this.getHotKeyword()
   },
   getHotKeyword:function(){
     const _this = this
@@ -32,7 +32,7 @@ Page({
       method: glbd.method,
       success: function (res) {
         _this.setData({
-          hot: res.data.data
+          hots: res.data.data
         })
       },
     })

@@ -84,6 +84,7 @@ class AppController extends Controller
                 ['url' => '/categories', 'name' => '分类列表', 'tabs' => ['Categories']],
                 ['url' => '/attributes', 'name' => '属性列表', 'tabs' => ['Attributes']],
                 ['url' => '/brands', 'name' => '品牌列表', 'tabs' => ['Brands']],
+                ['url' => '/keywords', 'name' => '热门搜索', 'tabs' => ['Keywords']],
             ],
         ],
         'Merchants' => [

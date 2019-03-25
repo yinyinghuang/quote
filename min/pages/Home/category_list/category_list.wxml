@@ -9,7 +9,7 @@
   </view>  
   <view class='section section-category-list'>
     <view class='category-list-header flex-row' wx:if='{{zone}}'>
-      <image src='/static/images/icon/icon-pc-outline.png' class='category-zone-icon'></image>
+      <image src='/static/images/icon/zone-{{zone.id}}-outline.png' class='category-zone-icon'></image>
       <text class='category-zone-name'>{{zone.name}}</text>
     </view>
     <view class='category-list-bread' wx:if='{{groups[0].zone}}'>

@@ -11,7 +11,7 @@
       <div class="layui-inline">
         <label class="layui-form-label">关键词</label>
         <div class="layui-input-block">
-          <input type="text" name="search[nickName]" placeholder="" autocomplete="off" class="layui-input">
+          <input type="text" name="search[name]" placeholder="" autocomplete="off" class="layui-input">
         </div>
       </div>
     </div>    
@@ -25,7 +25,7 @@
     </div>
     <div class="layui-form-item">
       <div class="layui-input-block">
-        <button class="layui-btn layui-btn-sm" lay-submit lay-filter="search-fans">搜索</button>
+        <button class="layui-btn layui-btn-sm" lay-submit lay-filter="search-keywords">搜索</button>
       </div>
     </div>
   </form>

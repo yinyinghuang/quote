@@ -65,22 +65,22 @@ class ProductsController extends AppController
         if (isset($params['sort'])) {
             switch ($params['sort']) {
                 case 'hotest':
-                    $order = array_merge(['ProductData.collect_count' => 'Desc'],$order);
+                    $order = array_merge(['ProductData.collect_count' => 'Desc'], $order);
                     break;
 
                 case 'newest':
-                    $order = array_merge(['Products.modified' => 'Desc'],$order);
+                    $order = array_merge(['Products.modified' => 'Desc'], $order);
                     break;
             }
         }
         //关键词存在
-        if(isset($params['keyword']) && !empty($params['keyword'])){
-            $conditions['Products.name like'] = '%'.$params['keyword'].'%';
+        if (isset($params['keyword']) && !empty($params['keyword'])) {
+            $conditions['Products.name like'] = '%' . $params['keyword'] . '%';
             //保存记录
-            $keyword = $this->loadModel('Keywords')->find('all',[
-                'conditions' => ['name' => $params['keyword']]
-            ])->first()?:$this->loadModel('Keywords')->newEntity(['name' => $params['keyword'],'count' => 0]);
-            $keyword->count =$keyword->count+1;
+            $keyword = $this->loadModel('Keywords')->find('all', [
+                'conditions' => ['name' => $params['keyword']],
+            ])->first() ?: $this->loadModel('Keywords')->newEntity(['name' => $params['keyword'], 'count' => 0]);
+            $keyword->count = $keyword->count + 1;
             $this->loadModel('Keywords')->save($keyword);
         }
         //最近浏览
@@ -93,10 +93,10 @@ class ProductsController extends AppController
             ->map(function ($row) {
                 $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
-            })            
+            })
             ->toArray();
         $this->ret(0, $products, '加载成功');
-    }    
+    }
     public function detail($id)
     {
         if (empty($id)) {
@@ -108,18 +108,18 @@ class ProductsController extends AppController
         ])->first();
         if (empty($product)) {
             $this->ret(1, null, '产品不存在或已被删除');
-        }       
+        }
         //更新产品数据统计
-        $this->setProductMetaData($id,['view_count' => 1]);
-        $product->albums        = $this->_getProductAlbumUrl($product->id, $product->album);
+        $this->setProductMetaData($id, ['view_count' => 1]);
+        $product->albums    = $this->_getProductAlbumUrl($product->id, $product->album);
         $product->meta_data = $this->loadModel('ProductData')->find('all', [
             'conditions' => ['product_id' => $product->id],
         ])->first();
         $product->commented = $this->loadModel('Comments')->find('all', [
-            'conditions' => ['product_id' => $product->id,'fan_id' => $fan_id],
+            'conditions' => ['product_id' => $product->id, 'fan_id' => $fan_id],
         ])->count();
         $product->liked = $this->loadModel('Likes')->find('all', [
-            'conditions' => ['product_id' => $product->id,'fan_id' => $fan_id],
+            'conditions' => ['product_id' => $product->id, 'fan_id' => $fan_id],
         ])->count();
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
@@ -128,7 +128,7 @@ class ProductsController extends AppController
         ])->map(function ($row) {
             $row->attribute_name = $this->loadModel('Attributes')->find()->where(['id' => $row->attribute_id])->first()->name;
             return $row;
-        }); 
+        });
         $this->ret(0, $product, '产品加载成功');
     }
     public function quoteLists($product_id)
@@ -181,14 +181,14 @@ class ProductsController extends AppController
                         'conditions' => $conditions,
                     ])->first();
                     if ($location) {
-                        $row->address = $location->address;
-                        $location->latitude && $row->latitude = $location->latitude;
+                        $row->address                            = $location->address;
+                        $location->latitude && $row->latitude    = $location->latitude;
                         $location->longtitude && $row->longitude = $location->longtitude;
                     }
                     return $row;
                 })
                 ->toArray();
-        }   
+        }
         $this->ret(0, $merchants, '加载成功');
     }
     public function setLike($product_id)
@@ -212,7 +212,7 @@ class ProductsController extends AppController
             }
         }
         //更新产品数据统计
-        $this->setProductMetaData($product_id,['collect_count' =>$delt]);
+        $this->setProductMetaData($product_id, ['collect_count' => $delt]);
         $this->ret(0, 1, '加载成功');
     }
     public function commentLists($product_id)
@@ -222,7 +222,7 @@ class ProductsController extends AppController
         }
         $params     = $this->request->getData();
         $fields     = ['fan_name' => 'Fans.nickName', 'fan_avatar' => 'Fans.avatarUrl', 'created' => 'Comments.created', 'rating' => 'Comments.rating', 'content' => 'Comments.content'];
-        $conditions = ['product_id' => $product_id,'is_checked' => 1];
+        $conditions = ['product_id' => $product_id, 'is_checked' => 1];
         $contain    = ['Fans'];
         $order      = ['Comments.sort desc', 'Comments.id desc'];
         $limit      = 20;
@@ -240,7 +240,7 @@ class ProductsController extends AppController
     public function addComment($product_id)
     {
         if (empty($product_id)) {
-            $this->ret(1, null, '产品id缺失'); 
+            $this->ret(1, null, '产品id缺失');
         }
         $params = $this->request->getData();
 
@@ -253,25 +253,26 @@ class ProductsController extends AppController
         $created = date('Y-m-d H:i:s');
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
-        
+
         $this->ret(0, 1, '提交成功');
     }
     public function shareCount($product_id)
     {
         if (empty($product_id)) {
-            $this->ret(1, null, '产品id缺失'); 
+            $this->ret(1, null, '产品id缺失');
         }
         // //更新产品数据统计
-        $this->setProductMetaData($product_id,['share_count' => 1]);
+        $this->setProductMetaData($product_id, ['share_count' => 1]);
         $this->ret(0, 1, '提交成功');
     }
     public function hotKeywordLists()
     {
-        $keywords = $this->loadModel('Keywords')->find('all',[
-            'limit' => 10,
+        $keywords = $this->loadModel('Keywords')->find('all', [
+            'conditions' => [ 'is_visible' => 1],
+            'limit'  => 10,
             'offset' => 0,
+            'order' => ['sort desc','id desc',]
         ])->extract('name')->toArray();
         $this->ret(0, $keywords, '加载成功');
     }
 }
- 

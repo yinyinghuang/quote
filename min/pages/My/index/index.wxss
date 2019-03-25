@@ -18,7 +18,6 @@
   padding: 25rpx 0;
   background: #fff;
   justify-content: stretch;
-  box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .tab-item{
   width: 25%;
