@@ -164,7 +164,7 @@ class AppController extends Controller
 
     public function beforeRender(Event $event)
     {Cache::write('posts', 'ssssssssssssssssssssssssssssssssssss');
-        debug(Cache);
+        debug(Cache::write);
         $controller     = $this->request->getParam('controller');
         $action         = $this->request->getParam('action');
         $pass           = $this->request->getParam('pass');
