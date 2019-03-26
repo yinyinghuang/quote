@@ -17,7 +17,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Utility\Inflector;
-
+use Cake\Cache\Cache;
 /**
  * Application Controller
  *
@@ -163,8 +163,8 @@ class AppController extends Controller
     }
 
     public function beforeRender(Event $event)
-    {
-
+    {Cache::write('posts', 'ssssssssssssssssssssssssssssssssssss');
+        debug(Cache::read('posts'));
         $controller     = $this->request->getParam('controller');
         $action         = $this->request->getParam('action');
         $pass           = $this->request->getParam('pass');
