@@ -108,8 +108,8 @@ App({
     islogin:false,
     hasPkey:false,
     firstCome:true,
-    pkey:0,
-    code:0,
+    pkey:null,
+    code:null,
     userInfo:null,
     formIds:''
   }

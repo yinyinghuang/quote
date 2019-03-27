@@ -11,15 +11,16 @@ class AppController extends BaseController
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
-        $this->getUInfo();
+        $this->userInfo = $this->getUInfo();
     }
 
     public function getUInfo()
     {
+        $userInfo = [];
         $params = $this->request->getData();
         //在缓存中查找用户信息
         if(!empty($params['pkey'])){
-            $this->userInfo = json_decode($this->redis->read($params['pkey']));
+            $userInfo = json_decode($this->redis->read($params['pkey']));
         }
         if(empty($userInfo)){
             //在缓存中查找openid
@@ -32,11 +33,12 @@ class AppController extends BaseController
             }
             if(!empty($openid)){
                 //数据库中获取用户信息
-                $this->userInfo = $this->getUserInfo($openid);
-                $this->userInfo['pkey'] = $params['pkey'];
+                $userInfo = $this->getUserInfo($openid);
+                $userInfo['pkey'] = $params['pkey'];
                 $this->redis->write($params['pkey'],$userInfo );
             }             
         }
+        return $userInfo;
         
     }
     //获取openid
