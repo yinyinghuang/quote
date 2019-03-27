@@ -11,16 +11,16 @@ class AppController extends BaseController
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
-        $ret         = [
-            'zone.list'                           => $this->redis->read('zone.list'),
-            'zone.children.5'                     => $this->redis->read('zone.children.5'),
-            'group.children.13'                   => $this->redis->read('group.children.13'),
-            'category.related.100019'             => $this->redis->read('category.related.100019'),
-            'category.attribute.is.filter.100019' => $this->redis->read('category.attribute.is.filter.100019'),
-            'category.brand.100019'               => $this->redis->read('category.brand.100019'),
-            'category.filter.option.100018'       => $this->redis->read('category.filter.option.100018'),
-        ];
-        $this->ret(0,$ret);
+        // $ret         = [
+        //     'zone.list'                           => $this->redis->read('zone.list'),
+        //     'zone.children.5'                     => $this->redis->read('zone.children.5'),
+        //     'group.children.13'                   => $this->redis->read('group.children.13'),
+        //     'category.related.100019'             => $this->redis->read('category.related.100019'),
+        //     'category.attribute.is.filter.100019' => $this->redis->read('category.attribute.is.filter.100019'),
+        //     'category.brand.100019'               => $this->redis->read('category.brand.100019'),
+        //     'category.filter.option.100018'       => $this->redis->read('category.filter.option.100018'),
+        // ];
+        // $this->ret(0,$ret);
     }
 
     //返回结果
