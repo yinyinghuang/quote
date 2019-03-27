@@ -10,6 +10,7 @@ class AppController extends BaseController
 {
     public function beforeFilter(Event $event)
     {
+        parent::beforeFilter($event);
         $this->redis = new Cache;
         $this->userInfo = $this->getUInfo();
     }
@@ -17,7 +18,7 @@ class AppController extends BaseController
     private function getUInfo()
     {
         $userInfo = [];
-        $params = $_POST;
+        $params = $this->request->getData();
         //在缓存中查找用户信息
         if(!empty($params['pkey'])){
             $userInfo = json_decode($this->redis->read($params['pkey']));
@@ -38,7 +39,7 @@ class AppController extends BaseController
                 $this->redis->write($params['pkey'],$userInfo );
             }             
         }
-        // $this->ret(1,$params);
+        $this->ret(1,$params);
         return $userInfo;
         
     }
