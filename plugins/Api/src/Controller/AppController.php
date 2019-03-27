@@ -8,7 +8,7 @@ use Cake\Event\Event;
 
 class AppController extends BaseController
 {
-    public function startup()
+    public function startupProcess()
     {
         $this->redis = new Cache;
         $this->userInfo = $this->getUInfo();
