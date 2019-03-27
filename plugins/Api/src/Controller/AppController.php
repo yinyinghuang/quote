@@ -115,7 +115,7 @@ class AppController extends BaseController
     }
 
     //返回结果
-    protected function ret($errCode, $data, $errMsg, $extra = [])
+    protected function ret($errCode, $data, $errMsg='', $extra = [])
     {
         $this->autoRender = false;
         $res              = [
