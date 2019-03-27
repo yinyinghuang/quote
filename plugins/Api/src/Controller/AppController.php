@@ -14,7 +14,7 @@ class AppController extends BaseController
         $this->userInfo = $this->getUInfo();
     }
 
-    public function getUInfo()
+    private function getUInfo()
     {
         $userInfo = [];
         $params = $this->request->getData();
@@ -38,6 +38,7 @@ class AppController extends BaseController
                 $this->redis->write($params['pkey'],$userInfo );
             }             
         }
+        $this->ret(1,$openid);
         return $userInfo;
         
     }
