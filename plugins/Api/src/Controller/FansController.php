@@ -115,12 +115,13 @@ class FansController extends AppController
         $nostr = mb_substr(md5(mb_substr(str_shuffle('0987YaTzxc23CvBVNbM456nSmkEjhA678guXoZqwpQrhRq24werWtyu2547iopsIdfgU76hPj'), 0, $len)), 0, $len); //随机字符串
         return $nostr;
     }
-    public function merchantLists($fan_id)
+    public function merchantLists($pkey)
     {
-        if (empty($fan_id)) {
-            $this->ret(1, null, 'fan_id缺失');
+        if (empty($pkey)) {
+            $this->ret(1, null, 'pkey缺失');
         }
-        $params     = $this->request->getData();
+        $params = $this->request->getData();
+        $fan_id = $this->redis->read($pkey)['id'];
         $fields     = ['Merchants.id', 'Merchants.name', 'Merchants.logo', 'Merchants.logo_ext'];
         $conditions = ['Merchants.is_visible' => 1];
 
