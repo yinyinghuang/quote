@@ -198,7 +198,7 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params     = $this->request->getData();
-        $fan_id     = $this->redis->read($params['pkey'])['id'];
+        $fan_id = $this->_getFanIdFormPkey($params['pkey']);
         $type       = $params['type'];
         $conditions = compact('product_id', 'fan_id');
         if ($type === 'dislike') {

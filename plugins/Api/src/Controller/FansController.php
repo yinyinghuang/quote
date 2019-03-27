@@ -121,7 +121,7 @@ class FansController extends AppController
             $this->ret(1, null, 'pkey缺失');
         }
         $params = $this->request->getData();
-        $fan_id = $this->_getFanIdFormPkey($pkey);
+        $fan_id = $this->redis->read($pkey)['id'];
         $fields     = ['Merchants.id', 'Merchants.name', 'Merchants.logo', 'Merchants.logo_ext'];
         $conditions = ['Merchants.is_visible' => 1];
 
@@ -160,7 +160,7 @@ class FansController extends AppController
             $this->ret(1, null, 'pkey缺失');
         }
         $params = $this->request->getData();
-        $fan_id = $this->_getFanIdFormPkey($pkey);
+        $fan_id = $this->redis->read($pkey)['id'];
         $fields = [
             'Products.id',
             'Products.name',
@@ -200,7 +200,7 @@ class FansController extends AppController
             $this->ret(1, null, 'pkey缺失');
         }
         $params = $this->request->getData();
-        $fan_id = $this->_getFanIdFormPkey($pkey);
+        $fan_id = $this->redis->read($pkey)['id'];
         $fields = [
             'id'              => 'Products.id',
             'name'            => 'Products.name',
