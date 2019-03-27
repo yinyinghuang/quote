@@ -39,7 +39,7 @@ Page({
   getCategoryFilterOption: function (category_attribute_id) {
     const _this = this
     comm.request({
-      url: glbd.host + 'categories/get-category-filter-option?category_attribute_id=' + category_attribute_id,
+      url: glbd.host + 'categories/get-category-filter-option/' + category_attribute_id,
       method: glbd.method,
       success: function (res) {
         //原始已选项与选项列表结合

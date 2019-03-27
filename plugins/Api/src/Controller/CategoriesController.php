@@ -66,7 +66,7 @@ class CategoriesController extends AppController
 
             case 'group_children':
                 if (isset($params['id']) && $params['id']) {
-                    $groups = $this->redis->read('group.list.'.$params['id']);
+                    $groups = $this->redis->read('group.children.'.$params['id']);
                     if($groups) $this->ret(0, $groups, '加载成功');
                     $groups = $this->loadModel('Groups')
                         ->find()
@@ -87,7 +87,7 @@ class CategoriesController extends AppController
                         $this->ret(2, null, '分组不存在');
                     }
                     $groups = compact('groups');
-                    $this->redis->write('group.list.'.$params['id'],$groups);
+                    $this->redis->write('group.children.'.$params['id'],$groups);
                     $this->ret(0, compact('groups'), '加载成功');
                 } else {
                     $this->ret(1, null, 'id参数缺失');

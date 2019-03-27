@@ -1,38 +1,51 @@
 <?php
 
 namespace Api\Controller;
-use Cake\Event\Event;
-use Cake\Cache\Cache;
+
 use App\Controller\AppController as BaseController;
+use Cake\Cache\Cache;
+use Cake\Event\Event;
 
 class AppController extends BaseController
 {
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
+        $ret         = [
+            'zone.list'                           => $this->redis->read('zone.list'),
+            'zone.children.5'                     => $this->redis->read('zone.children.5'),
+            'group.children.13'                   => $this->redis->read('group.children.13'),
+            'category.related.100019'             => $this->redis->read('category.related.100019'),
+            'category.attribute.is.filter.100019' => $this->redis->read('category.attribute.is.filter.100019'),
+            'category.brand.100019'               => $this->redis->read('category.brand.100019'),
+            'category.filter.option.100018'       => $this->redis->read('category.filter.option.100018'),
+        ];
+        $this->ret(0,$ret);
     }
 
-	//返回结果
-	protected function ret($errCode, $data, $errMsg, $extra = [])
-	{
-	    $this->autoRender = false;
-	    $res              = [
-	        'errCode' => $errCode,
-	        'data' => $data,
-	        'errMsg'  => $errMsg,
-	    ] + $extra;
-	    die(json_encode($res));
-	}
-	//获取offset
-	protected function getOffset($page,$limit){
-		return ($page-1)*$limit;
-	}
-	//获取默认顺序
-	protected function getDefaultOrder($controller){
-		return [$controller.'.sort desc',$controller.'.id desc'];
-	}
-	//获取产品封面
-	protected function _getProductCover($product_id, $product_album)
+    //返回结果
+    protected function ret($errCode, $data, $errMsg, $extra = [])
+    {
+        $this->autoRender = false;
+        $res              = [
+            'errCode' => $errCode,
+            'data'    => $data,
+            'errMsg'  => $errMsg,
+        ] + $extra;
+        die(json_encode($res));
+    }
+    //获取offset
+    protected function getOffset($page, $limit)
+    {
+        return ($page - 1) * $limit;
+    }
+    //获取默认顺序
+    protected function getDefaultOrder($controller)
+    {
+        return [$controller . '.sort desc', $controller . '.id desc'];
+    }
+    //获取产品封面
+    protected function _getProductCover($product_id, $product_album)
     {
         $cover = '';
         if ($product_album) {
