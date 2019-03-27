@@ -284,10 +284,6 @@ Page({
         if (res.data.data) {
           _this.data[model][index].liked = !cur.liked
           _this.setData(_this.data)
-        }else{
-          wx.navigateTo({
-            url: '/pages/login/login?bp=/pages/My/index/index',
-          })
         }
         
       }

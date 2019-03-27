@@ -112,7 +112,7 @@ class MerchantsController extends AppController
             $this->ret(1, null, '商户id缺失');
         }
         $params     = $this->request->getData();
-        $fan_id     = $this->redis->read($params['pkey'])['id'];
+        $fan_id = $this->_getFanIdFormPkey($params['pkey']);
         $type       = $params['type'];
         $conditions = compact('merchant_id', 'fan_id');
         if ($type === 'dislike') {
