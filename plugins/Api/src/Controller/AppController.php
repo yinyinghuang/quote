@@ -10,7 +10,6 @@ class AppController extends BaseController
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
-        $this->ret(0,$this->redis->read('ac69bafc58097c58c26c1b0710d97b78b95a7242'));
     }
 
 	//返回结果

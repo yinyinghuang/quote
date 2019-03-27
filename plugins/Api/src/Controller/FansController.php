@@ -4,7 +4,6 @@ namespace Api\Controller;
 use Api\Controller\AppController;
 use Cake\Http\Client;
 use Cake\I18n\Time;
-use Cake\Cache\Cache;
 use Cake\Core\Configure;
 
 /**
@@ -23,21 +22,21 @@ class FansController extends AppController
         $params = $this->request->getData();
         //在缓存中查找用户信息
         if(!empty($params['pkey'])){
-            $userInfo = json_decode(Cache::read($params['pkey']));
+            $userInfo = json_decode($this->redis->read($params['pkey']));
         }
         if(empty($userInfo)){
             //在缓存中查找openid
             if(!empty($params['pkey'])){
-                $openid  = json_decode(Cache::read('user.openid.'.$params['pkey']));
+                $openid  = json_decode($this->redis->read('user.openid.'.$params['pkey']));
             }else{
                 $openid  = $this->getOpenid();
                 $params['pkey'] = $this->setTokenId()['public_token_id'];
-                Cache::write('user.openid.'.$params['pkey'],$openid );
+                $this->redis->write('user.openid.'.$params['pkey'],$openid );
             }
             //数据库中获取用户信息
             $userInfo = $this->getUserInfo($openid);
             $userInfo['pkey'] = $params['pkey'];
-            Cache::write($params['pkey'],$userInfo ); 
+            $this->redis->write($params['pkey'],$userInfo ); 
         }
         $this->ret(0,['pkey' => $params['pkey']]);
         

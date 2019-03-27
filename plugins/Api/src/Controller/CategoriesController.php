@@ -17,6 +17,8 @@ class CategoriesController extends AppController
         $params = $this->request->getData();
         switch ($params['type']) {
             case 'zones':
+                $zones = $this->redis->read('zone.list');
+                if($zones) $this->ret(0, $zones, '加载成功');
                 $zones = $this
                     ->loadModel('Zones')
                     ->find()
@@ -24,10 +26,13 @@ class CategoriesController extends AppController
                     ->where(['Zones.is_visible' => 1])
                     ->order(['Zones.sort desc', 'Zones.id desc'])
                     ->toArray();
+                $this->redis->write('zone.list',$zones);
                 $this->ret(0, $zones, '加载成功');
                 break;
-            case 'zone_children':
+            case 'zone_children':                
                 if (isset($params['id']) && $params['id']) {
+                    $zone_children = $this->redis->read('zone.children.'.$params['id']);
+                    if($zone_children) $this->ret(0, $zone_children, '加载成功');
                     $zone = $this->loadModel('Zones')
                         ->find()
                         ->select(['id', 'name'])
@@ -50,7 +55,9 @@ class CategoriesController extends AppController
                         ->where(['Groups.is_visible' => 1, 'Groups.zone_id' => $params['id']])
                         ->order(['Groups.sort desc', 'Groups.id desc'])
                         ->toArray();
-                    $this->ret(0, compact('zone', 'groups'), '加载成功');
+                    $zone_children = compact('zone', 'groups');
+                    $this->redis->write('zone.children.'.$params['id'],$zone_children);
+                    $this->ret(0, $zone_children, '加载成功');
                 } else {
                     $this->ret(1, null, 'id参数缺失');
                 }
@@ -59,7 +66,8 @@ class CategoriesController extends AppController
 
             case 'group_children':
                 if (isset($params['id']) && $params['id']) {
-
+                    $groups = $this->redis->read('group.list.'.$params['id']);
+                    if($groups) $this->ret(0, $groups, '加载成功');
                     $groups = $this->loadModel('Groups')
                         ->find()
                         ->select(['id' => 'Groups.id', 'name' => 'Groups.name', 'zone_name' => 'Zones.name', 'zone_id' => 'Zones.id'])
@@ -78,6 +86,8 @@ class CategoriesController extends AppController
                     if (empty($groups)) {
                         $this->ret(2, null, '分组不存在');
                     }
+                    $groups = compact('groups');
+                    $this->redis->write('group.list.'.$params['id'],$groups);
                     $this->ret(0, compact('groups'), '加载成功');
                 } else {
                     $this->ret(1, null, 'id参数缺失');
@@ -95,6 +105,8 @@ class CategoriesController extends AppController
         if (empty($category_id)) {
             $this->ret(1, null, 'category_id缺失');
         }
+        $category = $this->redis->read('category.related.'.$category_id);
+        if($category) $this->ret(0, $category, '加载成功');
         $category    = $this->loadModel('Categories')
             ->find('all', [
                 'contain'    => ['Zones', 'Groups'],
@@ -117,7 +129,7 @@ class CategoriesController extends AppController
             $category->filter_count = count($this->_getCategoryAttributeIsFilter($category_id));
             $category->brand_count  = count($this->_getCategoryBrand($category_id));
         }
-
+        $this->redis->write('category.related.'.$category_id,$category);
         $this->ret(0, $category, ['分类信息加载成功']);
     }
 
@@ -127,9 +139,12 @@ class CategoriesController extends AppController
         if (empty($category_id)) {
             $this->ret(1, null, 'category_id缺失');
         }
+        $cateFilterAttrs = $this->redis->read('category.attribute.is.filter.'.$category_id);
+        if($cateFilterAttrs) $this->ret(0, $cateFilterAttrs, '加载成功');
 
         //分类下为筛选项的属性
         $cateFilterAttrs = $this->_getCategoryAttributeIsFilter($category_id);
+        $this->redis->write('category.attribute.is.filter.'.$category_id,$cateFilterAttrs);
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
     }
     protected function _getCategoryAttributeIsFilter($category_id)
