@@ -8,7 +8,7 @@ use Cake\Event\Event;
 
 class AppController extends BaseController
 {
-    public function startupProcess()
+    public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
         $this->userInfo = $this->getUInfo();
@@ -17,7 +17,7 @@ class AppController extends BaseController
     private function getUInfo()
     {
         $userInfo = [];
-        $params = $this->request->getData();
+        $params = $_POST;
         //在缓存中查找用户信息
         if(!empty($params['pkey'])){
             $userInfo = json_decode($this->redis->read($params['pkey']));
@@ -37,8 +37,8 @@ class AppController extends BaseController
                 $userInfo['pkey'] = $params['pkey'];
                 $this->redis->write($params['pkey'],$userInfo );
             }             
-        }  
-        $this->ret(2, '', $params);      
+        }
+        $this->ret(1,$params);
         return $userInfo;
         
     }
