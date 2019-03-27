@@ -197,7 +197,7 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params     = $this->request->getData();
-        $fan_id     = $params['pkey'];
+        $fan_id     = $this->redis->read($params['pkey'])['id'];
         $type       = $params['type'];
         $conditions = compact('product_id', 'fan_id');
         if ($type === 'dislike') {
@@ -247,7 +247,7 @@ class ProductsController extends AppController
         if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
-        $fan_id  = $params['pkey'];
+        $fan_id  = $this->redis->read($params['pkey'])['id'];
         $rating  = $params['rating'];
         $content = $params['content'];
         $created = date('Y-m-d H:i:s');
@@ -268,10 +268,10 @@ class ProductsController extends AppController
     public function hotKeywordLists()
     {
         $keywords = $this->loadModel('Keywords')->find('all', [
-            'conditions' => [ 'is_visible' => 1],
-            'limit'  => 10,
-            'offset' => 0,
-            'order' => ['sort desc','id desc',]
+            'conditions' => ['is_visible' => 1],
+            'limit'      => 10,
+            'offset'     => 0,
+            'order'      => ['sort desc', 'id desc'],
         ])->extract('name')->toArray();
         $this->ret(0, $keywords, '加载成功');
     }

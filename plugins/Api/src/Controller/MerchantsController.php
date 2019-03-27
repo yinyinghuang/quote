@@ -14,6 +14,8 @@ class MerchantsController extends AppController
 
     public function areaLists()
     {
+        $areas = $this->redis->read('area.list');
+        if($areas) $this->ret(0, $areas, '加载成功');
         $areas = $this->loadModel('Areas')->find('all', [
             'fields'     => ['Areas.id', 'Areas.name'],
             'contain'    => ['Districts' => function ($query) {
@@ -23,6 +25,7 @@ class MerchantsController extends AppController
             'order'      => ['Areas.sort'],
         ])
             ->toArray();
+        $this->redis->write('area.list',$areas);
         $this->ret(0, $areas, '加载成功');
     }
 
@@ -109,7 +112,7 @@ class MerchantsController extends AppController
             $this->ret(1, null, '商户id缺失');
         }
         $params     = $this->request->getData();
-        $fan_id     = $params['pkey'];
+        $fan_id     = $this->redis->read($params['pkey'])['id'];
         $type       = $params['type'];
         $conditions = compact('merchant_id', 'fan_id');
         if ($type === 'dislike') {
