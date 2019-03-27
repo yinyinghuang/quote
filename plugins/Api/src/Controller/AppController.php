@@ -37,8 +37,7 @@ class AppController extends BaseController
                 $userInfo['pkey'] = $params['pkey'];
                 $this->redis->write($params['pkey'],$userInfo );
             }             
-        }
-        $this->ret(1,$params);
+        }        
         return $userInfo;
         
     }
