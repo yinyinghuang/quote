@@ -11,16 +11,6 @@ class AppController extends BaseController
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
-        // $ret         = [
-        //     'zone.list'                           => $this->redis->read('zone.list'),
-        //     'zone.children.5'                     => $this->redis->read('zone.children.5'),
-        //     'group.children.13'                   => $this->redis->read('group.children.13'),
-        //     'category.related.100019'             => $this->redis->read('category.related.100019'),
-        //     'category.attribute.is.filter.100019' => $this->redis->read('category.attribute.is.filter.100019'),
-        //     'category.brand.100019'               => $this->redis->read('category.brand.100019'),
-        //     'category.filter.option.100018'       => $this->redis->read('category.filter.option.100018'),
-        // ];
-        // $this->ret(0,$ret);
     }
 
     //返回结果
@@ -100,5 +90,14 @@ class AppController extends BaseController
     protected function _getLogoDir($merchant_id)
     {
         return intval($merchant_id / 100) . '00' . '/';
+    }
+    protected function _getFanIdFormPkey($pkey)
+    {
+        $fan = $this->redis->read($pkey);
+        // if($fan) {
+        //     return $fan['id'];
+        // }else{
+            $this->ret(0,0,'登陆信息过期');
+        // }
     }
 }
