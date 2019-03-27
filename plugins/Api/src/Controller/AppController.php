@@ -11,16 +11,107 @@ class AppController extends BaseController
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
-        // $ret         = [
-        //     'zone.list'                           => $this->redis->read('zone.list'),
-        //     'zone.children.5'                     => $this->redis->read('zone.children.5'),
-        //     'group.children.13'                   => $this->redis->read('group.children.13'),
-        //     'category.related.100019'             => $this->redis->read('category.related.100019'),
-        //     'category.attribute.is.filter.100019' => $this->redis->read('category.attribute.is.filter.100019'),
-        //     'category.brand.100019'               => $this->redis->read('category.brand.100019'),
-        //     'category.filter.option.100018'       => $this->redis->read('category.filter.option.100018'),
-        // ];
-        // $this->ret(0,$ret);
+        $this->getUInfo();
+    }
+
+    public function getUInfo()
+    {
+        $params = $this->request->getData();
+        //在缓存中查找用户信息
+        if(!empty($params['pkey'])){
+            $this->userInfo = json_decode($this->redis->read($params['pkey']));
+        }
+        if(empty($userInfo)){
+            //在缓存中查找openid
+            if(!empty($params['pkey'])){
+                $openid  = json_decode($this->redis->read('user.openid.'.$params['pkey']));
+            }elseif(empty($params['pkey'] && !empty($params['code'])){
+                $openid  = $this->getOpenid();
+                $params['pkey'] = $this->setTokenId()['public_token_id'];
+                $this->redis->write('user.openid.'.$params['pkey'],$openid );
+            }
+            if(!empty($openid)){
+                //数据库中获取用户信息
+                $this->userInfo = $this->getUserInfo($openid);
+                $this->userInfo['pkey'] = $params['pkey'];
+                $this->redis->write($params['pkey'],$userInfo );
+            }             
+        }
+        
+    }
+    //获取openid
+    private function getOpenid()
+    {
+        $code = $this->request->getData('code');
+        empty($code) && $this->ret(1, '', '缺少code');
+        $this->sessionKey = $this->getSessionKey($code);
+        if (array_key_exists('errcode', $this->sessionKey->json)) {
+            $this->ret(2, '', $this->sessionKey->json['errmsg']);
+        } else {
+            $openid = $this->sessionKey->json['openid'];      
+            return $openid;      
+        }
+    }
+
+    private function getSessionKey($jscode)
+    {
+        $http        = new Client();
+        $jsonPayload = [
+            'appid'  => $this->appid,
+            'secret' => $this->secret,
+        ];
+        $url      = 'https://sz.api.weixin.qq.com/sns/jscode2session?js_code=' . $jscode . '&grant_type=authorization_code';
+        $response = $http->get($url, $jsonPayload, ['type' => 'json']);
+        return $response;
+    }
+    private function getUserInfo($openid)
+    {
+        $fan    = $this->Fans->find()->where(['openid' => $openid])->first();
+
+        if ($fan) return $fan;
+        $params = $this->request->getData();
+        $fan         = $this->Fans->newEntity();
+        $fan->openid = $openid;
+        $fan->sign_up =(new Time($row->created))->i18nFormat('yyyy-MM-dd H:i:s');
+        $params      = json_decode($this->request->getData('user_msg_str'), true);
+        $fan         = $this->Fans->patchEntity($fan, $params);
+        $schema      = $this->Fans->getSchema();
+        $data        = $fan->extract($this->Fans->getSchema()->columns(), true);
+        $fan         = $this->Fans->_insert($fan, $data);
+        
+        //以下方式保存数据，openid保存失败，原因未知
+        // if ($this->Fans->save($fan)) {
+        //     $this->ret(0, $fan->id, '注册成功');
+        // } else {
+        //     $msgs = [];
+        //     foreach ($fan->__debugInfo()['[errors]'] as $name => $error) {
+        //         $msgs[] = $name . ':' . implode(',', array_values($error));
+        //     }
+        //     $this->ret(3, $fan, implode(';', $msgs));
+        // }
+        return $fan;
+    }
+    private function setTokenId()
+    {
+        $token_salt = Configure::consume('Security.salt');
+        $timestamp = time();//时间戳
+        $nostr = self::setNostr();
+        $arr = ["{$timestamp}", $nostr, $token_salt];
+        sort($arr);
+
+        $public_token_id = sha1(implode($arr));
+        $real_token_id = md5($public_token_id . '@123' . $token_salt);
+
+        $ret['public_token_id'] = $public_token_id;
+        $ret['real_token_id'] = $real_token_id;
+
+        return $ret;
+    }    
+    //生成随机字符串
+    public static function setNostr($len = 12)
+    {
+        $nostr = mb_substr(md5(mb_substr(str_shuffle('0987YaTzxc23CvBVNbM456nSmkEjhA678guXoZqwpQrhRq24werWtyu2547iopsIdfgU76hPj'), 0, $len)), 0, $len); //随机字符串
+        return $nostr;
     }
 
     //返回结果
