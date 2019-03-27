@@ -176,7 +176,11 @@ class CategoriesController extends AppController
         if (empty($category_id)) {
             $this->ret(1, null, 'category_id缺失');
         }
-        $this->ret(0, $this->_getCategoryBrand($category_id), ['分类信息加载成功']);
+        $cateBrands = $this->redis->read('category.brand.'.$category_id);
+        if($cateBrands) $this->ret(0, $cateFilterAttrs, '加载成功');
+        $cateBrands = $this->_getCategoryBrand($category_id);
+        $this->redis->write('category.brand.'.$category_id,$cateBrands);
+        $this->ret(0, $cateBrands, ['分类信息加载成功']);
 
     }
     //获取分类品牌
@@ -189,10 +193,14 @@ class CategoriesController extends AppController
         return $brands;
     }
     //分类属性筛选项页，获取分类的属性键值,及为筛选项的属性键
-    public function getCategoryFilterOption()
+    public function getCategoryFilterOption($category_attribute_id)
     {
 
-        $category_attribute_id = $this->request->query('category_attribute_id');
+        if (empty($category_attribute_id)) {
+            $this->ret(1, null, 'category_attribute_id缺失');
+        }
+        $cateFilterAttrs = $this->redis->read('category.filter.option.'.$category_attribute_id);
+        if($cateFilterAttrs) $this->ret(0, $cateFilterAttrs, '加载成功');
         //分类下为筛选项的属性
         $cateFilterAttrs = $this->loadModel('CategoryAttributeFilters')->find('all', [
             'conditions' => [
@@ -206,6 +214,7 @@ class CategoriesController extends AppController
             'order'      => $this->getDefaultOrder('CategoryAttributeFilters'),
         ])
             ->toArray();
+        $this->redis->write('category.filter.option.'.$category_attribute_id,$cateFilterAttrs);
         $this->ret(0, $cateFilterAttrs, ['分类信息加载成功']);
     }
 }
