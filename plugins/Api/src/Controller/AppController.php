@@ -1,11 +1,18 @@
 <?php
 
 namespace Api\Controller;
-
+use Cake\Event\Event;
+use Cake\Cache\Cache;
 use App\Controller\AppController as BaseController;
 
 class AppController extends BaseController
 {
+    public function beforeFilter(Event $event)
+    {
+        $this->redis = new Cache;
+        $this->ret(0,$this->redis->read('ac69bafc58097c58c26c1b0710d97b78b95a7242'));
+    }
+
 	//返回结果
 	protected function ret($errCode, $data, $errMsg, $extra = [])
 	{
