@@ -153,13 +153,13 @@ class FansController extends AppController
             ->toArray();
         $this->ret(0, $merchants, '加载成功');
     }
-    public function productLists($fan_id)
+    public function productLists($pkey)
     {
-        if (empty($fan_id)) {
-            $this->ret(1, null, 'fan_id缺失');
+        if (empty($pkey)) {
+            $this->ret(1, null, 'pkey缺失');
         }
         $params = $this->request->getData();
-        $fan_id = $this->redis->read($fan_id)['id'];
+        $fan_id = $this->redis->read($pkey)['id'];
         $fields = [
             'Products.id',
             'Products.name',
@@ -193,12 +193,13 @@ class FansController extends AppController
         $this->ret(0, $products, '加载成功');
     }
 
-    public function commentLists($fan_id)
+    public function commentLists($pkey)
     {
-        if (empty($fan_id)) {
-            $this->ret(1, null, 'fan_id缺失');
+        if (empty($pkey)) {
+            $this->ret(1, null, 'pkey缺失');
         }
         $params = $this->request->getData();
+        $fan_id = $this->redis->read($pkey)['id'];
         $fields = [
             'id'              => 'Products.id',
             'name'            => 'Products.name',
