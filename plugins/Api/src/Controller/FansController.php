@@ -20,7 +20,8 @@ class FansController extends AppController
     public function login()
     {
         $userInfo =$this->userInfo;
-        $this->ret(2,$_POST);
+        // $this->ret(2,$_POST);
+        $this->ret(3,$this->request->getData());
         $this->ret(0,['pkey' => $userInfo['pkey']]);
         
     }
