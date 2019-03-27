@@ -25,7 +25,7 @@ class AppController extends BaseController
             //在缓存中查找openid
             if(!empty($params['pkey'])){
                 $openid  = json_decode($this->redis->read('user.openid.'.$params['pkey']));
-            }elseif(empty($params['pkey'] && !empty($params['code'])){
+            }elseif(empty($params['pkey']) && !empty($params['code'])){
                 $openid  = $this->getOpenid();
                 $params['pkey'] = $this->setTokenId()['public_token_id'];
                 $this->redis->write('user.openid.'.$params['pkey'],$openid );
