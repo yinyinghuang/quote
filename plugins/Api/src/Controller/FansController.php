@@ -31,7 +31,7 @@ class FansController extends AppController
                 $openid  = json_decode(Cache::read('user.openid.'.$params['pkey']));
             }else{
                 $openid  = $this->getOpenid();
-                $params['pkey'] = $this->setTokenId();
+                $params['pkey'] = $this->setTokenId()['public_token_id'];
                 Cache::write('user.openid.'.$params['pkey'],$openid );
             }
             //数据库中获取用户信息
