@@ -38,7 +38,7 @@ class AppController extends BaseController
                 $this->redis->write($params['pkey'],$userInfo );
             }             
         }
-        $this->ret(1,$openid);
+        $this->ret(1,empty($params['pkey']) && !empty($params['code']));
         return $userInfo;
         
     }
