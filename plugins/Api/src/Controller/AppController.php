@@ -18,7 +18,7 @@ class AppController extends BaseController
     private function getUInfo()
     {
         $userInfo = [];
-        $params = $this->request->getData();
+        $params = $_POST;
         //在缓存中查找用户信息
         if(!empty($params['pkey'])){
             $userInfo = json_decode($this->redis->read($params['pkey']));
@@ -39,7 +39,7 @@ class AppController extends BaseController
                 $this->redis->write($params['pkey'],$userInfo );
             }             
         }
-        $this->ret(1,$params);
+        $this->ret(5,$params);
         return $userInfo;
         
     }
