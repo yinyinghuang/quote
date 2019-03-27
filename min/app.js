@@ -9,6 +9,7 @@ App({
         const userInfo = res.authSetting['scope.userInfo']
         if (userInfo){
           _this.initPage(_fn)
+          
         }else{
           const page = getCurrentPages()[0];
           wx.redirectTo({

@@ -47,8 +47,6 @@ Page({
         _this.setData({
           option
         })
-        console.log(_this.data)
-        console.log(res)
       },
     })
   },

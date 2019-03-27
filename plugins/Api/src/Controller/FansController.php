@@ -159,6 +159,7 @@ class FansController extends AppController
             $this->ret(1, null, 'fan_id缺失');
         }
         $params = $this->request->getData();
+        $fan_id = $this->redis->read(($fan_id)['id'];
         $fields = [
             'Products.id',
             'Products.name',
