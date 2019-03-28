@@ -92,7 +92,7 @@ class ProductsController extends AppController
                 return $row;
             })
             ->toArray();
-        // $this->ret(0, $products, '加载成功');
+        $this->ret(0, $products, '加载成功');
     }
     public function detail($id)
     {
