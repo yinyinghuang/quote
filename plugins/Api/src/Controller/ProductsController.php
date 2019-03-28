@@ -40,18 +40,14 @@ class ProductsController extends AppController
         //获取价格
         if (isset($params['price']) && !empty($params['price'])) {
             $price_range = explode('-', $params['price']);
-            if (count($price_range) === 2) {
-                if (!empty($price_range[0])) {
-                    $conditions[] = ['or' => [
-                                            'Products.price_hong_min >='  => $price_range[0],
-                                            'Products.price_water_min >=' => $price_range[0],
-                                        ]];
+            if (count($price_range) === 2) {                
+                if(!empty($price_range[0])){
+                    $conditions['or'][0]['Products.price_hong_min >='] = $price_range[0];
+                    $conditions['or'][1]['Products.price_water_min >='] = $price_range[0];
                 }
-                if (!empty($price_range[1])) {
-                    $conditions[] = ['or' => [
-                                            'Products.price_hong_max <='  => $price_range[1],
-                                            'Products.price_water_max <=' => $price_range[1],
-                                        ]];
+                if(!empty($price_range[1])){
+                    $conditions['or'][0]['Products.price_hong_max <='] = $price_range[1];
+                    $conditions['or'][1]['Products.price_water_max <='] = $price_range[1];
                 }
             }
         }
@@ -96,7 +92,7 @@ class ProductsController extends AppController
                 return $row;
             })
             ->toArray();
-        $this->ret(0, $products, '加载成功');
+        // $this->ret(0, $products, '加载成功');
     }
     public function detail($id)
     {
