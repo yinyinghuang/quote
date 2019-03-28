@@ -16,7 +16,7 @@ Page({
     price:''
   },
 
-  //从列表页进入此页
+  //从列表页进入此页,将列表页中已有参数加入data中
   onLoad: function (options) {
     const product_list_page = getCurrentPages()[getCurrentPages().length - 2]['__data__']
     this.setData({
@@ -30,11 +30,17 @@ Page({
     })
     app.openSetting(this.initPage)
   },
-  //筛选项值页跳转回时
+  //筛选项值页跳转回时，同步已选参数信息，同时需要更新product_list_page
   onShow: function () {
     if (glbd.cate_filter_page) {
+      let { product_list_page } = this.data
+      product_list_page.brand = glbd.cate_filter_page.brand
+      product_list_page.price = glbd.cate_filter_page.price
+      product_list_page.filter_selected = glbd.cate_filter_page.filter_selected
+
       this.setData({
-        ...glbd.cate_filter_page
+        ...glbd.cate_filter_page,
+        product_list_page
       })
       delete (glbd.cate_filter_page)
       const filter = this.matchFilterSelected(this.data.filter)

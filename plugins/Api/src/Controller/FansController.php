@@ -14,9 +14,7 @@ use Cake\I18n\Time;
  */
 class FansController extends AppController
 {
-    protected $appid  = 'wx594d39c9d198444b';
-    protected $secret = '3896265393bd937b00683664282f01f8';
-
+    
     public function login()
     {
         $fan = $this->getUserInfo($this->request->getData());

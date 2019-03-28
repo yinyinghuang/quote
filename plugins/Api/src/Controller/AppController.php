@@ -10,6 +10,9 @@ use Cake\Core\Configure;
 
 class AppController extends BaseController
 {
+    protected $appid  = 'wx594d39c9d198444b';
+    protected $secret = '3896265393bd937b00683664282f01f8';
+
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;

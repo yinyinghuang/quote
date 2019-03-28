@@ -20,8 +20,8 @@ Page({
 
     this.setData({
       ...options,
-      cate_filter_page
-
+      cate_filter_page,
+      selected:cate_filter_page.brand
     })
     app.openSetting(this.initPage)
   },
@@ -53,7 +53,7 @@ Page({
   },
   //匹配筛选项是否已有选项值
   matchOptionSelected: function (data) {
-    const selected = this.data.cate_filter_page.brand
+    const {selected} = this.data
 
     if (selected) {
       data.some((item) => {
@@ -67,36 +67,36 @@ Page({
   handlerSelect: function (e) {
 
     const { index } = e.currentTarget.dataset
-    const { option } = this.data
-    if (this.data.filter_type == 1) {
-      if (!option[index]['selected']) {
-        option.some((item) => {
-          if (item.selected) {
-            item.selected = !1
-            return 1
-          }
-        })
+    let { option,selected } = this.data
+    //当前选项为已选中，取消选中，清除seleted
+    if (option[index]['selected']){
+      selected =''
+      option[index]['selected'] = false
+    }else{
+      if (this.data.filter_type == 1) {
+        if (!option[index]['selected']) {
+          option.some((item) => {
+            if (item.selected) {
+              item.selected = !1
+              return 1
+            }
+          })
+        }
       }
+      option[index]['selected'] = !option[index]['selected']
+      selected = option[index].name
     }
-    option[index]['selected'] = !option[index]['selected']
     this.setData({
       option,
-      selected: option[index]['name']
+      selected,
     })
 
   },
   //跳转回筛选页，并将已选筛选项值存入globalData中
   handlerNavigatorToCateFilter: function () {
-    // let data = this.data.option.filter((item) => {
-    //   return item.selected
-    // })
-    // if (this.data.filter_type == 1) data = data.slice(0, 1)
-
-    // let option_selected = {}
-    // data.forEach((option) => {
-    //   option_selected[option.id] = option.filter
-    // })
+    const {selected} = this.data
     this.data.cate_filter_page.brand = this.data.selected
+    
     glbd.cate_filter_page = this.data.cate_filter_page
     wx.navigateBack({
       delta: 1
