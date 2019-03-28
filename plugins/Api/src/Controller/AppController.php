@@ -93,13 +93,13 @@ class AppController extends BaseController
     {
         return intval($merchant_id / 100) . '00' . '/';
     }
-    protected function _getFanIdFormPkey($pkey)
+    protected function _getFanFormPkey($pkey)
     {
         $fan = $this->redis->read($pkey);
         if(!$fan) {
             $fan = $this->getUserInfo($this->request->getData());
         }
-        return $fan['id'];
+        return $fan;
     }
     protected function getUserInfo($params)
     {    
