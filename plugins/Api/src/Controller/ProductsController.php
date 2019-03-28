@@ -18,7 +18,7 @@ class ProductsController extends AppController
         $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max'];
         $conditions = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
         $contain    = ['Categories'];
-        $order      = ['Products.sort desc', 'Products.id desc'];
+        $order      = ['Products.sort desc', 'Products.is_hot desc', 'Products.is_new desc', 'Products.id desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 

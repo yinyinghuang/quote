@@ -57,6 +57,7 @@
 }
 .merchant-detail-text{
   width: 490rpx;
+  word-break:break-all; 
 }
 .quote-location-header{
   justify-content: flex-start;

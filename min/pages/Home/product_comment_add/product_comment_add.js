@@ -46,7 +46,7 @@ Page({
       success: function (res) {
         if(res.data.data){
           comm.showToast('跳转至产品详情', 'success')
-          comm.refreshPkey(glbd, res.data.data)
+          comm.refreshPkey(glbd, res.data.data.pkey)
           wx.navigateTo({
             url: '/pages/Home/product_detail/product_detail?id=' + product_id,
           })

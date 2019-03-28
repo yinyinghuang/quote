@@ -186,7 +186,7 @@ Page({
         if (res.data.data) _this.setData({
           liked: !_this.data.liked
         })
-        comm.refreshPkey(glbd, res.data.data)
+        comm.refreshPkey(glbd, res.data.data.pkey)
       }
     })
   },
