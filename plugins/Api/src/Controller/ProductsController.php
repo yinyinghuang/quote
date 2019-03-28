@@ -198,7 +198,8 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params     = $this->request->getData();
-        $fan_id = $this->_getFanIdFormPkey($params['pkey']);
+        $fan = $this->_getFanFormPkey($params['pkey']);
+        $fan_id = $fan['id'];
         $type       = $params['type'];
         $conditions = compact('product_id', 'fan_id');
         if ($type === 'dislike') {
@@ -214,7 +215,7 @@ class ProductsController extends AppController
         }
         //更新产品数据统计
         $this->setProductMetaData($product_id, ['collect_count' => $delt]);
-        $this->ret(0, 1, '加载成功');
+        $this->ret(0, $fan['pkey'], '加载成功');
     }
     public function commentLists($product_id)
     {

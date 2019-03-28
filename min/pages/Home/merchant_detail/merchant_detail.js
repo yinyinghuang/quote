@@ -178,6 +178,7 @@ Page({
         if (res.data.data) _this.setData({
           liked: !_this.data.liked
         })
+        if (glbd.pkey != res.data.data) glbd.pkey = res.data.data
       }
     })
   },

@@ -112,7 +112,8 @@ class MerchantsController extends AppController
             $this->ret(1, null, '商户id缺失');
         }
         $params     = $this->request->getData();
-        $fan_id = $this->_getFanIdFormPkey($params['pkey']);
+        $fan = $this->_getFanFormPkey($params['pkey']);
+        $fan_id = $fan['id'];
         $type       = $params['type'];
         $conditions = compact('merchant_id', 'fan_id');
         if ($type === 'dislike') {
@@ -124,6 +125,6 @@ class MerchantsController extends AppController
                 $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'merchant_id', 'created'])->values($conditions)->execute();
             }
         }
-        $this->ret(0, 1, '加载成功');
+        $this->ret(0, $fan['pkey'], '加载成功');
     }
 }
