@@ -18,7 +18,8 @@ Page({
     app.openSetting(this.initPage)    
   },
   onShow:function(){
-    this.initPage()
+    const history = wx.getStorageSync('search_history')
+    if (history) this.setData({ history })
   },
   initPage:function(){    
     const history = wx.getStorageSync('search_history')

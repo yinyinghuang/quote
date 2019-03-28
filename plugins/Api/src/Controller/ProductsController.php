@@ -81,6 +81,7 @@ class ProductsController extends AppController
                 'conditions' => ['name' => $params['keyword']],
             ])->first() ?: $this->loadModel('Keywords')->newEntity(['name' => $params['keyword'], 'count' => 0]);
             $keyword->count = $keyword->count + 1;
+            debug($keyword);die;
             $this->loadModel('Keywords')->save($keyword);
         }
         //最近浏览
@@ -252,7 +253,7 @@ class ProductsController extends AppController
         $fan = $this->_getFanFormPkey($this->request->getData('pkey'));
         $pkey = $fan['pkey'];
         $fan_id  = $fan['id'];
-        
+
         $rating  = $params['rating'];
         $content = $params['content'];
         $created = date('Y-m-d H:i:s');
