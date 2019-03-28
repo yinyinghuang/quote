@@ -86,7 +86,6 @@ class CategoriesController extends AppController
                     if (empty($groups)) {
                         $this->ret(2, null, '分组不存在');
                     }
-                    $groups = compact('groups');
                     $this->redis->write('group.children.'.$params['id'],$groups);
                     $this->ret(0, compact('groups'), '加载成功');
                 } else {
