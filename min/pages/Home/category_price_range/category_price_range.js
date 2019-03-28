@@ -17,14 +17,15 @@ Page({
   //从筛选页跳转至此页
   onLoad: function (options) {
     const cate_filter_page = getCurrentPages()[getCurrentPages().length - 2]['__data__']
+    
     const { price_max, price_min} = options
     let step = 100
     const active_range = cate_filter_page.price.split('-')
-
+    
     this.setData({
       ...options,
-      min: active_range.length === 2 ?active_range[0]:price_min,
-      max: active_range.length === 2 ? active_range[1] :price_max,
+      min: active_range.length === 2 && active_range[0]?active_range[0]:price_min,
+      max: active_range.length === 2 && active_range[1]? active_range[1] :price_max,
       cate_filter_page,
       step
     })
@@ -46,9 +47,15 @@ Page({
     
     if (this.data.min !== this.data.price_min || this.data.max !== this.data.price_max){
       let max, min;
-      [min, max] = [Math.min(this.data.min, this.data.max), Math.max(this.data.min, this.data.max)]
-      if (min < max && !(min === this.data.price_min && max === this.data.price_max )){
-        this.data.cate_filter_page.price = (min == this.data.price_min ? '' : min) + '-' + (max == this.data.price_max ? '' : max)
+      [min, max] = [Math.min(this.data.min, this.data.max), Math.max(this.data.min, this.data.max)]      
+      if (min < max){
+        if (min == this.data.price_min) { min = '' }
+        if (max == this.data.price_max) { max=''}
+        if(max==='' && min===''){
+          this.data.cate_filter_page.price = '';
+        }else{
+          this.data.cate_filter_page.price = [min,max].join('-')
+        }
       }
     }    
     glbd.cate_filter_page = this.data.cate_filter_page

@@ -90,7 +90,12 @@ Page({
     data.forEach((option) => {
       option_selected[option.id] = option.filter
     })
-    this.data.cate_filter_page.filter_selected[this.data.category_attribute_id] = option_selected
+    if(JSON.stringify(option_selected)=='{}') {
+      delete this.data.cate_filter_page.filter_selected[this.data.category_attribute_id];
+    }else{
+      this.data.cate_filter_page.filter_selected[this.data.category_attribute_id] = option_selected
+    }
+    
     glbd.cate_filter_page = this.data.cate_filter_page
     wx.navigateBack({
       delta: 1

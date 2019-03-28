@@ -48,12 +48,12 @@ class CategoriesController extends AppController
                         ->contain(['Categories' => function ($query) {
                             return $query->select(['Categories.id', 'Categories.group_id', 'Categories.name', 'product_count' => $query->func()->count('Products.id')])
                                 ->where(['Categories.is_visible' => 1])
-                                ->order(['Categories.sort desc', 'Categories.id desc'])
+                                ->order(['Categories.sort desc', 'Categories.id asc'])
                                 ->leftJoinWith('Products')
                                 ->group(['Categories.id']);
                         }])
                         ->where(['Groups.is_visible' => 1, 'Groups.zone_id' => $params['id']])
-                        ->order(['Groups.sort desc', 'Groups.id desc'])
+                        ->order(['Groups.sort desc', 'Groups.id asc'])
                         ->toArray();
                     $zone_children = compact('zone', 'groups');
                     $this->redis->write('zone.children.'.$params['id'],$zone_children);
@@ -74,12 +74,12 @@ class CategoriesController extends AppController
                         ->contain(['Categories' => function ($query) {
                             return $query->select(['Categories.id', 'Categories.group_id', 'Categories.name', 'product_count' => $query->func()->count('Products.id')])
                                 ->where(['Categories.is_visible' => 1])
-                                ->order(['Categories.sort desc', 'Categories.id desc'])
+                                ->order(['Categories.sort desc', 'Categories.id asc'])
                                 ->leftJoinWith('Products')
                                 ->group(['Categories.id']);
                         }, 'Zones'])
                         ->where(['Groups.is_visible' => 1, 'Groups.id' => $params['id']])
-                        ->order(['Groups.sort desc', 'Groups.id desc'])
+                        ->order(['Groups.sort desc', 'Groups.id asc'])
                         ->enableAutoFields(true)
                         ->toArray();
 
