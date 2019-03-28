@@ -87,6 +87,9 @@ Page({
         }
       })
     }
+    wx.login({
+      success:function(res){glbd.code = res.code},
+    })
   },
   //获取各种列表
   getList:function(){
@@ -136,10 +139,15 @@ Page({
               'params.recents.page': 2,
               'params.recents.reach_bottom': 1,
             })
+            return
           }
         })
       }
     }
+    _this.setData({
+      'params.recents.page': 2,
+      'params.recents.reach_bottom': 1,
+    })
     
   },
   //获取收藏店铺
@@ -285,7 +293,6 @@ Page({
           _this.data[model][index].liked = !cur.liked
           _this.setData(_this.data)
         }
-        
       }
     })
   },

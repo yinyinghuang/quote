@@ -14,7 +14,8 @@ const requestHandler = {
 }
 const requestData = (glbd,data={}) => {
   const req_data = {
-    pkey:glbd.pkey
+    pkey:glbd.pkey,
+    code:glbd.code
   }
   return Object.assign({}, req_data,data)
 }
