@@ -161,7 +161,7 @@ Page({
       data: comm.requestData(glbd,{page}),
       success: function (res) {
         let data = res.data.data.merchants
-        if (glbd.pkey != res.data.data.pkey) glbd.pkey = res.data.data.pkey
+        comm.refreshPkey(glbd,res.data.data.pkey)
         let time = Date.now()
         data.forEach((merchant) => {
           merchant.liked=1
@@ -190,7 +190,7 @@ Page({
       data: comm.requestData(glbd, { page }),
       success: function (res) {
         let data = res.data.data.products
-        if (glbd.pkey != res.data.data.pkey) glbd.pkey = res.data.data.pkey
+        comm.refreshPkey(glbd, res.data.data.pkey)
         let time = Date.now()
         data.forEach((product) => {
           product.liked=1
@@ -220,7 +220,7 @@ Page({
       data: comm.requestData(glbd, { page }),
       success: function (res) {
         let data = res.data.data.comments
-        if (glbd.pkey != res.data.data.pkey) glbd.pkey = res.data.data.pkey
+        comm.refreshPkey(glbd, res.data.data.pkey)
         let time = Date.now()
         data.forEach((product) => {
           product.album = product.cover ? glbd.hosts + product.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
@@ -295,7 +295,7 @@ Page({
         if (res.data.data) {
           _this.data[model][index].liked = !cur.liked
           _this.setData(_this.data)
-          if (glbd.pkey != res.data.data) glbd.pkey = res.data.data
+          comm.refreshPkey(glbd, res.data.data)
         }
       }
     })

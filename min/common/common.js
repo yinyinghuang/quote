@@ -61,10 +61,17 @@ const formatPrice = (price) => {
   }
   return price_positive + (str.length ? ',' + str.join(',') : '') + (price[1] ? '.' + price[1]:'')
 }
+const refreshPkey = (glbd,pkey) => {
+  if(glbd.pkey !=pkey){
+    glbd.pkey =pkey
+    wx.setStorageSync('local_pkey', pkey)  
+  }
+}
 export {
   showToast,
   request,
   requestData,
   type,
-  formatPrice
+  formatPrice,
+  refreshPkey
 }
