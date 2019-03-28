@@ -249,14 +249,17 @@ class ProductsController extends AppController
         if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
-        $fan_id  = $this->redis->read($params['pkey'])['id'];
+        $fan = $this->_getFanFormPkey($this->request->getData('pkey'));
+        $pkey = $fan['pkey'];
+        $fan_id  = $fan['id'];
+        
         $rating  = $params['rating'];
         $content = $params['content'];
         $created = date('Y-m-d H:i:s');
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
 
-        $this->ret(0, 1, '提交成功');
+        $this->ret(0, $pkey, '提交成功');
     }
     public function shareCount($product_id)
     {

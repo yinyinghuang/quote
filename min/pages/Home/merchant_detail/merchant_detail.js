@@ -49,7 +49,8 @@ Page({
       method: glbd.method,
       data: comm.requestData(glbd),
       success: function (res) {
-        let detail = res.data.data
+        let detail = res.data.data.merchant
+        comm.refreshPkey(glbd, res.data.data.pkey)
         if (detail.logos.middle){
           detail.logos.middle = glbd.hosts + detail.logos.middle
           detail.logos.full = glbd.hosts + detail.logos.full

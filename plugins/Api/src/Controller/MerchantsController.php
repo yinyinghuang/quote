@@ -40,16 +40,15 @@ class MerchantsController extends AppController
         ])->first();
         if (empty($merchant)) {
             $this->ret(1, null, '商户不存在或已被删除');
-        }
-        $fan_id  = $this->request->getData('pkey');
-        debug($this->loadModel('MerchantLikes')->find('all', [
-            'conditions' => ['merchant_id' => $merchant->id,'fan_id' => $fan_id],
-        ]));
+        }        
+        $fan = $this->_getFanFormPkey($this->request->getData('pkey'));
+        $pkey = $fan['pkey'];
+        $fan_id  = $fan['id'];
         $merchant->liked = $this->loadModel('MerchantLikes')->find('all', [
             'conditions' => ['merchant_id' => $merchant->id,'fan_id' => $fan_id],
         ])->count();
         $merchant->logos = $this->_getMerchantLogoUrl($merchant);
-        $this->ret(0, $merchant, '产品加载成功');
+        $this->ret(0, compact('merchant','pkey'), '产品加载成功');
     }
     public function locationLists($merchant_id)
     {
