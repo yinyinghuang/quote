@@ -4,7 +4,7 @@ namespace Api\Controller;
 use Api\Controller\AppController;
 
 use Cake\I18n\Time;
-use Cake\Core\Configure;
+
 
 /**
  * Fans Controller

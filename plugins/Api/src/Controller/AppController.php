@@ -6,6 +6,7 @@ use App\Controller\AppController as BaseController;
 use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\Http\Client;
+use Cake\Core\Configure;
 
 class AppController extends BaseController
 {
