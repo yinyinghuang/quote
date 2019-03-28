@@ -94,10 +94,10 @@ class AppController extends BaseController
     protected function _getFanIdFormPkey($pkey)
     {
         $fan = $this->redis->read($pkey);
-        // if($fan) {
-        //     return $fan['id'];
-        // }else{
+        if($fan) {
+            return $fan['id'];
+        }else{
             $this->ret(0,0,'登陆信息过期');
-        // }
+        }
     }
 }
