@@ -15,7 +15,7 @@ class ProductsController extends AppController
     public function lists()
     {
         $params     = $this->request->getData();
-        $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max'];
+        $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max', 'Products.is_hot', 'Products.is_new',];
         $conditions = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
         $contain    = ['Categories'];
         $order      = ['Products.sort desc', 'Products.is_hot desc', 'Products.is_new desc', 'Products.id desc'];
