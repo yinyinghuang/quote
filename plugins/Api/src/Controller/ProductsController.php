@@ -54,8 +54,6 @@ class ProductsController extends AppController
                                         ]];
                 }
             }
-            debug($conditions);
-            debug($conditions);
         }
         //获取筛选条件
         if (isset($params['filter']) && !empty($params['filter'])) {
