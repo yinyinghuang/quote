@@ -212,7 +212,7 @@ class ProductsController extends AppController
         }
         //更新产品数据统计
         $this->setProductMetaData($product_id, ['collect_count' => $delt]);
-        $this->ret(0, $fan['pkey'], '加载成功');
+        $this->ret(0, ['pkey' => $fan['pkey']], '加载成功');
     }
     public function commentLists($product_id)
     {
@@ -256,7 +256,7 @@ class ProductsController extends AppController
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
 
-        $this->ret(0, $pkey, '提交成功');
+        $this->ret(0, compact('pkey'), '提交成功');
     }
     public function shareCount($product_id)
     {

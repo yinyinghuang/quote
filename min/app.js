@@ -80,10 +80,9 @@ App({
       }),
       method:_this.globalData.method,
       success:function(res){
-        if(res.data.errCode === 0){
-          _this.globalData.pkey = res.data.data.pkey
+        if(res.data.errCode === 0){          
           _this.globalData.hasKey = true
-          wx.setStorageSync('local_pkey', res.data.data.pkey)
+          comm.refreshPkey(_this.globalData, res.data.data.pkey)
           _this.saveFormIds()
           typeof(_fn) === 'function' && _fn()
         }else{

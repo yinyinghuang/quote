@@ -127,6 +127,6 @@ class MerchantsController extends AppController
                 $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'merchant_id', 'created'])->values($conditions)->execute();
             }
         }
-        $this->ret(0, $fan['pkey'], '加载成功');
+        $this->ret(0, ['pkey' => $fan['pkey']], '加载成功');
     }
 }
