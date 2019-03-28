@@ -42,18 +42,19 @@ class ProductsController extends AppController
             $price_range = explode('-', $params['price']);
             if (count($price_range) === 2) {
                 if (!empty($price_range[0])) {
-                    $conditions['or'] = [
-                        'Products.price_hong_min >='  => $price_range[0],
-                        'Products.price_water_min >=' => $price_range[0],
-                    ];
+                    $conditions[] = ['or' => [
+                                            'Products.price_hong_min >='  => $price_range[0],
+                                            'Products.price_water_min >=' => $price_range[0],
+                                        ]];
                 }
                 if (!empty($price_range[1])) {
-                    $conditions['or'] = [
-                        'Products.price_hong_max >='  => $price_range[1],
-                        'Products.price_water_max >=' => $price_range[1],
-                    ];
+                    $conditions[] = ['or' => [
+                                            'Products.price_hong_max <='  => $price_range[1],
+                                            'Products.price_water_max <=' => $price_range[1],
+                                        ]];
                 }
             }
+            debug($conditions);
             debug($conditions);
         }
         //获取筛选条件
