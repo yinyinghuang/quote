@@ -97,7 +97,7 @@ class AppController extends BaseController
         if($fan) {
             return $fan['id'];
         }else{
-            $this->ret(0,0,'登陆信息过期');
+            $this->ret(0,1,'登陆信息过期');
         }
     }
 }
