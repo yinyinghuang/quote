@@ -20,7 +20,7 @@ class FansController extends AppController
     public function login()
     {
         $fan = $this->getUserInfo($this->request->getData());
-        $this->ret(0,$fan['pkey'],'登陆成功')
+        $this->ret(0,$fan['pkey'],'登陆成功');
         
     }
     public function merchantLists($pkey)

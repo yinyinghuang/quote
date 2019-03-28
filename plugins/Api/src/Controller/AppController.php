@@ -108,6 +108,7 @@ class AppController extends BaseController
             $userInfo = json_decode($this->redis->read($params['pkey']));
         }
         if(empty($userInfo)){
+            $openid = null;
             //在缓存中查找openid
             if(!empty($params['pkey'])){
                 $openid  = json_decode($this->redis->read('user.openid.'.$params['pkey']));
