@@ -24,7 +24,7 @@ class CategoriesController extends AppController
                     ->find()
                     ->select(['id', 'name'])
                     ->where(['Zones.is_visible' => 1])
-                    ->order(['Zones.sort desc', 'Zones.id desc'])
+                    ->order(['Zones.sort desc', 'Zones.id asc'])
                     ->toArray();
                 $this->redis->write('zone.list',$zones);
                 $this->ret(0, $zones, '加载成功');
