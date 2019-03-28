@@ -42,6 +42,9 @@ class MerchantsController extends AppController
             $this->ret(1, null, '商户不存在或已被删除');
         }
         $fan_id  = $this->request->getData('pkey');
+        debug($this->loadModel('MerchantLikes')->find('all', [
+            'conditions' => ['merchant_id' => $merchant->id,'fan_id' => $fan_id],
+        ]));
         $merchant->liked = $this->loadModel('MerchantLikes')->find('all', [
             'conditions' => ['merchant_id' => $merchant->id,'fan_id' => $fan_id],
         ])->count();
