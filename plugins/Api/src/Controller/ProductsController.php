@@ -79,9 +79,9 @@ class ProductsController extends AppController
             //保存记录
             $keyword = $this->loadModel('Keywords')->find('all', [
                 'conditions' => ['name' => $params['keyword']],
-            ])->first() ?: $this->loadModel('Keywords')->newEntity(['name' => $params['keyword'], 'count' => 0]);
+            ])->first() ?: $this->loadModel('Keywords')->newEntity(['name' => $params['keyword'], 'count' => 0,'is_visible' => 1]);
             $keyword->count = $keyword->count + 1;
-            debug($keyword);die;
+
             $this->loadModel('Keywords')->save($keyword);
         }
         //最近浏览
