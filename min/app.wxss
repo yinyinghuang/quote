@@ -16,7 +16,7 @@ button{
   text-decoration:none;
   line-height: 1;
   border-radius: 0;
-  background: #fff;
+  background-color: transparent;
 }
 button::after{
   border: none;
@@ -126,7 +126,9 @@ page {
   margin-left: 20rpx;
   color: #333;
   border: 1px solid #333;
-  padding:  0 6rpx;
+  padding:  0 4rpx;
+  font-size: 0.7em;
+  line-height: 1;
 }
 
 .action-icon{

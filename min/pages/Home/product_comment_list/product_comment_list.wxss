@@ -1,6 +1,6 @@
 /* pages/Home/product_comment_list/product_comment_list.wxss */
 .product-item{
-  box-shadow: 3rpx 3rpx 5rpx #000;
+  
 }
 .comment-list-header{
   justify-content: space-between;
@@ -35,7 +35,6 @@
   padding: 20rpx;
   width: 100%;
   background: #fff;
-  box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .comment-item-header{
   justify-content: space-between;
@@ -56,13 +55,4 @@
 .comment-item-content{
   margin-top: 20rpx;
   font-size: 1.4em;
-}
-.comment-no-more{
-  box-sizing: border-box;
-  width: 100%;
-  margin:auto;
-  background: #fff;
-  padding: 30rpx;
-  text-align: center;
-  box-shadow: 3rpx 3rpx 5rpx #000;
 }

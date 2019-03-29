@@ -100,7 +100,9 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params = $this->request->getData();
-        $fan_id  = $this->redis->read($params['pkey'])['id'];
+        $fan = $this->_getFanFormPkey($params['pkey']);
+        $pkey = $fan['pkey'];
+        $fan_id  = $fan['id'];
         $product = $this->loadModel('Products')->find('all', [
             'conditions' => ['Products.id' => $id, 'Products.is_visible' => 1],
         ])->first();

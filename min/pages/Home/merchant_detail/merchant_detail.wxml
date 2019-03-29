@@ -41,10 +41,10 @@
       </view>
     </view>
     <view class='merchant-detail-action flex-row'>
-      <button bindtap='handlerLike' data-id='{{id}}'>
-        <image src='/static/images/icon{{liked?"-red":""}}/icon-fav.png' class='action-icon'></image>
+      <button class='box-shadow merchant-action-icon'>
+        <image src='/static/images/icon{{liked?"-red":""}}/icon-fav.png' class='action-icon' bindtap='handlerLike' data-id='{{id}}'></image>
       </button>          
-      <button open-type='share'>
+      <button open-type='share' class='box-shadow merchant-action-icon'>
         <image src='/static/images/icon/icon-share.png' class='action-icon'></image>
       </button>
     </view>

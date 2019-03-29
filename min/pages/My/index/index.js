@@ -38,13 +38,13 @@ Page({
   onLoad: function (options) {
     app.openSetting(this.initPage)
   },
-  //下拉刷新
-  onPullDownRefresh:function(){
+  //生命周期函数--监听页面显示
+  onShow: function (options) {
     this.setData({
-      params:{
-        recents:{
-          page:1,
-          reach_bottom:false
+      params: {
+        recents: {
+          page: 1,
+          reach_bottom: false
         },
         merchants: {
           page: 1,

@@ -35,10 +35,10 @@
   justify-content: space-between;
 }
 .merchant-details{
-  width: 540rpx;
+  width: 522rpx;
 }
 .merchant-detail-action{
-  width: 110rpx;
+  width: 128rpx;
 }
 .merchant-detail-item,
 .location-item{
@@ -59,6 +59,13 @@
   width: 490rpx;
   word-break:break-all; 
 }
+.merchant-action-icon{
+  margin-left: 20rpx;
+  border-radius: 50%;
+}
+.action-icon{
+  margin-left: 0;
+}
 .quote-location-header{
   justify-content: flex-start;
 }
@@ -74,6 +81,9 @@
 .quote-location-header .title:last-child{
   border-right: none;
   margin-left: 40rpx;
+}
+.quote-location-header .title:first-child{
+  margin-left: 0;
 }
 .no-more{
   background: #fff;

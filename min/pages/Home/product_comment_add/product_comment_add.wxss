@@ -6,7 +6,6 @@
 .comment-submit{  
   background: #fff;
   padding: 20rpx;
-  box-shadow: 3rpx 3rpx 5rpx #000;
 }
 .comment-fields{
   margin-bottom: 20rpx;
@@ -20,11 +19,11 @@
 }
 textarea{
   width: 100%;
-  border: 1px solid #333;
   padding: 20rpx;
   font-size: 1.2em;
   line-height: 1.7;
   box-sizing: border-box;
+  border: 1px solid #333;
 }
 .comment-submit{
   font-size: 1.4em;

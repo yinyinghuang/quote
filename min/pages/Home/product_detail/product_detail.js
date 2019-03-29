@@ -66,7 +66,7 @@ Page({
       success: function (res) {
         let detail = res.data.data
         if (detail.rating == 0 && detail.meta_data&&detail.meta_data.comment_score_total && detail.meta_data.comment_count) {
-          detail.rating = Math.cell(detail.meta_data.comment_score_total / detail.meta_data.comment_count)
+          detail.rating = Math.ceil(detail.meta_data.comment_score_total / detail.meta_data.comment_count)
         }
         detail.albums.forEach((item) => {
           item.middle = glbd.hosts + item.middle
@@ -78,15 +78,15 @@ Page({
         if (detail.price_water_max) detail.price_water_max = comm.formatPrice(detail.price_water_max)
         if (detail.price_water_min) detail.price_water_min = comm.formatPrice(detail.price_water_min)
 
-        let attribute_group = []
-        if (detail.attributes.length){
-          const half = Math.ceil(detail.attributes.length / 2)
-          attribute_group.push(detail.attributes.slice(0, half))
-          attribute_group.push(detail.attributes.slice(half))
-        }
+        // let attribute_group = []
+        // if (detail.attributes.length){
+        //   const half = Math.ceil(detail.attributes.length / 2)
+        //   attribute_group.push(detail.attributes.slice(0, half))
+        //   attribute_group.push(detail.attributes.slice(half))
+        // }
         _this.setData({
           ...detail,
-          attribute_group
+          // attribute_group
         })
         _this._saveTrack()
       }

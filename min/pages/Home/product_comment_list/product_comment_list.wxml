@@ -3,7 +3,7 @@
   <official-account></official-account>
 </view>
 <view class='section section-product-info'>
-  <view data-id='{{id}}' data-name='{{name}}' data-album='{{album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item '>
+  <view data-id='{{id}}' data-name='{{name}}' data-album='{{album}}' bindtap='handlerNavigatorToProductDetail' class='flex-row product-item box-shadow'>
     <view class='product-icon'>
       <image src='{{thumb.middle}}' lazy-load binderror='handlerImageError'></image>
     </view>
@@ -42,7 +42,7 @@
     </view>
   </view>
   <view class='comment-list-body'>
-    <view class='comment-item' wx:for='{{comment_list}}' wx:key='{{index}}' wx:for-item='comment'>
+    <view class='comment-item box-shadow' wx:for='{{comment_list}}' wx:key='{{index}}' wx:for-item='comment'>
       <view class='comment-item-header flex-row'>
         <view class='comment-item-userinfo flex-row'>
           <image class='comment-item-user-avatar' src='{{comment.fan_avatar}}'></image>

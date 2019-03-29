@@ -2,7 +2,7 @@
 <view class='container'>
   <view class='section section-comment-add'>
     <form class='' bindsubmit='handlerSubmit'>
-      <view class='comment-fields'>
+      <view class='comment-fields box-shadow'>
         <view class='comment-field-item'>
           <view class='comment-field-name'>整体评分</view>
           <view class='comment-field-value'>
@@ -16,11 +16,11 @@
         <view class='comment-field-item'>
           <view class='comment-field-name'>评价</view>
           <view class='comment-field-value'>
-            <textarea name='content'></textarea>
+            <textarea name='content' class='box-shadow'></textarea>
           </view>      
         </view>
       </view>
-      <button form-type="submit" class='comment-submit'>提交</button>
+      <button form-type="submit" class='comment-submit box-shadow'>提交</button>
     </form>  
     <view class='section section-official-account'>
       <official-account></official-account>
