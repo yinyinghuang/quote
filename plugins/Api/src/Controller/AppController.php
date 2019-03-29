@@ -157,17 +157,17 @@ class AppController extends BaseController
     }
     protected function getUserInfoFromTable($openid)
     {
-        $fan    = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();
+        $fan    = $this->Fans->find()->where(['openid' => $openid])->first();
 
         if ($fan) return $fan;
-        $fan         = $this->loadModel('Fans')->newEntity();
+        $fan         = $this->Fans->newEntity();
         $fan->openid = $openid;
         $fan->sign_up =(new Time($row->created))->i18nFormat('yyyy-MM-dd H:i:s');
         $params      = json_decode($this->request->getData('user_msg_str'), true);
-        $fan         = $this->loadModel('Fans')->patchEntity($fan, $params);
-        $schema      = $this->loadModel('Fans')->getSchema();
-        $data        = $fan->extract($this->loadModel('Fans')->getSchema()->columns(), true);
-        $fan         = $this->loadModel('Fans')->_insert($fan, $data);
+        $fan         = $this->Fans->patchEntity($fan, $params);
+        $schema      = $this->Fans->getSchema();
+        $data        = $fan->extract($this->Fans->getSchema()->columns(), true);
+        $fan         = $this->Fans->_insert($fan, $data);
         
         //以下方式保存数据，openid保存失败，原因未知
         // if ($this->Fans->save($fan)) {
