@@ -15,27 +15,19 @@
       </view>
       <view class='product-price-action flex-row'>      
         <view class='product-price'>
-          <block wx:if='{{ price_hong_max===0 && price_hong_min===0 && price_water_max===0 && price_water_min===0}}'>
-            <view class='product-item-price'>暂无报价</view>
-          </block>
-          <block wx:else>
-            <block wx:if='{{price_hong_max!==0 || price_hong_min!==0}}'>
-              <view class='product-item-price'>
-                HK${{price_hong_min?price_hong_min:''}}
-                <block wx:if='{{price_hong_max && price_hong_min}}'>-</block>
-                {{price_hong_max?price_hong_max:''}}
-                <text class='product-price-label'>行</text>
-              </view>
-            </block>
-            <block wx:if='{{price_water_max!==0 || price_water_min!==0}}'>
-              <view class='product-item-price'>
-                HK${{price_water_min?price_water_min:''}}
-                <block wx:if='{{price_water_max && price_water_min}}'>-</block>
-                {{price_water_max?price_water_max:''}}
-                <text class='product-price-label'>水</text>
-              </view>
-            </block>
-          </block>
+          <view class='product-item-price' wx:if='{{ price_hong_max===0 && price_hong_min===0 && price_water_max===0 && price_water_min===0}}'>暂无报价</view>
+          <view class='product-item-price' wx:if='{{price_hong_max!==0 || price_hong_min!==0}}'>
+            HK${{price_hong_min?price_hong_min:''}}
+            <block wx:if='{{price_hong_max && price_hong_min}}'>-</block>
+            {{price_hong_max?price_hong_max:''}}
+            <text class='product-price-label'>行</text>
+          </view>
+          <view class='product-item-price' wx:if='{{price_water_max!==0 || price_water_min!==0}}'>
+            HK${{price_water_min?price_water_min:''}}
+            <block wx:if='{{price_water_max && price_water_min}}'>-</block>
+            {{price_water_max?price_water_max:''}}
+            <text class='product-price-label'>水</text>
+          </view>
         </view>
         <view class='product-action flex-row'>
           <button bindtap='handlerLike' data-id='{{id}}' class='box-shadow product-action-icon'>
@@ -130,8 +122,8 @@
           <view class='merchant-quote flex-row'>
             <view class='merchant-quote-text'>售价:</view>
             <view class='merchant-quote-price'>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='quote-price-label'>行</text></view>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='quote-price-label'>水</text></view>
+              <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='product-price-label'>行</text></view>
+              <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='product-price-label'>水</text></view>
             </view>
           </view>
         </view>

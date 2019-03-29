@@ -16,7 +16,7 @@
         <view class='comment-field-item'>
           <view class='comment-field-name'>评价</view>
           <view class='comment-field-value'>
-            <textarea name='content' class='box-shadow'></textarea>
+            <textarea name='content'></textarea>
           </view>      
         </view>
       </view>

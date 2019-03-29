@@ -33,6 +33,8 @@ Page({
   //筛选项也跳转回时,重新加载页面
   onShow: function () {
     if (glbd.product_list_page) {
+      glbd.product_list_page.reach_bottom=0
+      glbd.product_list_page.options.page=1
       this.setData({
         ...glbd.product_list_page
       })

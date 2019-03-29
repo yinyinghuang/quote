@@ -118,6 +118,7 @@
   justify-content: flex-start;
   align-content: flex-end;
   align-items: flex-start;
+  word-break: break-all;
 }
 /* 在售商家 */
 .section-merchant-list{
