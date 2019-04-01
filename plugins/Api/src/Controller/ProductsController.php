@@ -275,7 +275,7 @@ class ProductsController extends AppController
             'conditions' => ['is_visible' => 1],
             'limit'      => 10,
             'offset'     => 0,
-            'order'      => ['sort desc', 'id desc'],
+            'order'      => ['sort desc','count desc', 'id desc'],
         ])->extract('name')->toArray();
         $this->ret(0, $keywords, '加载成功');
     }
