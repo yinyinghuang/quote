@@ -6,9 +6,6 @@ use Cake\I18n\Time;
 
 /**
  * Products Controller
- *
- *
- * @method \Api\Model\Entity\Product[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ProductsController extends AppController
 {
@@ -16,7 +13,7 @@ class ProductsController extends AppController
     {
         $params     = $this->request->getData();
         $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max', 'Products.is_hot', 'Products.is_new',];
-        $conditions = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
+        $conditions = ['Products.is_visible' => 1, 'c.is_visible' => 1];
         $contain    = ['Categories'];
         $order      = ['Products.sort'=> 'desc', 'Products.is_hot'=>'desc', 'Products.is_new'=>'desc', 'Products.id'=>'desc'];
         $limit      = 20;

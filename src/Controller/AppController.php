@@ -106,6 +106,11 @@ class AppController extends Controller
             'name' => '粉丝',
             'tabs' => ['Fans'],
         ],
+        'Configs'      => [
+            'url'  => '/configs',
+            'name' => '配置',
+            'tabs' => ['Configs'],
+        ],
     ];
     /**
      * Initialization hook method.
@@ -124,13 +129,17 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
-        // $this->loadComponent('Auth', [
-        //     'loginRedirect' => [
-        //         'controller' => 'Products',
-        //         'action' => 'index'
-        //     ],
-        //     'unauthorizedRedirect' => $this->referer()
-        // ]);
+        $this->loadComponent('Auth', [
+            'loginRedirect' => [
+                'controller' => 'Products',
+                'action' => 'index'
+            ],
+            'unauthorizedRedirect' => $this->referer(),
+            'logoutRedirect' => [
+                'controller' => 'Users',
+                'action' => 'Login'
+            ]
+        ]);
         // 更新分类的最高最低价
         // $cates = $this->loadModel('Categories')->find('list');
         // foreach ($cates as $cate_id => $cate_name) {
@@ -184,6 +193,7 @@ class AppController extends Controller
             'CategoriesBrands'     => '分类品牌',
             'Comments'             => '评价',
             'Keywords'             => '关键词',
+            'Configs'             => '配置',
         ];
         $actionsMap = [
             'add'       => '添加 ',

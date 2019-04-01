@@ -614,7 +614,7 @@ class ProductsController extends AppController
 
             $contain = ['Zones', 'Groups', 'Categories'];
 
-            $order = ['Products.sort' => 'desc', 'Products.modified' => 'desc', 'Products.created' => 'desc', 'Products.id' => 'desc'];
+            $order = ['Products.sort' => 'desc', 'Products.created' => 'desc', 'Products.id' => 'desc'];
             return [$fields, $where, $contain, $order];
 
         });

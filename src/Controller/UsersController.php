@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Event\Event;
 /**
  * Users Controller
  *
@@ -12,6 +13,16 @@ use Cake\Auth\DefaultPasswordHasher;
  */
 class UsersController extends AppController
 {
+    // Other methods..
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        // Allow users to register and logout.
+        // You should not add the "login" action to allow list. Doing so would
+        // cause problems with normal functioning of AuthComponent.
+        $this->Auth->allow(['logout']);
+    }
 
     //首页
     public function index()
@@ -65,7 +76,6 @@ class UsersController extends AppController
         $this->set(compact('user'));
         $this->render('view');
     }
-
     public function login()
     {
         if ($this->request->is('post')) {
@@ -78,7 +88,6 @@ class UsersController extends AppController
             $this->Flash->error(__('用戶名稱或密碼不正確, 請重試!'));
         }
     }
-
     public function logout()
     {
         return $this->redirect($this->Auth->logout());
