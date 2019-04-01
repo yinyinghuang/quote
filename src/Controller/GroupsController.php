@@ -234,8 +234,8 @@ class GroupsController extends AppController
         $msg_arr = ['删除完成', '删除失败，刷新页面再重试', '未选中', '暂不支持删除'];
         $this->allowMethod(['POST']);
         
-        $data = ['code' =>3];
-        $this->resApi(0, $data, $msg_arr[$data]);
+        $code=3;
+        $this->resApi(0, compact('code'), $msg_arr[$code]);
     }
 
     //ajax获取list
