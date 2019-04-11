@@ -16,6 +16,7 @@ class AppController extends BaseController
     public function beforeFilter(Event $event)
     {
         $this->redis = new Cache;
+        $this->Auth->allow();
     }
 
     //返回结果
