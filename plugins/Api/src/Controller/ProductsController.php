@@ -144,7 +144,7 @@ class ProductsController extends AppController
         $conditions = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
         $contain    = ['Merchants'];
         $order      = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.id desc', 'Merchants.id desc'];
-        $limit      = 20;
+        $limit      = 100;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
         //存在地区筛选项

@@ -34,10 +34,10 @@ Page({
     wx.removeStorageSync('user_location')
   },
   //页面上拉触底事件的处理函数
-  onReachBottom: function () {
-    const _this = this
-    _this.getMerchantList()
-  },
+  // onReachBottom: function () {
+  //   const _this = this
+  //   _this.getMerchantList()
+  // },
   initPage:function(){
     const _this = this
     wx.getLocation({
@@ -54,15 +54,15 @@ Page({
   getMerchantList: function () {
     const _this = this
     if (_this.data.merchant_reach_bottom) return false
-    const {page} = this.data
+    // const {page} = this.data
     comm.request({
       loadingMsg: '获取报价列表中...',
       url: glbd.host + 'products/quote-lists/' + _this.data.product_id,
       method: glbd.method,
-      data:{page},
+      // data:{page},
       success: function (res) {
         let data = res.data.data
-        const { page } = _this.data
+        // const { page } = _this.data
         let markers = []
         const length = _this.data.markers.length
         data.forEach((quote,index) => {
@@ -80,8 +80,9 @@ Page({
         _this.setData({
           markers: _this.data.markers.concat(markers),
           merchants: _this.data.merchants.concat(data),
-          page: page + 1,
-          merchant_reach_bottom: !data.length,
+          // page: page + 1,
+          // merchant_reach_bottom: !data.length,
+          merchant_reach_bottom: 1,
         })
       }
     })
