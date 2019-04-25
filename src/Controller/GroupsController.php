@@ -213,6 +213,7 @@ class GroupsController extends AppController
         if (!$group->pid) {
             $group->pid = $this->getPid();
         }
+        $visible_dirty = $group->isDirty('is_visible');
         $data = $this->Groups->save($group) ? 0 : 3;
         
         //内容填写错误导致记录无法更新
@@ -222,6 +223,14 @@ class GroupsController extends AppController
                 $msgs[] =$name.':'.implode(',', array_values($error));
             }
             $this->resApi($code, $data, implode(';', $msgs));
+        }
+        if($visible_dirty){
+            $this->Groups->Categories
+                ->query()
+                ->update()
+                ->set(['is_visible' => $group->is_visible])
+                ->where(['group_id' => $group->id])
+                ->execute();
         }
 
         $this->resApi($code, $data, $msg_arr[$data]);

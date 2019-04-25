@@ -240,6 +240,7 @@ class ZonesController extends AppController
         }
 
         $zone = $this->Zones->patchEntity($zone, $params);
+        $visible_dirty = $zone->isDirty('is_visible');
         $data = $this->Zones->save($zone) ? 0 : 3;
 
         //内容填写错误导致记录无法更新
@@ -250,7 +251,20 @@ class ZonesController extends AppController
             }
             $this->resApi($code, $data, implode(';', $msgs));
         }
-
+        if($visible_dirty){
+            $this->Zones->Categories
+                ->query()
+                ->update()
+                ->set(['is_visible' => $zone->is_visible])
+                ->where(['zone_id' => $zone->id])
+                ->execute();
+            $this->Zones->Groups
+                ->query()
+                ->update()
+                ->set(['is_visible' => $zone->is_visible])
+                ->where(['zone_id' => $zone->id])
+                ->execute();
+        }
         $this->resApi($code, $data, $msg_arr[$data]);
 
     }
