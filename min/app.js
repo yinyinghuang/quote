@@ -101,8 +101,8 @@ App({
 
   },
   globalData: {
-    host: 'https://exchange.527hk.cn/api/',
-    hosts:'https://exchange.527hk.cn/',
+    host: 'https://equote.527hk.cn/api/',
+    hosts:'https://equote.527hk.cn/',
     method:'post',
     islogin:false,
     hasPkey:false,

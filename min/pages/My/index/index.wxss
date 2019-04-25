@@ -112,6 +112,9 @@
 .product-item-text-action{
   justify-content: space-between;
 }
+.product-info .product-item-text{
+  width: 390rpx;
+}
 .section-tabs{
   padding-bottom: 60rpx;
 }

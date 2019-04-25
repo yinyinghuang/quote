@@ -60,14 +60,17 @@
     </view>
     <view class='product-detail-attr'>
       <view class='product-title'>产品参数</view>
-      <view class='flex-row product-attr-list'>
-        <!-- <view class='product-attr-column' wx:for='{{attribute_group}}' wx:key='{{index}}' wx:for-item='group'>
-          <view class='flex-column product-attr-item' wx:for='{{group}}' wx:for-item='attribute' wx:key='{{id}}'>
-            {{attribute.attribute_name}}:{{attribute.value}}
+      <view class='product-attr-list'>
+        <view class='product-attr-column flex-row ' wx:for='{{attributes}}' wx:key='{{index}}' wx:for-item='attribute'>
+          <view class='product-attr-item attr-name'>
+            {{attribute.attribute_name}}:
           </view>
-        </view> -->
-        <view class='product-attr-column'>
-          <view class='flex-column product-attr-item' wx:for='{{attributes}}' wx:key='{{attribute_id}}' wx:for-item='attribute'>
+          <view class='product-attr-item attr-value'>
+          {{attribute.value}}
+          </view>
+        </view>
+        <!-- <view class='product-attr-column'>
+          <view class='flex-column product-attr-item left' wx:for='{{attributes}}' wx:key='{{attribute_id}}' wx:for-item='attribute'>
             {{attribute.attribute_name}}:
           </view>
         </view>
@@ -75,7 +78,7 @@
           <view class='flex-column product-attr-item' wx:for='{{attributes}}' wx:key='{{attribute_id}}' wx:for-item='attribute'>
           {{attribute.value}}
           </view>
-        </view>
+        </view> -->
       </view>
     </view>
   </view>
