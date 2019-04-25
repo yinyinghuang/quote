@@ -5,6 +5,7 @@
 /logs/*
 /tmp/*
 /vendor/*
+/webroot/album/*
 
 # OS generated files #
 ######################
