@@ -162,6 +162,7 @@ class AppController extends Controller
 
         // }        
         $Navs  = $this->navs;
+        $Navs['Products']['children'][] = ['url' => '/comments', 'name' => '待审核评论', 'tabs' => ['Comments'],'bage' => $this->loadModel('Comments')->find()->where(['is_checked' => -1])->count()];
         $token = $this->request->getParam('_csrfToken');
         $this->set(compact('Navs', 'token'));
         /*

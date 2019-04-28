@@ -53,7 +53,9 @@
                         <dl class="layui-nav-child">
                             <?php foreach ($Nav['children'] as $ChildNav): ?>
                             <dd> <a href="<?=$ChildNav['url']?>"
-              class="<?php if (in_array($this->request->getParam('controller'), $ChildNav['tabs'])): ?>side-bar__tab--current<?php endif?>"><?=$ChildNav['name']?></a></dd>
+              class="<?php if (in_array($this->request->getParam('controller'), $ChildNav['tabs'])): ?>side-bar__tab--current<?php endif?>"><?=$ChildNav['name']?><?php if(isset($ChildNav['bage'])):?><span class="layui-badge"><?= $ChildNav['bage']?></span><?php endif?></a>
+                
+          </dd>
                             <?php endforeach?>
                         </dl>
                         <?php endif?>

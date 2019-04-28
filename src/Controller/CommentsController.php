@@ -13,6 +13,31 @@ use Cake\I18n\Time;
  */
 class CommentsController extends AppController
 {
+    public function index()
+    {
+        
+        $tableParams    = [
+            'name'        => 'comments',
+            'renderUrl'   => '/comments/api-lists?is_checked=-1',
+            'deleteUrl'   => '/comments/api-delete',
+            'editUrl'     => '/comments/api-save',
+            'can_search'  => true,
+            'tableFields' => [
+                ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
+                ['field' => '\'product_name\'', 'title' => '\'产品\'', 'fixed' => '\'left\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/products/view/\'+res.product_id+\'">\'+res.product_name+\'</a>\')', 'minWidth' => 150],
+                ['field' => '\'fan_name\'', 'title' => '\'粉丝\'', 'fixed' => '\'left\'', 'unresize' => true, 'templet' => '(res) => (\'<a href="/fans/view/\'+res.fan_id+\'">\'+res.fan_name+\'</a>\')'],
+                ['field' => '\'content\'', 'title' => '\'内容\'', 'minWidth' => 280, 'unresize' => true, ],
+                ['field' => '\'rating\'', 'title' => '\'评级\'', 'unresize' => true,],
+                ['field' => '\'is_checked\'', 'title' => '\'审核通过\'', 'unresize' => true, 'templet' => '\'#switchTpl_4\''],
+                ['field' => '\'sort\'', 'title' => '\'顺序\'', 'unresize' => true, 'edit' => '\'number\'', 'sort' => true],
+                ['field' => '\'created\'', 'title' => '\'评论时间\'','minWidth' => 180, 'unresize' => true],
+            ],
+            'switchTpls'  => [['id' => 'switchTpl_4', 'name' => 'is_checked', 'text' => '是|否']],
+        ];
+
+        $tableParams     = ['comments' => $tableParams];
+        $this->set(compact('tableParams'));
+    }
     //ajax修改产品
     public function apiSave()
     {
@@ -41,8 +66,9 @@ class CommentsController extends AppController
             $params['is_checked'] = isset($params['is_checked']) ? $params['is_checked'] : 0;
         }
         //若修改审核状态
-        if ($params['is_checked'] != $comment->is_checked) {
-            $comment_delt = $params['is_checked'] ? 1 : -1;
+        $delt = $params['is_checked'] - $comment->is_checked;
+        if ($delt!=0) {
+            $comment_delt = $delt>0 ? 1 : -1;
             $comment_score_delt = $params['is_checked'] ? $comment->rating : -$comment->rating;
             $this->setProductMetaData($comment->product_id, ['comment_count' => $comment_delt,'comment_score_total' => $comment_score_delt]);
         }
@@ -93,11 +119,19 @@ class CommentsController extends AppController
                 'sort'     => 'Comments.sort',
                 'fan_name' => 'Fans.nickName',
                 'fan_id'   => 'Fans.id',
+                'product_name' => 'Products.name',
+                'product_id'   => 'Products.id',
             ];
             $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
             $params  = $this->request->$paramFn();
 
-            $where = ['product_id' => $params['product_id']];
+            $where = [];
+            if (isset($params['product_id']) && $params['product_id']) {
+                $where['product_id'] = $params['product_id'];
+            }            
+            if (isset($params['is_checked']) && in_array($params['is_checked'], [0,1,-1])) {
+                $where['is_checked'] = $params['is_checked'];
+            }            
             if (isset($params['search'])) {
                 $params = $params['search'];
                 if (isset($params['fan_id']) && intval($params['fan_id'])) {
@@ -107,16 +141,16 @@ class CommentsController extends AppController
                     $where['Products.is_checked'] = $params['is_checked'];
                 }
             }
-            $contain = ['Fans'];
+            $contain = ['Fans','Products'];
             $order   = ['Comments.sort' => 'desc', 'Comments.id' => 'desc'];
             return [$fields, $where, $contain, $order];
 
-        }, function () {
+        }, /*function () {
             $msg_arr = ['加载完成', '访问参数无pid'];
             if (!($this->request->getQuery('product_id') || $this->request->getQuery('merchant_id'))) {
                 $this->resApi(0, [], $msg_arr[1]);
             }
-        }, function ($row) {
+        }*/null, function ($row) {
             $row->created = (new Time($row->created))->i18nFormat('yyyy-MM-dd HH:mm:ss');
             return $row;
         });

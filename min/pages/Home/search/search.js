@@ -76,6 +76,7 @@ Page({
         }
       }
       history.unshift(keyword)
+      history = history.slice(0,20)
       wx.setStorageSync('search_history', history )
       wx.navigateTo({
         url: '/pages/Home/product_list/product_list?keyword=' + keyword,
