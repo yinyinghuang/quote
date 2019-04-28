@@ -68,7 +68,7 @@ class CommentsController extends AppController
         //若修改审核状态
         $delt = $params['is_checked'] - $comment->is_checked;
         if ($delt!=0) {
-            $comment_delt = $delt>0 ? 1 : -1;
+            $comment_delt = $params['is_checked']=1? 1 :($delt>0?0:-1);
             $comment_score_delt = $params['is_checked'] ? $comment->rating : -$comment->rating;
             $this->setProductMetaData($comment->product_id, ['comment_count' => $comment_delt,'comment_score_total' => $comment_score_delt]);
         }
