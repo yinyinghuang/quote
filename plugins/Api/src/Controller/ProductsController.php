@@ -252,7 +252,14 @@ class ProductsController extends AppController
         $rating  = $params['rating'];
         $content = $params['content'];
         $created = date('Y-m-d H:i:s');
-        $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created'];
+        $comment_need_check = $this->redis->read('config.comment_need_check');
+        if(empty($comment_need_check)){
+            $comment_need_check = $this->loadModel('Configs')->findByName('comment_need_check')->first()->value;
+            $this->redis->write('config.comment_need_check',$comment_need_check);
+        }
+        
+        $is_checked =  $comment_need_check?-1:1;
+        $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created','is_checked'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
 
         $this->ret(0, compact('pkey'), '提交成功');

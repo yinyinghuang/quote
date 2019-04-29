@@ -46,7 +46,7 @@
             <div class="layui-side-scroll">
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                    <?php foreach ($Navs as $Nav): ?><?php if(isset($ChildNav['bage'])):?><span class="layui-badge"><?= $ChildNav['bage']?></span><?php endif?>
+                    <?php foreach ($Navs as $Nav): ?>
                     <li class="layui-nav-item <?php if (in_array($this->request->getParam('controller'), $Nav['tabs'])): ?>layui-nav-itemed<?php endif?>">
                         <a class="" href="<?=$Nav['url']?>"><?=$Nav['name']?></a>
                         <?php if (isset($Nav['children'])): ?>
