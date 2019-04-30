@@ -68,8 +68,8 @@ class CommentsController extends AppController
         //若修改审核状态
         $delt = $params['is_checked'] - $comment->is_checked;
         if ($delt!=0) {
-            $comment_delt = $params['is_checked']=1? 1 :($delt>0?0:-1);
-            $comment_score_delt = $params['is_checked'] ? $comment->rating : -$comment->rating;
+            $comment_delt = $params['is_checked']==1? 1 :($delt>0?0:-1);
+            $comment_score_delt = $comment_delt*$comment->rating;
             $this->setProductMetaData($comment->product_id, ['comment_count' => $comment_delt,'comment_score_total' => $comment_score_delt]);
         }
         $comment = $this->Comments->patchEntity($comment, $params);
@@ -126,7 +126,7 @@ class CommentsController extends AppController
             $params  = $this->request->$paramFn();
 
             $where = [];
-            if (isset($params['product_id']) && $params['product_id']) {
+            if (isset($params['product_id']) && $params['product_id']) { 
                 $where['product_id'] = $params['product_id'];
             }            
             if (isset($params['is_checked']) && in_array($params['is_checked'], [0,1,-1])) {

@@ -261,6 +261,9 @@ class ProductsController extends AppController
         $is_checked =  $comment_need_check?-1:1;
         $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created','is_checked'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
+        if(!$comment_need_check){
+            $this->setProductMetaData($product_id,  ['comment_count' => 1,'comment_score_total' => $rating]);
+        }
 
         $this->ret(0, compact('pkey'), '提交成功');
     }
@@ -269,7 +272,7 @@ class ProductsController extends AppController
         if (empty($product_id)) {
             $this->ret(1, null, '产品id缺失');
         }
-        // //更新产品数据统计
+        // 更新产品数据统计
         $this->setProductMetaData($product_id, ['share_count' => 1]);
         $this->ret(0, 1, '提交成功');
     }
