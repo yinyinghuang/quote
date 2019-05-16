@@ -4,9 +4,9 @@ namespace Api\Controller;
 
 use App\Controller\AppController as BaseController;
 use Cake\Cache\Cache;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Client;
-use Cake\Core\Configure;
 use Cake\I18n\Time;
 
 class AppController extends BaseController
@@ -101,37 +101,37 @@ class AppController extends BaseController
     protected function _getFanFormPkey($pkey)
     {
         $fan = $this->redis->read($pkey);
-        if(!$fan) {
+        if (!$fan) {
             $fan = $this->getUserInfo($this->request->getData());
         }
         return $fan;
     }
     protected function getUserInfo($params)
-    {    
-        $userInfo = [];   
+    {
+        $userInfo = [];
         //在缓存中查找用户信息
-        if(!empty($params['pkey'])){
+        if (!empty($params['pkey'])) {
             $userInfo = json_decode($this->redis->read($params['pkey']));
             $this->updateLastAccess($userInfo['openid']);
         }
-        if(empty($userInfo)){
+        if (empty($userInfo)) {
             $openid = null;
             //在缓存中查找openid
-            if(!empty($params['pkey'])){
-                $openid  = json_decode($this->redis->read('user.openid.'.$params['pkey']));
+            if (!empty($params['pkey'])) {
+                $openid = json_decode($this->redis->read('user.openid.' . $params['pkey']));
             }
-            if(!$openid && isset($params['code'])){
-                $openid  = $this->getOpenId($params['code']);
+            if (!$openid && isset($params['code'])) {
+                $openid         = $this->getOpenId($params['code']);
                 $params['pkey'] = $this->setTokenId()['public_token_id'];
-                $this->redis->write('user.openid.'.$params['pkey'],$openid );
+                $this->redis->write('user.openid.' . $params['pkey'], $openid);
             }
-            if($openid){
+            if ($openid) {
                 //数据库中获取用户信息
-                $userInfo = $this->getUserInfoFromTable($openid);die($userInfo);
+                $userInfo = $this->getUserInfoFromTable($openid);
                 $this->updateLastAccess($openid);
                 $userInfo['pkey'] = $params['pkey'];
-                $this->redis->write($params['pkey'],$userInfo );
-            }             
+                $this->redis->write($params['pkey'], $userInfo);
+            }
         }
         return $userInfo;
     }
@@ -142,13 +142,13 @@ class AppController extends BaseController
 
     //获取openid
     protected function getOpenId($code)
-    { 
+    {
         $this->sessionKey = $this->getSessionKey($code);
         if (array_key_exists('errcode', $this->sessionKey->json)) {
             $this->ret(2, '', $this->sessionKey->json['errmsg']);
         } else {
-            $openid = $this->sessionKey->json['openid'];      
-            return $openid;      
+            $openid = $this->sessionKey->json['openid'];
+            return $openid;
         }
     }
     protected function getSessionKey($jscode)
@@ -165,16 +165,20 @@ class AppController extends BaseController
     }
     protected function getUserInfoFromTable($openid)
     {
-        $fan    = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();
-        if ($fan) return $fan;
-        $fan         = $this->loadModel('Fans')->newEntity();        
-        $fan->last_access = $fan->sign_up =(new Time())->i18nFormat('yyyy-MM-dd H:i:s');
-        $params      = json_decode($this->request->getData('user_msg_str'), true);
-        $fan         = $this->loadModel('Fans')->patchEntity($fan, $params);
-        $schema      = $this->loadModel('Fans')->getSchema();
-        $data        = $fan->extract($this->loadModel('Fans')->getSchema()->columns(), true);
-        $fan         = $this->loadModel('Fans')->_insert($fan, $data);
-        
+        $fan = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();
+        if ($fan) {
+            return $fan;
+        }
+
+        $fan              = $this->loadModel('Fans')->newEntity();
+        $fan->sign_up     = (new Time())->i18nFormat('yyyy-MM-dd H:i:s');
+        $fan->last_access = (new Time())->i18nFormat('yyyy-MM-dd H:i:s');
+        $params           = json_decode($this->request->getData('user_msg_str'), true);
+        $fan              = $this->loadModel('Fans')->patchEntity($fan, $params);
+        $schema           = $this->loadModel('Fans')->getSchema();
+        $data             = $fan->extract($this->loadModel('Fans')->getSchema()->columns(), true);
+        $fan              = $this->loadModel('Fans')->_insert($fan, $data);
+
         //以下方式保存数据，openid保存失败，原因未知
         // if ($this->Fans->save($fan)) {
         //     $this->ret(0, $fan->id, '注册成功');
@@ -190,19 +194,19 @@ class AppController extends BaseController
     protected function setTokenId()
     {
         $token_salt = Configure::consume('Security.salt');
-        $timestamp = time();//时间戳
-        $nostr = self::setNostr();
-        $arr = ["{$timestamp}", $nostr, $token_salt];
+        $timestamp  = time(); //时间戳
+        $nostr      = self::setNostr();
+        $arr        = ["{$timestamp}", $nostr, $token_salt];
         sort($arr);
 
         $public_token_id = sha1(implode($arr));
-        $real_token_id = md5($public_token_id . '@123' . $token_salt);
+        $real_token_id   = md5($public_token_id . '@123' . $token_salt);
 
         $ret['public_token_id'] = $public_token_id;
-        $ret['real_token_id'] = $real_token_id;
+        $ret['real_token_id']   = $real_token_id;
 
         return $ret;
-    }    
+    }
     //生成随机字符串
     protected static function setNostr($len = 12)
     {
