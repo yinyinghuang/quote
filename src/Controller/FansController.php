@@ -27,7 +27,7 @@ class FansController extends AppController
                 ['field' => '\'nickName\'', 'title' => '\'粉丝昵称\'', 'fixed' => '\'left\'', 'unresize' => true],
                 ['field' => '\'city\'', 'title' => '\'城市\'', 'unresize' => true],
                 ['field' => '\'sign_up\'', 'title' => '\'注册时间\'', 'unresize' => true],
-                ['field' => '\'  last_access\'', 'title' => '\'上次访问\'', 'unresize' => true],
+                ['field' => '\'last_access\'', 'title' => '\'上次访问\'', 'unresize' => true],
             ],
             'switchTpls'  => [
             ],
