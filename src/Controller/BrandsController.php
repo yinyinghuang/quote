@@ -38,11 +38,11 @@ class BrandsController extends AppController
         $this->set(compact('table_fields', 'switch_tpls', 'tableParams'));
 
         $brands = $this->Brands->find()
-            ->map(function($row){
+            /*->map(function($row){
                 $alpha = $this->getfirstchar($row->brand);
                 $this->Brands->query()->update()->set(['alpha' => $alpha])->where(['brand' => $row->brand])->execute();
                 return $row;
-            })->count();
+            })*/->count();
         die($brands);
     }
 
