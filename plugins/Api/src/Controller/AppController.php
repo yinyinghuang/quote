@@ -163,7 +163,7 @@ class AppController extends BaseController
 
         if ($fan) return $fan;
         $fan         = $this->loadModel('Fans')->newEntity();
-        $fan->openid = $openid;
+        $fan->openid = $openid;die($fan);
         $fan->sign_up =(new Time($row->created))->i18nFormat('yyyy-MM-dd H:i:s');
 
         $params      = json_decode($this->request->getData('user_msg_str'), true);
