@@ -80,7 +80,7 @@ class ProductsController extends AppController
         //最近浏览
         if (isset($params['product_ids']) && is_array($params['product_ids']) && count($params['product_ids'])) {
             $conditions['Products.id in'] = $params['product_ids'];
-        }
+        }die(print_r($order));
         $products = $this->loadModel('Products')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->leftJoinWith('ProductData')
