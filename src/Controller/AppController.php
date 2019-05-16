@@ -207,13 +207,12 @@ class AppController extends Controller
             ['href' => '/' . $controller, 'title' => $breadcrumbsMap[$controller]],
             ['href' => '', 'title' => $actionsMap[$action]],
         ];
-        $brands = $this->loadModel('Brands')->find('all')
-            ->map(function($row){
-                $alpha = $this->getfirstchar($row->brand);
-                debug($alpha);
-                $this->Brands->query()->update()->set(['alpha' => $alpha])->where(['brand' => $row->brand])->execute();
-                return $row;
-            })->count();
+        $brands = $this->loadModel('Brands')->find('all');
+        foreach ($brands as $row) {
+            $alpha = $this->getfirstchar($row->brand);
+            debug($alpha);
+            $this->Brands->query()->update()->set(['alpha' => $alpha])->where(['brand' => $row->brand])->execute();
+        }
         
         $this->set(compact('breadcrumbs','brands'));
 
