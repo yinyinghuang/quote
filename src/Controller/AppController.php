@@ -207,15 +207,15 @@ class AppController extends Controller
             ['href' => '/' . $controller, 'title' => $breadcrumbsMap[$controller]],
             ['href' => '', 'title' => $actionsMap[$action]],
         ];
-        $this->set(compact('breadcrumbs'));
-
         $brands = $this->loadModel('Brands')->find('all')->where(['brand like' => '%360%'])
             /*->map(function($row){
                 $alpha = $this->getfirstchar($row->brand);
                 $this->Brands->query()->update()->set(['alpha' => $alpha])->where(['brand' => $row->brand])->execute();
                 return $row;
             })*/->count();
-        die('ssssssss');
+        // die('ssssssss');
+        $this->set(compact('breadcrumbs','brands'));
+
     }
     protected function getfirstchar($s0){   //获取单个汉字拼音首字母。注意:此处不要纠结。汉字拼音是没有以U和V开头的
         $fchar = ord($s0{0});
