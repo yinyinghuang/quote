@@ -165,7 +165,7 @@ class AppController extends BaseController
     }
     protected function getUserInfoFromTable($openid)
     {
-        $fan = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();die($openid);
+        $fan = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();
         if ($fan) {
             return $fan;
         }
