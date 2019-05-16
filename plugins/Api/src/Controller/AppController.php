@@ -124,7 +124,7 @@ class AppController extends BaseController
                 $openid  = $this->getOpenId($params['code']);
                 $params['pkey'] = $this->setTokenId()['public_token_id'];
                 $this->redis->write('user.openid.'.$params['pkey'],$openid );
-            }
+            }debug($openid);
             if($openid){
                 //数据库中获取用户信息
                 $userInfo = $this->getUserInfoFromTable($openid);
