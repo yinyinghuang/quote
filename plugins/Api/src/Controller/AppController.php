@@ -7,6 +7,7 @@ use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\Http\Client;
 use Cake\Core\Configure;
+use Cake\I18n\Time;
 
 class AppController extends BaseController
 {
@@ -164,7 +165,7 @@ class AppController extends BaseController
         $fan         = $this->loadModel('Fans')->newEntity();
         $fan->openid = $openid;
         $fan->sign_up =(new Time($row->created))->i18nFormat('yyyy-MM-dd H:i:s');
-        die($fan);
+
         $params      = json_decode($this->request->getData('user_msg_str'), true);
         $fan         = $this->loadModel('Fans')->patchEntity($fan, $params);
         $schema      = $this->loadModel('Fans')->getSchema();
