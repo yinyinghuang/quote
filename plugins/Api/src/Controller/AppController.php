@@ -172,7 +172,6 @@ class AppController extends BaseController
 
         $fan              = $this->loadModel('Fans')->newEntity();
         $fan->sign_up     = (new Time())->i18nFormat('yyyy-MM-dd H:i:s');
-        $fan->last_access = (new Time())->i18nFormat('yyyy-MM-dd H:i:s');
         $params           = json_decode($this->request->getData('user_msg_str'), true);
         $fan              = $this->loadModel('Fans')->patchEntity($fan, $params);
         $schema           = $this->loadModel('Fans')->getSchema();
