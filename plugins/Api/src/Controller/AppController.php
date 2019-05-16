@@ -114,7 +114,7 @@ class AppController extends BaseController
             $userInfo = json_decode($this->redis->read($params['pkey']));
             $this->updateLastAccess($userInfo['openid']);
         }
-        if(empty($userInfo)){die($params['code']);
+        if(empty($userInfo)){
             $openid = null;
             //在缓存中查找openid
             if(!empty($params['pkey'])){
@@ -124,7 +124,7 @@ class AppController extends BaseController
                 $openid  = $this->getOpenId($params['code']);
                 $params['pkey'] = $this->setTokenId()['public_token_id'];
                 $this->redis->write('user.openid.'.$params['pkey'],$openid );
-            }
+            }die($params['code']);
             if($openid){
                 //数据库中获取用户信息
                 $userInfo = $this->getUserInfoFromTable($openid);
