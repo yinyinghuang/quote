@@ -108,13 +108,13 @@ class AppController extends BaseController
     }
     protected function getUserInfo($params)
     {    
-        $userInfo = [];   die($params);
+        $userInfo = [];   
         //在缓存中查找用户信息
         if(!empty($params['pkey'])){
             $userInfo = json_decode($this->redis->read($params['pkey']));
             $this->updateLastAccess($userInfo['openid']);
         }
-        if(empty($userInfo)){
+        if(empty($userInfo)){die($params['code']);
             $openid = null;
             //在缓存中查找openid
             if(!empty($params['pkey'])){
