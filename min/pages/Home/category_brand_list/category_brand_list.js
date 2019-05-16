@@ -11,13 +11,13 @@ Page({
     option: [],
     category_id: 0,
     filter_type: 1,
-    selected:''
+    selected:'',
+    scrollTop: 0,
   },
 
   //从筛选页跳转至此页
   onLoad: function (options) {
     const cate_filter_page = getCurrentPages()[getCurrentPages().length - 2]['__data__']
-
     this.setData({
       ...options,
       cate_filter_page,
@@ -43,10 +43,13 @@ Page({
       url: glbd.host + 'categories/get-category-brand/' + category_id,
       method: glbd.method,
       success: function (res) {
+        //提取出首字符列表
+        const alphas = Object.keys(res.data.data);
         //原始已选项与选项列表结合
         const option = _this.matchOptionSelected(res.data.data)
         _this.setData({
-          option
+          option,
+          alphas
         })
       },
     })
@@ -63,6 +66,26 @@ Page({
       })
     }
     return data
+  },
+  //滚动至相应首字母品牌处
+  handleScrollTo:function(e){
+    const _this =this
+    const alphaIndex = e.currentTarget.dataset.index
+    console.log(alphaIndex)
+    const query = wx.createSelectorQuery()
+    query.selectAll('.option-title-alpha').boundingClientRect()
+    query.exec(function (res) {
+      if (!res.length) return
+      let scrollTop = 0
+      const margin_bottom = 0
+      for (let i = 0; i < alphaIndex; i++) {
+        const cur = res[0][i]
+        scrollTop += cur.height + margin_bottom
+      }
+      _this.setData({
+        scrollTop
+      })
+    })
   },
   handlerSelect: function (e) {
 
