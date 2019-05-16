@@ -186,8 +186,9 @@ class CategoriesController extends AppController
     protected function _getCategoryBrand($category_id)
     {
         $brands = $this->loadModel('CategoriesBrands')->find('all', [
+            'contain' => ['Brands'],
             'conditions' => ['category_id' => $category_id],
-            'fields' => ['name' => 'brand'],
+            'fields' => ['name' => 'Brands.brand','alpha' => 'Brands.alpha'],
         ])->toArray();
         return $brands;
     }
