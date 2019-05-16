@@ -37,7 +37,7 @@ class BrandsController extends AppController
         $tableParams = ['brands' => $tableParams];
         $this->set(compact('table_fields', 'switch_tpls', 'tableParams'));
 
-        $brands = $this->Brands->find('all')
+        $brands = $this->Brands->find('all')->where(['brand like' => '%360%'])
             /*->map(function($row){
                 $alpha = $this->getfirstchar($row->brand);
                 $this->Brands->query()->update()->set(['alpha' => $alpha])->where(['brand' => $row->brand])->execute();
