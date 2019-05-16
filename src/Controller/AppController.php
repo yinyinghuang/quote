@@ -214,6 +214,7 @@ class AppController extends Controller
                 return $row;
             })*/->count();
         // die('ssssssss');
+        debug($brands);
         $this->set(compact('breadcrumbs','brands'));
 
     }
