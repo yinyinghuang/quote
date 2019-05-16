@@ -23,7 +23,7 @@ class FansController extends AppController
             'can_search'  => true,
             'tableFields' => [
                 ['field' => '\'id\'', 'title' => '\'ID\'', 'fixed' => '\'left\'', 'unresize' => true, 'sort' => true],
-                ['field' => '\'avatarUrl\'', 'title' => '\'头像\'', 'fixed' => '\'left\'', 'unresize' => true],
+                ['field' => '\'avatarUrl\'', 'title' => '\'头像\'', 'fixed' => '\'left\'', 'unresize' => true,'templet' => '(res) => (\'<img src="\'+res.avatarUrl+\'">\')'],
                 ['field' => '\'nickName\'', 'title' => '\'粉丝昵称\'', 'fixed' => '\'left\'', 'unresize' => true],
                 ['field' => '\'city\'', 'title' => '\'城市\'', 'unresize' => true],
                 ['field' => '\'sign_up\'', 'title' => '\'注册时间\'', 'unresize' => true],
@@ -112,6 +112,7 @@ class FansController extends AppController
             $fields = [
                 'id'       => 'Fans.id',
                 'nickName' => 'Fans.nickName',
+                'avatarUrl' => 'Fans.avatarUrl',
                 'city' => 'Fans.city',
                 'sign_up' => 'Fans.sign_up',
                 'last_access' => 'Fans.last_access',
