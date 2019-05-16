@@ -159,7 +159,7 @@ class AppController extends BaseController
     protected function getUserInfoFromTable($openid)
     {
         $fan    = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();
-
+        die($fan);
         if ($fan) return $fan;
         $fan         = $this->loadModel('Fans')->newEntity();
         $fan->openid = $openid;
