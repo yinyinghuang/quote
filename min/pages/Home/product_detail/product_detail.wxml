@@ -5,11 +5,11 @@
   </view>  
   <view class='section section-product-detail'>
     <view class='product-detail-primary box-shadow'>
-      <view class='product-name'>{{name}}</view>
+      <text class='product-name' selectable='true'>{{name}}</text>
       <view class='product-albums'>
         <swiper class='product-albums-swiper' autoplay interval='2000' circular>
           <swiper-item class='flex-column product-album-item' wx:for='{{albums}}' wx:key='{{index}}'>
-            <image src="{{item.full}}" class="slide-image" width="345" binderror='handlerImageError' data-index='albums.{{index}}.full'/>
+            <image src="{{item.full}}" class="slide-image" width="345" binderror='handlerImageError' data-index='albums.{{index}}.full' catchtap='handlePreview' data-idx="{{index}}"/>
           </swiper-item>
         </swiper>
       </view>
@@ -83,7 +83,7 @@
     </view>
   </view>
   <view class='section section-merchant-list'>
-    <view class='product-title'>在售商家<text class='split'>|</text>{{meta_data.quote_count}}</view>    
+    <view class='product-title'>在售商家<text class='split'>|</text>{{merchants.length}}</view>    
     <view class='merchant-tabs box-shadow flex-row'>
       <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy' data-id='{{id}}'>附近</view>
       <view class='merchant-tab-item {{style.show_merchant_filter||style.merchant_filtered?"active":""}}' bindtap='handlerShowMerchantFilter'>筛选</view>
@@ -118,10 +118,10 @@
       <view class='merchant-item' wx:for='{{merchants}}' wx:for-item='merchant' wx:key='{{id}}' bindtap='handlerNavigatorToMerchantDetail' data-merchant_id='{{merchant.merchant_id}}'>  
         <view class='merchant-name'>
           <image class='map-icon' src='/static/images/icon/icon-map.png'></image>
-          <text class='merchant-name-text'>{{merchant.merchant_name}}</text>
+          <text class='merchant-name-text' selectable='true'>{{merchant.merchant_name}}</text>
         </view>
         <view class='merchant-detail'>
-          <view class='merchant-address' catchtap='handlerOpenLocation' data-latitude='{{merchant.latitude}}' data-longitude='{{merchant.longitude}}' data-name='{{merchant.merchant_name}}' data-address='{{merchant.address}}'>{{merchant.address}}</view>
+          <text class='merchant-address' catchtap='handlerOpenLocation' data-latitude='{{merchant.latitude}}' data-longitude='{{merchant.longitude}}' data-name='{{merchant.merchant_name}}' data-address='{{merchant.address}}' selectable='true'>{{merchant.address}}</text>
           <view class='merchant-quote flex-row'>
             <view class='merchant-quote-text'>售价:</view>
             <view class='merchant-quote-price'>

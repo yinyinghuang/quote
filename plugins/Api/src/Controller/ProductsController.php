@@ -12,10 +12,10 @@ class ProductsController extends AppController
     public function lists()
     {
         $params     = $this->request->getData();
-        $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max', 'Products.is_hot', 'Products.is_new',];
+        $fields     = ['Products.id', 'Products.name', 'Products.album', 'Products.price_hong_min', 'Products.price_hong_max', 'Products.price_water_min', 'Products.price_water_max', 'Products.is_hot', 'Products.is_new'];
         $conditions = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
         $contain    = ['Categories'];
-        $order      = ['Products.sort'=> 'desc', 'Products.is_hot'=>'desc', 'Products.is_new'=>'desc', 'Products.id'=>'desc'];
+        $order      = ['Products.sort' => 'desc', 'Products.is_hot' => 'desc', 'Products.is_new' => 'desc', 'Products.id' => 'desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
@@ -27,6 +27,7 @@ class ProductsController extends AppController
             switch ($params['type']) {
                 case 'last':
                     $order = array_merge(['Products.created' => 'Desc'], $order);
+                    $conditions['Products.is_new'] = 1;
                     break;
             }
         }
@@ -37,13 +38,13 @@ class ProductsController extends AppController
         //获取价格
         if (isset($params['price']) && !empty($params['price'])) {
             $price_range = explode('-', $params['price']);
-            if (count($price_range) === 2) {                
-                if(!empty($price_range[0])){
-                    $conditions['or'][0]['Products.price_hong_min >='] = $price_range[0];
+            if (count($price_range) === 2) {
+                if (!empty($price_range[0])) {
+                    $conditions['or'][0]['Products.price_hong_min >=']  = $price_range[0];
                     $conditions['or'][1]['Products.price_water_min >='] = $price_range[0];
                 }
-                if(!empty($price_range[1])){
-                    $conditions['or'][0]['Products.price_hong_max <='] = $price_range[1];
+                if (!empty($price_range[1])) {
+                    $conditions['or'][0]['Products.price_hong_max <=']  = $price_range[1];
                     $conditions['or'][1]['Products.price_water_max <='] = $price_range[1];
                 }
             }
@@ -60,7 +61,6 @@ class ProductsController extends AppController
                 case 'hotest':
                     $order = array_merge(['ProductData.collect_count' => 'Desc'], $order);
                     break;
-
                 case 'newest':
                     $order = array_merge(['Products.created' => 'Desc'], $order);
                     break;
@@ -72,7 +72,7 @@ class ProductsController extends AppController
             //保存记录
             $keyword = $this->loadModel('Keywords')->find('all', [
                 'conditions' => ['name' => $params['keyword']],
-            ])->first() ?: $this->loadModel('Keywords')->newEntity(['name' => $params['keyword'], 'count' => 0,'is_visible' => 1]);
+            ])->first() ?: $this->loadModel('Keywords')->newEntity(['name' => $params['keyword'], 'count' => 0, 'is_visible' => 1]);
             $keyword->count = $keyword->count + 1;
 
             $this->loadModel('Keywords')->save($keyword);
@@ -96,9 +96,9 @@ class ProductsController extends AppController
         if (empty($id)) {
             $this->ret(1, null, '产品id缺失');
         }
-        $params = $this->request->getData();
-        $fan = $this->_getFanFormPkey($params['pkey']);
-        $pkey = $fan['pkey'];
+        $params  = $this->request->getData();
+        $fan     = $this->_getFanFormPkey($params['pkey']);
+        $pkey    = $fan['pkey'];
         $fan_id  = $fan['id'];
         $product = $this->loadModel('Products')->find('all', [
             'conditions' => ['Products.id' => $id, 'Products.is_visible' => 1],
@@ -194,8 +194,8 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params     = $this->request->getData();
-        $fan = $this->_getFanFormPkey($params['pkey']);
-        $fan_id = $fan['id'];
+        $fan        = $this->_getFanFormPkey($params['pkey']);
+        $fan_id     = $fan['id'];
         $type       = $params['type'];
         $conditions = compact('product_id', 'fan_id');
         if ($type === 'dislike') {
@@ -245,24 +245,24 @@ class ProductsController extends AppController
         if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
-        $fan = $this->_getFanFormPkey($this->request->getData('pkey'));
-        $pkey = $fan['pkey'];
-        $fan_id  = $fan['id'];
+        $fan    = $this->_getFanFormPkey($this->request->getData('pkey'));
+        $pkey   = $fan['pkey'];
+        $fan_id = $fan['id'];
 
-        $rating  = $params['rating'];
-        $content = $params['content'];
-        $created = date('Y-m-d H:i:s');
+        $rating             = $params['rating'];
+        $content            = $params['content'];
+        $created            = date('Y-m-d H:i:s');
         $comment_need_check = $this->redis->read('config.comment_need_check');
-        if(empty($comment_need_check)){
+        if (empty($comment_need_check)) {
             $comment_need_check = $this->loadModel('Configs')->findByName('comment_need_check')->first()->value;
-            $this->redis->write('config.comment_need_check',$comment_need_check);
+            $this->redis->write('config.comment_need_check', $comment_need_check);
         }
-        
-        $is_checked =  $comment_need_check?-1:1;
-        $fields  = ['product_id', 'fan_id', 'rating', 'content', 'created','is_checked'];
+
+        $is_checked = $comment_need_check ? -1 : 1;
+        $fields     = ['product_id', 'fan_id', 'rating', 'content', 'created', 'is_checked'];
         $this->loadModel('Comments')->query()->insert($fields)->values(compact($fields))->execute();
-        if(!$comment_need_check){
-            $this->setProductMetaData($product_id,  ['comment_count' => 1,'comment_score_total' => $rating]);
+        if (!$comment_need_check) {
+            $this->setProductMetaData($product_id, ['comment_count' => 1, 'comment_score_total' => $rating]);
         }
 
         $this->ret(0, compact('pkey'), '提交成功');
@@ -282,7 +282,7 @@ class ProductsController extends AppController
             'conditions' => ['is_visible' => 1],
             'limit'      => 10,
             'offset'     => 0,
-            'order'      => ['sort desc','count desc', 'id desc'],
+            'order'      => ['sort desc', 'count desc', 'id desc'],
         ])->extract('name')->toArray();
         $this->ret(0, $keywords, '加载成功');
     }

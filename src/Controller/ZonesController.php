@@ -268,5 +268,12 @@ class ZonesController extends AppController
         $this->resApi($code, $data, $msg_arr[$data]);
 
     }
+    //多级下拉框获取数据
+    public function apiCascade(){
+        $fields = ['key' => 'name','value' => 'id'];
+        $list = $this->Zones->find('all',compact('conditions','fields'))->toArray();
+        $this->response->body(json_encode($list));
+        return $this->response;
+    }
 
 }

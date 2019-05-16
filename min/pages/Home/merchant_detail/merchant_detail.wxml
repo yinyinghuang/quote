@@ -2,14 +2,14 @@
 <view class='section section-official-account'>
   <official-account></official-account>
 </view>
-<view class='section section-merchant-detail'>
+<view class='section section-merchant-detail box-shadow'>
   <view class='merchant-detail-header flex-row'>
     <image class='merchant-logo' binderror='handlerImageError' src='{{logos.full}}' data-index='logos.full'></image>
     <view class='merchant-name-address'>
-      <view class='merchant-name'>{{name}}</view>
+      <text class='merchant-name' selectable='true'>{{name}}</text>
       <view class='merchant-address flex-row' bindtap='handlerOpenLocation' data-latitude='{{latitude}}' data-longitude='{{longitude}}' data-name='{{name}}' data-address='{{address}}'>
         <image class='map-icon' src='/static/images/icon/icon-map.png'></image>
-        <view class='merchant-address-text'>{{address}}</view>
+        <text class='merchant-address-text' selectable='true'>{{address}}</text>
       </view>
     </view>
   </view>
@@ -17,23 +17,23 @@
     <view class='merchant-details'>
       <view class='merchant-detail-item flex-row' wx:if='{{contact}}'bindtap='handlerMakePhoneCall' data-phone='{{location.contact}}'>
         <image class='merchant-detail-icon' src='/static/images/icon/icon-call.png'></image>
-        <view class='merchant-detail-text'>{{contact}}</view>
+        <text class='merchant-detail-text' selectable='true'>{{contact}}</text>
       </view>
       <view class='merchant-detail-item flex-row' wx:if='{{openhour}}'>
         <image class='merchant-detail-icon' src='/static/images/icon/icon-clock.png'></image>
-        <view class='merchant-detail-text'>{{openhour}}</view>
+        <text class='merchant-detail-text' selectable='true'>{{openhour}}</text>
       </view>
       <view class='merchant-detail-item flex-row'>
         <image class='merchant-detail-icon' src='/static/images/icon/icon-email.png'></image>
-        <view class='merchant-detail-text'>{{email}}</view>
+        <text class='merchant-detail-text' selectable='true'>{{email}}</text>
       </view>
       <view class='merchant-detail-item flex-row'>
         <image class='merchant-detail-icon' src='/static/images/icon/icon-wechat.png'></image>
-        <view class='merchant-detail-text'>{{wechat}}</view>
+        <text class='merchant-detail-text' selectable='true'>{{wechat}}</text>
       </view>
       <view class='merchant-detail-item flex-row'>
         <image class='merchant-detail-icon' src='/static/images/icon/icon-website.png'></image>
-        <navigator class='merchant-detail-text' url='{{website}}'>{{website}}</navigator>
+        <text class='merchant-detail-text' selectable='true'>{{website}}</text>
       </view>
       <view class='merchant-detail-item flex-row'>
         <image class='merchant-detail-icon' src='/static/images/icon/icon-intro.png'></image>
@@ -79,11 +79,11 @@
       <view class='location-item' wx:for="{{locations}}" wx:key="id" wx:for-item='location' data-id='{{location.id}}'>
         <view class='location-item-row  flex-row' wx:if='{{location.address}}' bindtap='handlerOpenLocation' data-latitude='{{location.latitude}}' data-longitude='{{location.longitude}}' data-name='{{location.name}}' data-address='{{location.address}}'>
           <image class='location-icon map' src='/static/images/icon/icon-map.png'></image>
-          <view class='location-item-text'>{{location.address}}</view>
+          <text class='location-item-text' selectable='true'>{{location.address}}</text>
         </view>
         <view class='location-item-row flex-row' wx:if='{{location.contact}}' bindtap='handlerMakePhoneCall' data-phone='{{location.contact}}'>
           <image class='location-icon' src='/static/images/icon/icon-call.png'></image>
-          <view class='location-item-text'> {{location.contact}}</view>
+          <text class='location-item-text' selectable='true'> {{location.contact}}</text>
          </view>
         <view class='location-item-row flex-row' wx:if='{{location.openhour}}' >
           <image class='location-icon' src='/static/images/icon/icon-clock.png'></image>

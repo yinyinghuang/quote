@@ -19,6 +19,8 @@
 		"hidedInDevtools": []
 	},
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -57,7 +59,7 @@
 					"id": 2,
 					"name": "产品详情",
 					"pathName": "pages/Home/product_detail/product_detail",
-					"query": "id=231252",
+					"query": "id=238168",
 					"scene": null
 				},
 				{

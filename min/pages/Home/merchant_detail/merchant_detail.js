@@ -2,6 +2,7 @@
 let app = getApp()
 let glbd = app.globalData
 const comm = require('../../../common/common.js')
+const coordinate = require('../../../utils/WSCoordinate.js')
 Page({
 
   /**
@@ -162,10 +163,11 @@ Page({
   },
   //打开地图
   handlerOpenLocation: function (e) {
-    let { latitude, longitude, name, address } = e.currentTarget.dataset
+    var { latitude, longitude, name, address } = e.currentTarget.dataset
     latitude = Number(latitude)
     longitude = Number(longitude)
     if (!latitude || !longitude) return;
+    var { latitude, longitude } = coordinate.transformFromWGSToGCJ(latitude, longitude)
     wx.openLocation({
       latitude,
       longitude,

@@ -95,10 +95,20 @@ Page({
         res.data.data.map((item) => {
           item.album = item.cover ? glbd.hosts + item.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
           delete (item.albums)
-          if (item.price_hong_max) item.price_hong_max = comm.formatPrice(item.price_hong_max)
-          if (item.price_hong_min) item.price_hong_min = comm.formatPrice(item.price_hong_min)
-          if (item.price_water_max) item.price_water_max = comm.formatPrice(item.price_water_max)
-          if (item.price_water_min) item.price_water_min = comm.formatPrice(item.price_water_min)
+          if (item.price_hong_max && item.price_hong_max == item.price_hong_min) {
+            item.price_hong_max = 0
+            item.price_hong_min = comm.formatPrice(item.price_hong_min)
+          } else {
+            if (item.price_hong_max) item.price_hong_max = comm.formatPrice(item.price_hong_max)
+            if (item.price_hong_min) item.price_hong_min = comm.formatPrice(item.price_hong_min)
+          }
+          if (item.price_water_max && item.price_water_max == item.price_water_min) {
+            item.price_water_max = 0
+            item.price_water_min = comm.formatPrice(item.price_water_min)
+          } else {
+            if (item.price_water_max) item.price_water_max = comm.formatPrice(item.price_water_max)
+            if (item.price_water_min) item.price_water_min = comm.formatPrice(item.price_water_min)
+          }
         })
         const page = _this.data.options.page
         _this.setData({

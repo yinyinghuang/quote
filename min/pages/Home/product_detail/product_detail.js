@@ -2,6 +2,7 @@
 let app = getApp()
 let glbd = app.globalData
 const comm = require('../../../common/common.js')
+const coordinate = require('../../../utils/WSCoordinate.js')
 Page({
 
   /**
@@ -73,10 +74,20 @@ Page({
           item.full = glbd.hosts + item.full
           item.thumb = glbd.hosts + item.thumb
         })
-        if (detail.price_hong_max) detail.price_hong_max = comm.formatPrice(detail.price_hong_max)
-        if (detail.price_hong_min) detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
-        if (detail.price_water_max) detail.price_water_max = comm.formatPrice(detail.price_water_max)
-        if (detail.price_water_min) detail.price_water_min = comm.formatPrice(detail.price_water_min)
+        if (detail.price_hong_max && detail.price_hong_max == detail.price_hong_min) {
+          detail.price_hong_max = 0
+          detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
+        } else {
+          if (detail.price_hong_max) detail.price_hong_max = comm.formatPrice(detail.price_hong_max)
+          if (detail.price_hong_min) detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
+        }
+        if (detail.price_water_max && detail.price_water_max == detail.price_water_min) {
+          detail.price_water_max = 0
+          detail.price_water_min = comm.formatPrice(detail.price_water_min)
+        } else {
+          if (detail.price_water_max) detail.price_water_max = comm.formatPrice(detail.price_water_max)
+          if (detail.price_water_min) detail.price_water_min = comm.formatPrice(detail.price_water_min)
+        }
 
         // let attribute_group = []
         // if (detail.attributes.length){
@@ -158,6 +169,16 @@ Page({
     }
     recent.unshift({ id, album, name, time: Date.now() })
     wx.setStorageSync('recent', recent.slice(0, 50))
+  },
+  //点击图片查看大图
+  handlePreview:function(e){
+    const { idx } = e.currentTarget.dataset
+    const current = this.data.albums[idx]['full']
+    const urls = this.data.albums.map((img) => img.full)
+    wx.previewImage({
+      current, // 当前显示图片的http链接
+      urls // 需要预览的图片http链接列表
+    })
   },
   //点赞收藏
   handlerLike:function(e){
@@ -267,10 +288,13 @@ Page({
   },
   //打开地图
   handlerOpenLocation: function (e) {
-    let { latitude, longitude, name, address } = e.currentTarget.dataset
+    var { latitude, longitude, name, address } = e.currentTarget.dataset
     latitude = Number(latitude)
     longitude = Number(longitude)
     if (!latitude || !longitude) return;
+    // console.log({ latitude, longitude })
+    var { latitude, longitude} = coordinate.transformFromWGSToGCJ(latitude, longitude)
+    // console.log({ latitude, longitude })
     wx.openLocation({
       latitude,
       longitude,

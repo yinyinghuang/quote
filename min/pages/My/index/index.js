@@ -2,6 +2,7 @@
 let app = getApp()
 let glbd = app.globalData
 const comm = require('../../../common/common.js')
+const coordinate = require('../../../utils/WSCoordinate.js')
 Page({
 
   /**
@@ -129,10 +130,21 @@ Page({
             data.forEach((product) => {
               product.album = product.cover ? glbd.hosts + product.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
               delete (product.albums)
-              if (product.price_hong_max) product.price_hong_max = comm.formatPrice(product.price_hong_max)
-              if (product.price_hong_min) product.price_hong_min = comm.formatPrice(product.price_hong_min)
-              if (product.price_water_max) product.price_water_max = comm.formatPrice(product.price_water_max)
-              if (product.price_water_min) product.price_water_min = comm.formatPrice(product.price_water_min)
+
+              if (product.price_hong_max && product.price_hong_max == product.price_hong_min) {
+                product.price_hong_max = 0
+                product.price_hong_min = comm.formatPrice(product.price_hong_min)
+              } else {
+                if (product.price_hong_max) product.price_hong_max = comm.formatPrice(product.price_hong_max)
+                if (product.price_hong_min) product.price_hong_min = comm.formatPrice(product.price_hong_min)
+              }
+              if (product.price_water_max && product.price_water_max == product.price_water_min) {
+                product.price_water_max = 0
+                product.price_water_min = comm.formatPrice(product.price_water_min)
+              } else {
+                if (product.price_water_max) product.price_water_max = comm.formatPrice(product.price_water_max)
+                if (product.price_water_min) product.price_water_min = comm.formatPrice(product.price_water_min)
+              }
             })
             _this.setData({
               recents: data,
@@ -196,10 +208,20 @@ Page({
           product.liked=1
           product.album = product.cover ? glbd.hosts + product.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
           delete (product.albums)
-          if (product.price_hong_max) product.price_hong_max = comm.formatPrice(product.price_hong_max)
-          if (product.price_hong_min) product.price_hong_min = comm.formatPrice(product.price_hong_min)
-          if (product.price_water_max) product.price_water_max = comm.formatPrice(product.price_water_max)
-          if (product.price_water_min) product.price_water_min = comm.formatPrice(product.price_water_min)
+          if (product.price_hong_max && product.price_hong_max == product.price_hong_min) {
+            product.price_hong_max = 0
+            product.price_hong_min = comm.formatPrice(product.price_hong_min)
+          } else {
+            if (product.price_hong_max) product.price_hong_max = comm.formatPrice(product.price_hong_max)
+            if (product.price_hong_min) product.price_hong_min = comm.formatPrice(product.price_hong_min)
+          }
+          if (product.price_water_max && product.price_water_max == product.price_water_min) {
+            product.price_water_max = 0
+            product.price_water_min = comm.formatPrice(product.price_water_min)
+          } else {
+            if (product.price_water_max) product.price_water_max = comm.formatPrice(product.price_water_max)
+            if (product.price_water_min) product.price_water_min = comm.formatPrice(product.price_water_min)
+          }
         })
         _this.setData({
           products: page == 1 ? data : _this.data.products.concat(data),
@@ -260,10 +282,11 @@ Page({
   },
   //打开地图
   handlerOpenLocation: function (e) {
-    let { latitude, longitude, name, address } = e.currentTarget.dataset
+    var { latitude, longitude, name, address } = e.currentTarget.dataset
     latitude = Number(latitude)
     longitude = Number(longitude)
     if (!latitude || !longitude) return;
+    var { latitude, longitude } = coordinate.transformFromWGSToGCJ(latitude, longitude)
     wx.openLocation({
       latitude,
       longitude,

@@ -48,10 +48,20 @@ Page({
           item.thumb = glbd.hosts + item.thumb
         })
         detail.thumb = detail.albums[0]
-        if (detail.price_hong_max) detail.price_hong_max = comm.formatPrice(detail.price_hong_max)
-        if (detail.price_hong_min) detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
-        if (detail.price_water_max) detail.price_water_max = comm.formatPrice(detail.price_water_max)
-        if (detail.price_water_min) detail.price_water_min = comm.formatPrice(detail.price_water_min)
+        if (detail.price_hong_max && detail.price_hong_max == detail.price_hong_min) {
+          detail.price_hong_max = 0
+          detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
+        } else {
+          if (detail.price_hong_max) detail.price_hong_max = comm.formatPrice(detail.price_hong_max)
+          if (detail.price_hong_min) detail.price_hong_min = comm.formatPrice(detail.price_hong_min)
+        }
+        if (detail.price_water_max && detail.price_water_max == detail.price_water_min) {
+          detail.price_water_max = 0
+          detail.price_water_min = comm.formatPrice(detail.price_water_min)
+        } else {
+          if (detail.price_water_max) detail.price_water_max = comm.formatPrice(detail.price_water_max)
+          if (detail.price_water_min) detail.price_water_min = comm.formatPrice(detail.price_water_min)
+        }
 
         let attribute_group = []
         if (detail.attributes.length) {

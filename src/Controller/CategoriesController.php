@@ -330,4 +330,12 @@ class CategoriesController extends AppController
             return $row;
         });
     }
+    //多级下拉框获取数据
+    public function apiCascade(){
+        $conditions = $this->request->getQuery('id')?['group_id' => $this->request->getQuery('id')]:[];
+        $fields = ['key' => 'name','value' => 'id'];
+        $list = $this->Categories->find('all',compact('conditions','fields'));
+        $this->response->body(json_encode($list));
+        return $this->response;
+    }
 }

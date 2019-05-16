@@ -110,8 +110,8 @@ class KeywordsController extends AppController
         }
         //更新keywords表
         $this->Keywords->deleteAll(['id in' => $ids]);
-        $data = ['code' => 3];
-        $this->resApi(0, $data, $msg_arr[3]);
+        $data = ['code' => 0];
+        $this->resApi(0, $data, $msg_arr[0]);
     }
 
     //ajax获取list
@@ -126,10 +126,8 @@ class KeywordsController extends AppController
                 'is_visible' => 'Keywords.is_visible',
                 'sort' => 'Keywords.sort',
             ];
-
             $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';
             $params  = $this->request->$paramFn();
-
             $where = [];
             if (isset($params['search'])) {
                 $params = $params['search'];
@@ -144,7 +142,6 @@ class KeywordsController extends AppController
                 }
             }
             $contain = [];
-
             $order = ['Keywords.sort' => 'desc','Keywords.id' => 'desc',];
             return [$fields, $where, $contain, $order];
 
