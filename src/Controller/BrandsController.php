@@ -43,7 +43,7 @@ class BrandsController extends AppController
                 $this->Brands->query()->update()->set(['alpha' => $alpha])->where(['brand' => $row->brand])->execute();
                 return $row;
             })*/->count();
-        die($brands);
+        die('ssssssss');
     }
 
     //浏览
