@@ -110,13 +110,22 @@ Page({
         scrollTop
       })
     })
+    const match = this.data.merchants[markerId]
+    this.setData({
+      latitude: match.latitude,
+      longitude: match.longitude,
+      name: match.merchant_name,
+      address: match.address,
+      scale: 20,
+      show_goto_button: 1,
+    }) 
   },
   //点击报价项，商店地址设为中心
   handlerLinkMap:function(e){
     const {id} = e.currentTarget.dataset
     let match = this.data.merchants[id] 
     if (!match) return 
-    console.log(match)
+    // console.log(match)
     this.setData({
       latitude: match.latitude,
       longitude: match.longitude,

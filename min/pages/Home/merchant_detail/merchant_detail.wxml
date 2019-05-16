@@ -4,7 +4,7 @@
 </view>
 <view class='section section-merchant-detail box-shadow'>
   <view class='merchant-detail-header flex-row'>
-    <image class='merchant-logo' binderror='handlerImageError' src='{{logos.full}}' data-index='logos.full'></image>
+    <image class='merchant-logo' binderror='handlerImageError' src='{{logos.full}}' data-index='logos.full' mode='aspectFit'></image>
     <view class='merchant-name-address'>
       <text class='merchant-name' selectable='true'>{{name}}</text>
       <view class='merchant-address flex-row' bindtap='handlerOpenLocation' data-latitude='{{latitude}}' data-longitude='{{longitude}}' data-name='{{name}}' data-address='{{address}}'>

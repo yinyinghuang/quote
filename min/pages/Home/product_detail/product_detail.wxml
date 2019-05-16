@@ -9,7 +9,7 @@
       <view class='product-albums'>
         <swiper class='product-albums-swiper' autoplay interval='2000' circular>
           <swiper-item class='flex-column product-album-item' wx:for='{{albums}}' wx:key='{{index}}'>
-            <image src="{{item.full}}" class="slide-image" width="345" binderror='handlerImageError' data-index='albums.{{index}}.full' catchtap='handlePreview' data-idx="{{index}}"/>
+            <image src="{{item.full}}" class="slide-image" width="345" binderror='handlerImageError' data-index='albums.{{index}}.full' catchtap='handlePreview' data-idx="{{index}}" mode='aspectFit'/>
           </swiper-item>
         </swiper>
       </view>
@@ -83,7 +83,7 @@
     </view>
   </view>
   <view class='section section-merchant-list'>
-    <view class='product-title'>在售商家<text class='split'>|</text>{{merchants.length}}</view>    
+    <view class='product-title'>在售商家<text class='split'>|</text>{{meta_data.quote_count}}</view>    
     <view class='merchant-tabs box-shadow flex-row'>
       <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy' data-id='{{id}}'>附近</view>
       <view class='merchant-tab-item {{style.show_merchant_filter||style.merchant_filtered?"active":""}}' bindtap='handlerShowMerchantFilter'>筛选</view>
