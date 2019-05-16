@@ -170,13 +170,14 @@ class AppController extends BaseController
             return $fan;
         }
 
-        $fan              = $this->loadModel('Fans')->newEntity();
-        $fan->sign_up     = (new Time())->i18nFormat('yyyy-MM-dd H:i:s');
-        $params           = json_decode($this->request->getData('user_msg_str'), true);
-        $fan              = $this->loadModel('Fans')->patchEntity($fan, $params);
-        $schema           = $this->loadModel('Fans')->getSchema();
-        $data             = $fan->extract($this->loadModel('Fans')->getSchema()->columns(), true);
-        $fan              = $this->loadModel('Fans')->_insert($fan, $data);
+        $fan          = $this->loadModel('Fans')->newEntity();
+        $fan->openid  = $openid;
+        $fan->sign_up = (new Time())->i18nFormat('yyyy-MM-dd H:i:s');
+        $params       = json_decode($this->request->getData('user_msg_str'), true);
+        $fan          = $this->loadModel('Fans')->patchEntity($fan, $params);
+        $schema       = $this->loadModel('Fans')->getSchema();
+        $data         = $fan->extract($this->loadModel('Fans')->getSchema()->columns(), true);
+        $fan          = $this->loadModel('Fans')->_insert($fan, $data);
 
         //以下方式保存数据，openid保存失败，原因未知
         // if ($this->Fans->save($fan)) {
