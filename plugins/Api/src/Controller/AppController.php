@@ -112,6 +112,7 @@ class AppController extends BaseController
         //在缓存中查找用户信息
         if(!empty($params['pkey'])){
             $userInfo = json_decode($this->redis->read($params['pkey']));
+            $this->updateLastAccess($userInfo['openid']);
         }
         if(empty($userInfo)){
             $openid = null;
@@ -127,7 +128,7 @@ class AppController extends BaseController
             if($openid){
                 //数据库中获取用户信息
                 $userInfo = $this->getUserInfoFromTable($openid);
-                $userInfo = $this->updateLastAccess($openid);
+                $this->updateLastAccess($openid);
                 $userInfo['pkey'] = $params['pkey'];
                 $this->redis->write($params['pkey'],$userInfo );
             }             
