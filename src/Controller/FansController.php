@@ -136,8 +136,8 @@ class FansController extends AppController
             return [$fields, $where, $contain, $order];
 
         },null,function($row){
-            $row->last_access = (new Time($row->last_access))->i18nFormat('yyyy-MM-dd H:i:s');
-            $row->sign_up = (new Time($row->sign_up))->i18nFormat('yyyy-MM-dd H:i:s');
+            $row->last_access = (new Time($row->last_access))->i18nFormat('yyyy-MM-dd HH:mm:ss');
+            $row->sign_up = (new Time($row->sign_up))->i18nFormat('yyyy-MM-dd HH:mm:ss');
             return $row;
         });
     }

@@ -137,7 +137,7 @@ class AppController extends BaseController
     }
     protected function updateLastAccess($openid)
     {
-        $this->loadModel('Fans')->query()->update()->set(['last_access' => (new Time())->i18nFormat('yyyy-MM-dd H:i:s')])->where(['openid' => $openid])->execute();
+        $this->loadModel('Fans')->query()->update()->set(['last_access' => (new Time())->i18nFormat('yyyy-MM-dd HH:mm:ss')])->where(['openid' => $openid])->execute();
     }
 
     //获取openid
@@ -172,7 +172,7 @@ class AppController extends BaseController
 
         $fan          = $this->loadModel('Fans')->newEntity();
         $fan->openid  = $openid;
-        $fan->sign_up = (new Time())->i18nFormat('yyyy-MM-dd H:i:s');
+        $fan->sign_up = (new Time())->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $params       = json_decode($this->request->getData('user_msg_str'), true);
         $fan          = $this->loadModel('Fans')->patchEntity($fan, $params);
         $schema       = $this->loadModel('Fans')->getSchema();
