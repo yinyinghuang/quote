@@ -159,11 +159,12 @@ class AppController extends BaseController
     protected function getUserInfoFromTable($openid)
     {
         $fan    = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();
-        die($fan);
+
         if ($fan) return $fan;
         $fan         = $this->loadModel('Fans')->newEntity();
         $fan->openid = $openid;
         $fan->sign_up =(new Time($row->created))->i18nFormat('yyyy-MM-dd H:i:s');
+        die($fan);
         $params      = json_decode($this->request->getData('user_msg_str'), true);
         $fan         = $this->loadModel('Fans')->patchEntity($fan, $params);
         $schema      = $this->loadModel('Fans')->getSchema();
