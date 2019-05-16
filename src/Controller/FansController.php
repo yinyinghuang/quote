@@ -112,6 +112,9 @@ class FansController extends AppController
             $fields = [
                 'id'       => 'Fans.id',
                 'nickName' => 'Fans.nickName',
+                'city' => 'Fans.city',
+                'sign_up' => 'Fans.sign_up',
+                'last_access' => 'Fans.last_access',
             ];
 
             $paramFn = $this->request->is('get') ? 'getQuery' : 'getData';

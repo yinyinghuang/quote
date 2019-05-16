@@ -127,11 +127,16 @@ class AppController extends BaseController
             if($openid){
                 //数据库中获取用户信息
                 $userInfo = $this->getUserInfoFromTable($openid);
+                $userInfo = $this->updateLastAccess($openid);
                 $userInfo['pkey'] = $params['pkey'];
                 $this->redis->write($params['pkey'],$userInfo );
             }             
         }
         return $userInfo;
+    }
+    protected function updateLastAccess($openid)
+    {
+        $this->loadModel('Fans')->query()->update()->set(['last_access' => (new Time())->i18nFormat('yyyy-MM-dd H:i:s')])->where(['openid' => $openid])->execute();
     }
 
     //获取openid
@@ -162,7 +167,7 @@ class AppController extends BaseController
         $fan    = $this->loadModel('Fans')->find()->where(['openid' => $openid])->first();
         if ($fan) return $fan;
         $fan         = $this->loadModel('Fans')->newEntity();        
-        $fan->sign_up =(new Time())->i18nFormat('yyyy-MM-dd H:i:s');
+        $fan->last_access = $fan->sign_up =(new Time())->i18nFormat('yyyy-MM-dd H:i:s');
         $params      = json_decode($this->request->getData('user_msg_str'), true);
         $fan         = $this->loadModel('Fans')->patchEntity($fan, $params);
         $schema      = $this->loadModel('Fans')->getSchema();
