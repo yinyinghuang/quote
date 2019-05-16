@@ -189,7 +189,7 @@ class CategoriesController extends AppController
             'contain' => ['Brands'],
             'conditions' => ['category_id' => $category_id],
             'fields' => ['name' => 'Brands.brand','alpha' => 'Brands.alpha'],
-        ])->toArray();
+        ])->groupBy('alpha')->toArray();
         return $brands;
     }
     //分类属性筛选项页，获取分类的属性键值,及为筛选项的属性键
