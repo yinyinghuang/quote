@@ -1,5 +1,7 @@
 <!--pages/Home/catogery_brand_list/category_brand_list.wxml-->
+<scroll-view scroll-y scroll-top='{{ scrollTop }}'> 
 <view class='container'>
+
   <view class='section section-option'>
     <text class='section-title'>
       <text>筛选</text>
@@ -11,15 +13,13 @@
           {{item}}
       </view>
     </view>
-    <view class='option-list box-shadow'>      
-      <scroll-view class='alpha-list' id='alpha_list' scroll-y scroll-top='{{ scrollTop }}'> 
+    <view class='option-list box-shadow'>  
         <view class="option-title-alpha" wx:for="{{option}}" wx:key="alpha" data-index='{{alpha}}' wx:for-index="alpha" wx:for-item="options">
           <view>{{alpha}}</view>
           <view wx:for="{{options}}" wx:key="id" data-index='{{index}}' bindtap='handlerSelect' class='option-item'>
               <view class='option-item-name {{item.selected?"active":""}}'>{{item.name}}</view>
           </view>
         </view>
-      </scroll-view>
     </view>
     <view class='option-buttons'>
       <view class='option-confirm box-shadow' bindtap='handlerNavigatorToCateFilter'>确认</view>
@@ -30,4 +30,5 @@
     <official-account></official-account>
   </view>
 </view>
+</scroll-view>
 
