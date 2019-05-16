@@ -40,6 +40,7 @@ class BrandsController extends AppController
         $brands = $this->Brands->find()
             ->map(function($row){
                 $alpha = $this->getfirstchar($row->brand);
+                die($alpha );
                 $this->Brands->query()->update()->set(['alpha' => $alpha])->where(['brand' => $row->brand])->execute();
             });
     }
