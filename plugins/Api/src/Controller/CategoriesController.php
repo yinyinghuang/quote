@@ -175,8 +175,8 @@ class CategoriesController extends AppController
         if (empty($category_id)) {
             $this->ret(1, null, 'category_id缺失');
         }
-        // $cateBrands = $this->redis->read('category.brand.'.$category_id);
-        // if($cateBrands) $this->ret(0, $cateBrands, '加载成功');
+        $cateBrands = $this->redis->read('category.brand.'.$category_id);
+        if($cateBrands) $this->ret(0, $cateBrands, '加载成功');
         $cateBrands = $this->_getCategoryBrand($category_id);
         $this->redis->write('category.brand.'.$category_id,$cateBrands);
         $this->ret(0, $cateBrands, ['分类信息加载成功']);
