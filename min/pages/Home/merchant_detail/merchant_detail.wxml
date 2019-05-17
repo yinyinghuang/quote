@@ -52,8 +52,8 @@
 </view>
 <view class='section section-quote-address-list' wx:if='{{quotes.length}}'>
     <view class='quote-location-header flex-row'>
-      <view class='title {{active=="quote"?"active":""}}' bindtap='handlerToggleActive' data-active='quote'>在售产品</view> 
-      <view class='title {{active=="location"?"active":""}}' bindtap='handlerToggleActive' data-active='location' wx:if='{{locations.length>1}}'>营业地址</view>
+      <view class='title {{active=="quote"?"active":""}}' bindtap='handlerToggleActive' data-active='quote'>在售产品({{quote_count}})</view> 
+      <view class='title {{active=="location"?"active":""}}' bindtap='handlerToggleActive' data-active='location' wx:if='{{locations.length>1}}'>营业地址({{location_count}})</view>
     </view>
     <view class='quote-list' hidden='{{active!=="quote"}}'>
       <view class='quote-search-field flex-row' hidden='{{!quotes.length}}'>

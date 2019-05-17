@@ -98,6 +98,7 @@ class MerchantsController extends AppController
         if(isset($params['keyword']) && !empty($params['keyword'])) {
             $conditions['Products.name like'] = '%'.$params['keyword'].'%';
         }
+        debug($conditions);
         $contain    = ['Products'];
         $order      = ['Quotes.sort desc', 'Products.sort desc', 'Quotes.id desc', 'Products.id desc'];
         $limit      = 20;

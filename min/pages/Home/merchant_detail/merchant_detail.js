@@ -20,7 +20,9 @@ Page({
       keyword:'',
     },
     locations:[],
-    quotes:[]
+    quotes:[],
+    quote_count:0,
+    location_count:0,
   },
 
   //生命周期函数--监听页面加载
@@ -74,7 +76,7 @@ Page({
       method: glbd.method,
       data: { page},
       success: function (res) {
-        let data = [].concat(res.data.data)
+        let data = [].concat(res.data.data.list)
         data = page==1?data:_this.data.locations.concat(data)
         //商户没有更多地址信息        
         if (res.data.data.length===0){
@@ -95,7 +97,8 @@ Page({
             latitude: data[0].latitude,
             longitude:data[0].longitude,
             locations: data,
-            'location_param.page': page + 1
+            'location_param.page': page + 1,
+            'location_count':res.data.data.count
           })
         }
         
@@ -116,7 +119,7 @@ Page({
       method: glbd.method,
       data: {page,keyword},
       success: function (res) {
-        let data = res.data.data
+        let data = res.data.data.list
         data.forEach((quote) => {
           if (quote.price_hong) quote.price_hong = comm.formatPrice(quote.price_hong)
           if (quote.price_water) quote.price_water = comm.formatPrice(quote.price_water)
@@ -126,6 +129,7 @@ Page({
           quotes: page == 1 ? data : _this.data.quotes.concat(data),
           'quote_param.page': page + 1,
           'quote_param.reach_bottom': !data.length,
+          'quote_count':res.data.data.count
         })
       }
     })
