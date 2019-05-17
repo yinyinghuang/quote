@@ -156,7 +156,7 @@ Page({
   },
   //保存浏览记录
   _saveTrack: function (){
-    const { id, name} = this.data
+    const { id, name,price_hong_max,price_water_min,price_water_max,price_hong_min} = this.data
     const album = this.data.albums.length ? this.data.albums[0].thumb :'/static/images/icon-red/nopic.png'
     let recent = wx.getStorageSync('recent')
     recent = recent ? recent : []
@@ -167,7 +167,7 @@ Page({
         break
       }
     }
-    recent.unshift({ id, album, name, time: Date.now() })
+    recent.unshift({ id, album, name, time: Date.now() ,price_hong_max,price_water_min,price_water_max,price_hong_min})
     wx.setStorageSync('recent', recent.slice(0, 50))
   },
   //点击图片查看大图

@@ -16,7 +16,8 @@ Page({
     },
     quote_param:{
       page: 1,
-      reach_bottom: false
+      reach_bottom: false,
+      keyword:'',
     },
     locations:[],
     quotes:[]
@@ -102,14 +103,18 @@ Page({
     })
   },
   //获取在售产品列表
-  getQuoteList: function () {
+  getQuoteList: function (force =0) {
     const _this = this
-    const { page, reach_bottom } = this.data.quote_param
+    let { page, reach_bottom, keyword } = this.data.quote_param
+    if(force) {
+      reach_bottom = false
+      page = 1
+    } 
     if (reach_bottom) return false
     comm.request({
-      url: glbd.host + 'merchants/quote-lists/' + _this.data.id,
+      url: glbd.host + 'merchants/quote-lists/' + _this.data.id+'?time='+Date.now(),
       method: glbd.method,
-      data: {page},
+      data: {page,keyword},
       success: function (res) {
         let data = res.data.data
         data.forEach((quote) => {
@@ -145,6 +150,14 @@ Page({
         break
     }
     this.setData(this.data)
+  },
+  handlerQuoteSearch:function(e){
+    const {value} = e.detail
+    this.setData({
+      'quote_param.keyword':value
+    })
+    const force = true
+    this.getQuoteList(force)
   },
   //拨打电话
   handlerMakePhoneCall:function(e){

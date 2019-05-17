@@ -1,5 +1,4 @@
 <!--pages/Home/catogery_brand_list/category_brand_list.wxml-->
-<scroll-view scroll-y scroll-top='{{ scrollTop }}'> 
 <view class='container'>
 
   <view class='section section-option'>
@@ -9,26 +8,26 @@
       <text>品牌</text>
     </text>
     <view class='alpha-index-list'>
-      <view class='alpha-index-item {{item===alpha_selected?"active":""}}' wx:for="{{alphas}}" wx:key="item" data-index='{{index}}' bindtap='handleScrollTo'>
+      <view class='alpha-index-item {{item===currentAlpha?"active":""}}' wx:for="{{alphas}}" wx:key="item" data-index='{{index}}' bindtap='handleScrollTo'>
           {{item}}
       </view>
     </view>
+    <scroll-view scroll-y scroll-top='{{ scrollTop }}' class='option-list-scroll-view'> 
     <view class='option-list box-shadow'>  
-        <view class="option-title-alpha" wx:for="{{option}}" wx:key="alpha" data-index='{{alpha}}' wx:for-index="alpha" wx:for-item="options">
+        <view class="option-title-alpha" wx:for="{{option}}" wx:key="alpha"  wx:for-index="alpha" wx:for-item="options">
           <view>{{alpha}}</view>
-          <view wx:for="{{options}}" wx:key="id" data-index='{{index}}' bindtap='handlerSelect' class='option-item'>
+          <view wx:for="{{options}}" wx:key="id" data-alpha='{{alpha}}' data-index='{{index}}' bindtap='handlerSelect' class='option-item'>
               <view class='option-item-name {{item.selected?"active":""}}'>{{item.name}}</view>
           </view>
         </view>
     </view>
+    </scroll-view>
     <view class='option-buttons'>
       <view class='option-confirm box-shadow' bindtap='handlerNavigatorToCateFilter'>确认</view>
     </view>
-    
   </view>
   <view class='section section-official-account'>
     <official-account></official-account>
   </view>
 </view>
-</scroll-view>
 

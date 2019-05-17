@@ -8,6 +8,9 @@
   font-weight: bold;
   margin-bottom: 30rpx;
 }
+.option-list-scroll-view{
+  height: 900rpx;
+}
 .option-list{
   background: #fff;
   padding: 0 20rpx;
@@ -49,16 +52,25 @@
   margin: 15rpx 30rpx 30rpx;
 }
 .alpha-index-list{
-  position: fixed;
-  right: 0;
-  top: 200rpx;
-  width: 100rpx;
-  z-index: 99;
-  text-align: center;
-  background: rgba(51,51,51,0.5);
+  position:fixed;
+  right:0;
+  top:50%;
+  z-index:10;
+  padding-left:10px;
+  transform:translateY(-50%);
 }
 .alpha-index-item{
-
+  display:block;
+  height:18px;
+  line-height:18px;
+  padding:0 5px;
+  text-align:center;
+  color:#ff7878;
+  font-size:12px;
+  border-radius:50%
+}
+.alpha-index-item.active{
+  background:#ff7878;color:#fff
 }
 .section-official-account{
   

@@ -29,5 +29,5 @@
   </view>
   <view class='no-more {{merchant_reach_bottom?"active":""}}'>暂无更多数据</view>
 </scroll-view>
-<cover-image class='go-to' src='/static/images/icon/home.png' catchtap='handlerOpenLocation' hidden='{{!show_goto_button}}'> </cover-image>
-<cover-image class='my-location' src='/static/images/icon/home.png' catchtap='handlerSwithToMyLocation' hidden='{{!show_goto_button}}'> </cover-image>
+<cover-image class='go-to' src='/static/images/icon/goto.png' catchtap='handlerOpenLocation' hidden='{{!show_goto_button}}'> </cover-image>
+<cover-image class='my-location' src='/static/images/icon/locate.png' catchtap='handlerSwithToMyLocation' hidden='{{!show_goto_button}}'> </cover-image>

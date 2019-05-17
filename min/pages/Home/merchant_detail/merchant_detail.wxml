@@ -56,6 +56,10 @@
       <view class='title {{active=="location"?"active":""}}' bindtap='handlerToggleActive' data-active='location' wx:if='{{locations.length>1}}'>营业地址</view>
     </view>
     <view class='quote-list' hidden='{{active!=="quote"}}'>
+      <view class='quote-search-field flex-row' hidden='{{!quotes.length}}'>
+        <input class='quote-search-input box-shadow' bindconfirm='handlerQuoteSearch'></input>
+        <image class='quote-search-icon' src='/static/images/icon/icon-search.png'></image>
+      </view>
       <view class='flex-row product-item ' wx:for="{{quotes}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail'>
         <view class='product-icon'>
           <image src='{{item.cover}}' lazy-load binderror='handlerImageError' data-index='quotes.{{index}}.cover'></image>

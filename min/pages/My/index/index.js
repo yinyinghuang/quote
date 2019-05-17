@@ -114,49 +114,50 @@ Page({
   _getRecentView:function(){
     const localStorage = wx.getStorageSync('recent')
     const _this = this
-    if (localStorage && localStorage.length>0){
-      let product_ids = [];
-      localStorage.forEach((item) => {
-        product_ids.push(item.id)
-      })
-      if(product_ids.length>0){
-        comm.request({
-          url: glbd.host + 'products/lists/',
-          method: glbd.method,
-          data: { product_ids },
-          success: function (res) {
-            let data = res.data.data
-            let time = Date.now()
-            data.forEach((product) => {
-              product.album = product.cover ? glbd.hosts + product.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
-              delete (product.albums)
+    // if (localStorage && localStorage.length>0){
+    //   let product_ids = [];
+    //   localStorage.forEach((item) => {
+    //     product_ids.unshift(item.id)
+    //   })
+    //   if(product_ids.length>0){
+    //     comm.request({
+    //       url: glbd.host + 'products/lists/',
+    //       method: glbd.method,
+    //       data: { product_ids },
+    //       success: function (res) {
+    //         let data = res.data.data
+    //         let time = Date.now()
+    //         data.forEach((product) => {
+    //           product.album = product.cover ? glbd.hosts + product.cover + '?t=' + time : '/static/image/icon/red/nopic.png'
+    //           delete (product.albums)
 
-              if (product.price_hong_max && product.price_hong_max == product.price_hong_min) {
-                product.price_hong_max = 0
-                product.price_hong_min = comm.formatPrice(product.price_hong_min)
-              } else {
-                if (product.price_hong_max) product.price_hong_max = comm.formatPrice(product.price_hong_max)
-                if (product.price_hong_min) product.price_hong_min = comm.formatPrice(product.price_hong_min)
-              }
-              if (product.price_water_max && product.price_water_max == product.price_water_min) {
-                product.price_water_max = 0
-                product.price_water_min = comm.formatPrice(product.price_water_min)
-              } else {
-                if (product.price_water_max) product.price_water_max = comm.formatPrice(product.price_water_max)
-                if (product.price_water_min) product.price_water_min = comm.formatPrice(product.price_water_min)
-              }
-            })
-            _this.setData({
-              recents: data,
-              'params.recents.page': 2,
-              'params.recents.reach_bottom': 1,
-            })
-            return
-          }
-        })
-      }
-    }
+    //           if (product.price_hong_max && product.price_hong_max == product.price_hong_min) {
+    //             product.price_hong_max = 0
+    //             product.price_hong_min = comm.formatPrice(product.price_hong_min)
+    //           } else {
+    //             if (product.price_hong_max) product.price_hong_max = comm.formatPrice(product.price_hong_max)
+    //             if (product.price_hong_min) product.price_hong_min = comm.formatPrice(product.price_hong_min)
+    //           }
+    //           if (product.price_water_max && product.price_water_max == product.price_water_min) {
+    //             product.price_water_max = 0
+    //             product.price_water_min = comm.formatPrice(product.price_water_min)
+    //           } else {
+    //             if (product.price_water_max) product.price_water_max = comm.formatPrice(product.price_water_max)
+    //             if (product.price_water_min) product.price_water_min = comm.formatPrice(product.price_water_min)
+    //           }
+    //         })
+    //         _this.setData({
+    //           recents: data,
+    //           'params.recents.page': 2,
+    //           'params.recents.reach_bottom': 1,
+    //         })
+    //         return
+    //       }
+    //     })
+    //   }
+    // }
     _this.setData({
+       recents: localStorage,
       'params.recents.page': 2,
       'params.recents.reach_bottom': 1,
     })

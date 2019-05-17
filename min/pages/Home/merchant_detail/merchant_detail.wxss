@@ -68,6 +68,7 @@
 }
 .quote-location-header{
   justify-content: flex-start;
+  position: relative;
 }
 .quote-location-header .title{
   display: inline-block;
@@ -84,6 +85,23 @@
 }
 .quote-location-header .title:first-child{
   margin-left: 0;
+}
+.quote-search-field{
+  /* position: absolute;
+  right: 0;
+  top: 0; */
+  justify-content: flex-end;
+  margin-bottom: 20rpx;
+}
+.quote-search-input{
+  width: 300rpx;
+  padding: 0 10rpx;
+  background: #fff;
+}
+.quote-search-icon{
+  width: 24rpx;
+  height: 24rpx;
+  margin: 0 30rpx;
 }
 .no-more{
   background: #fff;

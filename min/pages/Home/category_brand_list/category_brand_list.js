@@ -13,6 +13,7 @@ Page({
     filter_type: 1,
     selected:'',
     scrollTop: 0,
+    currentAlpha:''
   },
 
   //从筛选页跳转至此页
@@ -59,11 +60,13 @@ Page({
     const {selected} = this.data
 
     if (selected) {
-      data.some((item) => {
-        const flag = selected === item.name
-        item.selected = flag ? 1 : 0
-        return flag
-      })
+      for(let alpha in data){
+        data[alpha].some((item) => {
+          const flag = selected === item.name
+          item.selected = flag ? 1 : 0
+          return flag
+        })
+      }
     }
     return data
   },
@@ -71,7 +74,7 @@ Page({
   handleScrollTo:function(e){
     const _this =this
     const alphaIndex = e.currentTarget.dataset.index
-    console.log(alphaIndex)
+    
     const query = wx.createSelectorQuery()
     query.selectAll('.option-title-alpha').boundingClientRect()
     query.exec(function (res) {
@@ -83,22 +86,23 @@ Page({
         scrollTop += cur.height + margin_bottom
       }
       _this.setData({
-        scrollTop
+        scrollTop,
+        currentAlpha:_this.data.alphas[alphaIndex]
       })
     })
   },
   handlerSelect: function (e) {
 
-    const { index } = e.currentTarget.dataset
+    const { alpha,index } = e.currentTarget.dataset
     let { option,selected } = this.data
     //当前选项为已选中，取消选中，清除seleted
-    if (option[index]['selected']){
+    if (option[alpha][index]['selected']){
       selected =''
-      option[index]['selected'] = false
+      option[alpha][index]['selected'] = false
     }else{
       if (this.data.filter_type == 1) {
-        if (!option[index]['selected']) {
-          option.some((item) => {
+        if (!option[alpha][index]['selected']) {
+          option[alpha].some((item) => {
             if (item.selected) {
               item.selected = !1
               return 1
@@ -106,8 +110,8 @@ Page({
           })
         }
       }
-      option[index]['selected'] = !option[index]['selected']
-      selected = option[index].name
+      option[alpha][index]['selected'] = !option[alpha][index]['selected']
+      selected = option[alpha][index].name
     }
     this.setData({
       option,
