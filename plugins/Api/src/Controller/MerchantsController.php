@@ -71,12 +71,13 @@ class MerchantsController extends AppController
         $order             = ['MerchantLocations.sort desc','MerchantLocations.id desc',];
         $limit             = 20;
         $offset            = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        $count = $this->loadModel('MerchantLocations')->find('all')->where($conditions)->count();
         $merchantLocations = $this->loadModel('MerchantLocations')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->leftJoinWith('Areas')
             ->leftJoinWith('Districts')
             ->toArray();
-        $this->ret(0, $merchantLocations, '产品加载成功');
+        $this->ret(0, ['count' => $count,'list' => $merchantLocations], '产品加载成功');
     }
 
     public function quoteLists($merchant_id)
@@ -101,7 +102,7 @@ class MerchantsController extends AppController
         $order      = ['Quotes.sort desc', 'Products.sort desc', 'Quotes.id desc', 'Products.id desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        
+        $count = $this->loadModel('Quotes')->find('all')->where($conditions)->count();
         $quotes = $this->loadModel('Quotes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
@@ -109,7 +110,7 @@ class MerchantsController extends AppController
                 return $row;
             })
             ->toArray();
-        $this->ret(0, $quotes, '加载成功');
+        $this->ret(0, ['count' => $count,'list' => $quotes], '加载成功');
     }
     public function setLike($merchant_id)
     {
