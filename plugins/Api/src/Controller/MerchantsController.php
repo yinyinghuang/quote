@@ -94,9 +94,9 @@ class MerchantsController extends AppController
             'price_water'  => 'Quotes.price_water',
         ];
         $conditions = ['Quotes.is_visible' => 1, 'Quotes.merchant_id' => $merchant_id];
-        if(isset($params['keyword']) && !empty($params['keyword'])) {
-            $conditions['Products.name like'] = '%'.$params['keyword']).'%';
-        }
+        // if(isset($params['keyword']) && !empty($params['keyword'])) {
+        //     $conditions['Products.name like'] = '%'.$params['keyword']).'%';
+        // }
         $contain    = ['Products'];
         $order      = ['Quotes.sort desc', 'Products.sort desc', 'Quotes.id desc', 'Products.id desc'];
         $limit      = 20;
