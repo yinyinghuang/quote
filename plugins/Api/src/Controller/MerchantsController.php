@@ -71,7 +71,7 @@ class MerchantsController extends AppController
         $order             = ['MerchantLocations.sort desc','MerchantLocations.id desc',];
         $limit             = 20;
         $offset            = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        $count = $this->loadModel('MerchantLocations')->find('all')->where($conditions)->count();
+        $count = $this->loadModel('MerchantLocations')->find('all',compact('contain','conditions'))->count();
         $merchantLocations = $this->loadModel('MerchantLocations')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->leftJoinWith('Areas')
@@ -98,12 +98,11 @@ class MerchantsController extends AppController
         if(isset($params['keyword']) && !empty($params['keyword'])) {
             $conditions['Products.name like'] = '%'.$params['keyword'].'%';
         }
-        debug($conditions);
         $contain    = ['Products'];
         $order      = ['Quotes.sort desc', 'Products.sort desc', 'Quotes.id desc', 'Products.id desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        $count = $this->loadModel('Quotes')->find('all')->where($conditions)->count();
+        $count = $this->loadModel('Quotes')->find('all',compact('contain','conditions'))->count();
         $quotes = $this->loadModel('Quotes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
