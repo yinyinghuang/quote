@@ -128,6 +128,7 @@
               <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='product-price-label'>行</text></view>
               <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='product-price-label'>水</text></view>
             </view>
+            <view class='merchant-quote-time'>{{item.modified}}</view>
           </view>
         </view>
       </view>

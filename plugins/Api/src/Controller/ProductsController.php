@@ -26,7 +26,7 @@ class ProductsController extends AppController
         if (isset($params['type'])) {
             switch ($params['type']) {
                 case 'last':
-                    $order = array_merge(['Products.created' => 'Desc'], $order);
+                    $order                         = array_merge(['Products.created' => 'Desc'], $order);
                     $conditions['Products.is_new'] = 1;
                     break;
             }
@@ -140,6 +140,7 @@ class ProductsController extends AppController
             'merchant_name' => 'Merchants.name',
             'price_hong'    => 'Quotes.price_hong',
             'price_water'   => 'Quotes.price_water',
+            'modified'      => 'Quotes.modified',
         ];
         $conditions = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
         $contain    = ['Merchants'];
@@ -173,8 +174,9 @@ class ProductsController extends AppController
             $merchants = $this->loadModel('Quotes')
                 ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
                 ->map(function ($row) {
-                    $conditions = ['merchant_id' => $row->merchant_id, 'address is not null'];
-                    $location   = $this->loadModel('MerchantLocations')->find('all', [
+                    $row->modified = (new Time($location->modified))->i18nFormat('yyyy-MM-dd');
+                    $conditions    = ['merchant_id' => $row->merchant_id, 'address is not null'];
+                    $location      = $this->loadModel('MerchantLocations')->find('all', [
                         'conditions' => $conditions,
                     ])->first();
                     if ($location) {
@@ -186,8 +188,8 @@ class ProductsController extends AppController
                 })
                 ->toArray();
         }
-        $count = $this->loadModel('Quotes')->find('all',compact('conditions','contain'))->count();
-        $this->ret(0, ['list' => $merchants,'count' => $count], '加载成功');
+        $count = $this->loadModel('Quotes')->find('all', compact('conditions', 'contain'))->count();
+        $this->ret(0, ['list' => $merchants, 'count' => $count], '加载成功');
     }
     public function setLike($product_id)
     {
