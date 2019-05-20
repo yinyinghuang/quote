@@ -266,3 +266,7 @@
   margin-left: 20rpx;
   padding: 0 6rpx;
 }
+.merchant-quote-time{
+  margin-right: 20rpx;
+  color: #8e8e93;
+}
