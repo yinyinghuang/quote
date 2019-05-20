@@ -244,9 +244,12 @@
   color: #7f7f7f;
 }
 .merchant-quote{
+  justify-content: space-between;
+  align-items:flex-start;
+}
+.merchant-quote-content{
   justify-content: flex-start;
   align-items:flex-start;
-
 }
 .merchant-quote-text{
   width: 68rpx;

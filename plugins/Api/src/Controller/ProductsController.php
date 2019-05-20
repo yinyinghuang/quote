@@ -174,7 +174,7 @@ class ProductsController extends AppController
             $merchants = $this->loadModel('Quotes')
                 ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
                 ->map(function ($row) {
-                    $row->modified = (new Time($location->modified))->i18nFormat('yyyy-MM-dd');
+                    $row->modified = (new Time($row->modified))->i18nFormat('yyyy-MM-dd');
                     $conditions    = ['merchant_id' => $row->merchant_id, 'address is not null'];
                     $location      = $this->loadModel('MerchantLocations')->find('all', [
                         'conditions' => $conditions,

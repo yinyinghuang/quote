@@ -123,12 +123,14 @@
         <view class='merchant-detail'>
           <text class='merchant-address' catchtap='handlerOpenLocation' data-latitude='{{merchant.latitude}}' data-longitude='{{merchant.longitude}}' data-name='{{merchant.merchant_name}}' data-address='{{merchant.address}}' selectable='true'>{{merchant.address}}</text>
           <view class='merchant-quote flex-row'>
-            <view class='merchant-quote-text'>售价:</view>
-            <view class='merchant-quote-price'>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='product-price-label'>行</text></view>
-              <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='product-price-label'>水</text></view>
+            <view class='flex-row merchant-quote-content'>
+              <view class='merchant-quote-text'>售价:</view>
+              <view class='merchant-quote-price'>
+                <view class='merchant-quote-price-item' wx:if='{{merchant.price_hong}}'>HK${{merchant.price_hong}}<text class='product-price-label'>行</text></view>
+                <view class='merchant-quote-price-item' wx:if='{{merchant.price_water}}'>HK${{merchant.price_water}}<text class='product-price-label'>水</text></view>
+              </view>
             </view>
-            <view class='merchant-quote-time'>{{item.modified}}</view>
+            <view class='merchant-quote-time'>{{merchant.modified}}</view>
           </view>
         </view>
       </view>
