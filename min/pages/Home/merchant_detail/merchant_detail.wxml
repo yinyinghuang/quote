@@ -41,8 +41,8 @@
       </view>
     </view>
     <view class='merchant-detail-action flex-row'>
-      <button class='box-shadow merchant-action-icon'>
-        <image src='/static/images/icon{{liked?"-red":""}}/icon-fav.png' class='action-icon' bindtap='handlerLike' data-id='{{id}}'></image>
+      <button class='box-shadow merchant-action-icon' bindtap='handlerLike' data-id='{{id}}'>
+        <image src='/static/images/icon{{liked?"-red":""}}/icon-fav.png' class='action-icon' ></image>
       </button>          
       <button open-type='share' class='box-shadow merchant-action-icon'>
         <image src='/static/images/icon/icon-share.png' class='action-icon'></image>
@@ -50,15 +50,15 @@
     </view>
   </view> 
 </view>
-<view class='section section-quote-address-list' wx:if='{{quotes.length}}'>
+<view class='section section-quote-address-list'>
     <view class='quote-location-header flex-row'>
       <view class='title {{active=="quote"?"active":""}}' bindtap='handlerToggleActive' data-active='quote'>在售产品({{quote_count}})</view> 
       <view class='title {{active=="location"?"active":""}}' bindtap='handlerToggleActive' data-active='location' wx:if='{{locations.length>1}}'>营业地址({{location_count}})</view>
     </view>
     <view class='quote-list' hidden='{{active!=="quote"}}'>
-      <view class='quote-search-field flex-row' hidden='{{!quotes.length}}'>
-        <input class='quote-search-input box-shadow' bindconfirm='handlerQuoteSearch'></input>
-        <image class='quote-search-icon' src='/static/images/icon/icon-search.png'></image>
+      <view class='quote-search-field flex-row'>
+        <input class='quote-search-input box-shadow' bindconfirm='handleForceSearch' bindinput='handleKeywordSave' value='{{quote_param.keyword}}'></input>
+        <image class='quote-search-icon' src='/static/images/icon/icon-search.png' bindtap='handleForceSearch'></image>
       </view>
       <view class='flex-row product-item ' wx:for="{{quotes}}" wx:key="id" data-id='{{item.id}}' data-name='{{item.name}}' data-album='{{item.album}}' bindtap='handlerNavigatorToProductDetail'>
         <view class='product-icon'>

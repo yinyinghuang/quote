@@ -186,7 +186,8 @@ class ProductsController extends AppController
                 })
                 ->toArray();
         }
-        $this->ret(0, $merchants, '加载成功');
+        $count = $this->loadModel('Quotes')->find('all',compact('conditions','contain'))->count();
+        $this->ret(0, ['list' => $merchants,'count' => $count], '加载成功');
     }
     public function setLike($product_id)
     {

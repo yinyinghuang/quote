@@ -83,7 +83,7 @@
     </view>
   </view>
   <view class='section section-merchant-list'>
-    <view class='product-title'>在售商家<text class='split'>|</text>{{meta_data.quote_count}}</view>    
+    <view class='product-title'>在售商家<text class='split'>|</text>{{merchant_count}}</view>    
     <view class='merchant-tabs box-shadow flex-row'>
       <view class='merchant-tab-item' bindtap='handlerNavigatorToNearBy' data-id='{{id}}'>附近</view>
       <view class='merchant-tab-item {{style.show_merchant_filter||style.merchant_filtered?"active":""}}' bindtap='handlerShowMerchantFilter'>筛选</view>

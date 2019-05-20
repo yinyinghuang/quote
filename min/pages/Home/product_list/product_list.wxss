@@ -50,3 +50,10 @@
   font-weight:bold;
 
 }
+.product-icon{
+  width: 200rpx;
+}
+.product-item-text{
+  max-width: 370rpx;
+  text-align: left;
+}

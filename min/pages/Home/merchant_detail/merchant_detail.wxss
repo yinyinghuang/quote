@@ -95,6 +95,7 @@
 }
 .quote-search-input{
   width: 300rpx;
+  height: 30px;
   padding: 0 10rpx;
   background: #fff;
 }

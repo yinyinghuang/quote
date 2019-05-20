@@ -155,11 +155,15 @@ Page({
     }
     this.setData(this.data)
   },
-  handlerQuoteSearch:function(e){
+  //保存关键字
+  handleKeywordSave:function(e){
     const {value} = e.detail
     this.setData({
       'quote_param.keyword':value
     })
+  },
+  //强制搜索
+  handleForceSearch:function(){
     const force = true
     this.getQuoteList(force)
   },
@@ -193,7 +197,7 @@ Page({
     })
   },//点赞收藏
   handlerLike: function (e) {
-    const { id } = e.currentTarget.dataset
+    const { id } = e.currentTarget.dataset    
     const _this = this
     const type = _this.data.liked ? 'dislike' : 'like'
     comm.request({

@@ -22,6 +22,7 @@ Page({
     },
     merchant_filter: {},
     merchant_filter_name:{},
+    merchant_count:0,
     default_merchant_filter_name:{
       price_type: '行货|水货',
       area:'地区',
@@ -116,7 +117,7 @@ Page({
         page:this.data.page
       },
       success: function (res) {
-        let data = res.data.data
+        let data = res.data.data.list
         const { page } = _this.data
         data.forEach((quote) => {
           if (quote.price_hong) quote.price_hong = comm.formatPrice(quote.price_hong)
@@ -126,6 +127,7 @@ Page({
           merchants: page == 1 ? data : _this.data.merchants.concat(data),
           page: page + 1,
           merchant_reach_bottom: !data.length,
+          merchant_count:res.data.data.count
         })
       }
     })
