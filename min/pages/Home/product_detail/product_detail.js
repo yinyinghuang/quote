@@ -39,6 +39,11 @@ Page({
     })
     app.openSetting(this.initPage)
   },
+  // 评论页面跳转回
+  onShow:function(){
+    const _this = this 
+    _this.getProductDetail()
+  },
   //页面上拉触底事件的处理函数
   onReachBottom: function () {
     const _this = this

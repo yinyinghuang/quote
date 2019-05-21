@@ -62,7 +62,7 @@ Page({
       method: glbd.method,
       // data:{page},
       success: function (res) {
-        let data = res.data.data
+        let data = res.data.data.list
         // const { page } = _this.data
         let markers = []
         const length = _this.data.markers.length

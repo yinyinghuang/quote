@@ -2,9 +2,7 @@
 namespace Api\Controller;
 
 use Api\Controller\AppController;
-
 use Cake\I18n\Time;
-
 
 /**
  * Fans Controller
@@ -14,21 +12,21 @@ use Cake\I18n\Time;
  */
 class FansController extends AppController
 {
-    
+
     public function login()
     {
         $fan = $this->getUserInfo($this->request->getData());
-        $this->ret(0,['pkey' => $fan['pkey']],'登陆成功');
-        
+        $this->ret(0, ['pkey' => $fan['pkey']], '登陆成功');
+
     }
     public function merchantLists($pkey)
     {
         if (empty($pkey)) {
             $this->ret(1, null, 'pkey缺失');
         }
-        $params = $this->request->getData();
-        $fan = $this->_getFanFormPkey($pkey);
-        $pkey = $fan['pkey'];
+        $params     = $this->request->getData();
+        $fan        = $this->_getFanFormPkey($pkey);
+        $pkey       = $fan['pkey'];
         $fields     = ['Merchants.id', 'Merchants.name', 'Merchants.logo', 'Merchants.logo_ext'];
         $conditions = ['Merchants.is_visible' => 1];
 
@@ -59,16 +57,17 @@ class FansController extends AppController
                 return $row;
             })
             ->toArray();
-        $this->ret(0, compact('merchants','pkey'), '加载成功');
+        $this->ret(0, compact('merchants', 'pkey'), '加载成功');
     }
+    //获取粉丝收藏的产品列表
     public function productLists($pkey)
     {
         if (empty($pkey)) {
             $this->ret(1, null, 'pkey缺失');
         }
         $params = $this->request->getData();
-        $fan = $this->_getFanFormPkey($pkey);
-        $pkey = $fan['pkey'];
+        $fan    = $this->_getFanFormPkey($pkey);
+        $pkey   = $fan['pkey'];
         $fields = [
             'Products.id',
             'Products.name',
@@ -78,28 +77,29 @@ class FansController extends AppController
             'Products.price_water_min',
             'Products.price_water_max',
         ];
-        $conditions = ['Products.is_visible' => 1, 'Categories.is_visible' => 1];
-        $contain    = ['Categories'];
-        $order      = ['Products.sort desc', 'Products.id desc'];
+        $conditions = ['fan_id' => $fan['id'],'Products.is_visible' => 1];
+        $contain    = ['Products' => function($query){
+            return $query->contain('Categories')->where(['Categories.is_visible' => 1]);
+        }];
+        $order      = ['Likes.created desc', 'Products.sort desc', 'Products.id desc'];
         $limit      = 20;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        //获取粉丝收藏的产品列表
-        $product_ids = $this->loadModel('Likes')->find('all', [
-            'conditions' => ['fan_id' => $fan['id']],
-        ])->extract('product_id')->toArray();
-        if (empty($product_ids)) {
-            $conditions = ['1!=1'];
-        } else {
-            $conditions['Products.id in'] = $product_ids;
-        }
-        $products = $this->loadModel('Products')
+        $products   = $this->loadModel('Likes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
                 $row->cover = $this->_getProductCover($row->id, $row->album);
                 return $row;
             })
             ->toArray();
-        $this->ret(0, compact('products','pkey'), '加载成功');
+
+        // $products = $this->loadModel('Products')
+        //     ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
+        //     ->map(function ($row) {
+        //         $row->cover = $this->_getProductCover($row->id, $row->album);
+        //         return $row;
+        //     })
+        //     ->toArray();
+        $this->ret(0, compact('products', 'pkey'), '加载成功');
     }
 
     public function commentLists($pkey)
@@ -108,8 +108,8 @@ class FansController extends AppController
             $this->ret(1, null, 'pkey缺失');
         }
         $params = $this->request->getData();
-        $fan = $this->_getFanFormPkey($pkey);
-        $pkey = $fan['pkey'];
+        $fan    = $this->_getFanFormPkey($pkey);
+        $pkey   = $fan['pkey'];
         $fields = [
             'id'              => 'Products.id',
             'name'            => 'Products.name',
@@ -137,6 +137,6 @@ class FansController extends AppController
                 return $row;
             })
             ->toArray();
-        $this->ret(0, compact('comments','pkey'), '加载成功');
+        $this->ret(0, compact('comments', 'pkey'), '加载成功');
     }
 }

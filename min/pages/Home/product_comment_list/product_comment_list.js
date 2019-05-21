@@ -24,6 +24,10 @@ Page({
     })
     app.openSetting(this.initPage)
   },
+  // 评论页面跳转回
+  onShow: function () {
+    this.initPage()
+  },
   initPage:function(){
     const _this = this
     if(!this.data.name) _this.getProductDetail()
