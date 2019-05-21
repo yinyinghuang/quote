@@ -75,16 +75,17 @@ class FansController extends AppController
             'Products.price_hong_min',
             'Products.price_hong_max',
             'Products.price_water_min',
-            'Products.price_water_max',
-        ];
-        $conditions = ['fan_id' => $fan['id'],'Products.is_visible' => 1,'Categories.is_visible' => 1];
-        $contain    = ['Products' => function($query){
-            return $query->contain('Categories');
-        }];
-        $order      = ['Likes.created desc', 'Products.sort desc', 'Products.id desc'];
-        $limit      = 20;
-        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        $products   = $this->loadModel('Likes')
+            'Products.price_water_max'];
+        $conditions = [
+            'Like.fan_id'           => $fan['id'],
+            'Like.type'             => 1,
+            'Products.is_visible'   => 1,
+            'Categories.is_visible' => 1];
+        $contain = ['Products' => 'Categories'];
+        $order    = ['Likes.created desc', 'Products.sort desc', 'Products.id desc'];
+        $limit    = 20;
+        $offset   = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
+        $products = $this->loadModel('Likes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
                 $row->product->cover = $this->_getProductCover($row->product->id, $row->product->album);

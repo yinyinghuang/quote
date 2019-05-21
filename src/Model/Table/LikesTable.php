@@ -46,8 +46,12 @@ class LikesTable extends Table
             'foreignKey' => 'foreign_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Fans', [
+        $this->belongsTo('Merchants', [
             'foreignKey' => 'foreign_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Fans', [
+            'foreignKey' => 'fan_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -61,7 +65,8 @@ class LikesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['product_id'], 'Products'));
+        $rules->add($rules->existsIn(['foreign_id'], 'Products'));
+        $rules->add($rules->existsIn(['foreign_id'], 'Merchants'));
         $rules->add($rules->existsIn(['fan_id'], 'Fans'));
 
         return $rules;
