@@ -316,11 +316,7 @@ class AppController extends Controller
     protected function resApi($code, $data, $msg, $extra = [])
     {
         $this->autoRender = false;
-        $res              = [
-            'code' => $code,
-            'data' => $data,
-            'msg'  => $msg,
-        ] + $extra;
+        $res              = compact('code','data','msg') + $extra;
 
         $this->response->body(json_encode($res));
         die($this->response);
