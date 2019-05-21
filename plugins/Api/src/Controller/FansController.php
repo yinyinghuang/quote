@@ -28,34 +28,28 @@ class FansController extends AppController
         $fan        = $this->_getFanFormPkey($pkey);
         $pkey       = $fan['pkey'];
         $fields     = ['Merchants.id', 'Merchants.name', 'Merchants.logo', 'Merchants.logo_ext'];
-        $conditions = ['Merchants.is_visible' => 1];
+        $conditions = ['Merchants.is_visible' => 1, 'Likes.type' => 2];
+        $contain    = ['Merchants'];
+        $order      = ['Merchants.sort desc', 'Merchants.id desc'];
+        $limit      = 20;
+        $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
-        $order        = ['Merchants.sort desc', 'Merchants.id desc'];
-        $limit        = 20;
-        $offset       = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
-        $merchant_ids = $this->loadModel('MerchantLikes')->find('all', [
-            'conditions' => ['fan_id' => $fan['id']],
-        ])->extract('merchant_id')->toArray();
-        if (empty($merchant_ids)) {
-            $conditions = ['1!=1'];
-        } else {
-            $conditions['Merchants.id in'] = $merchant_ids;
-        }
-        $merchants = $this->loadModel('Merchants')
+        $merchants = $this->loadModel('Likes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
-                $row->logos = $this->_getMerchantLogoUrl($row);
-                $conditions = ['merchant_id' => $row->id, 'address is not null'];
-                $location   = $this->loadModel('MerchantLocations')->find('all', [
+                $row->merchant->logos = $this->_getMerchantLogoUrl($row->merchant);
+                $conditions           = ['merchant_id' => $row->merchant->id, 'address is not null'];
+                $location             = $this->loadModel('MerchantLocations')->find('all', [
                     'conditions' => $conditions,
                 ])->first();
                 if ($location) {
-                    $row->address                            = $location->address;
-                    $location->latitude && $row->latitude    = $location->latitude;
-                    $location->longtitude && $row->longitude = $location->longtitude;
+                    $row->merchant->address                            = $location->address;
+                    $location->latitude && $row->merchant->latitude    = $location->latitude;
+                    $location->longtitude && $row->merchant->longitude = $location->longtitude;
                 }
                 return $row;
             })
+            ->extract('merchant')
             ->toArray();
         $this->ret(0, compact('merchants', 'pkey'), '加载成功');
     }
@@ -77,11 +71,11 @@ class FansController extends AppController
             'Products.price_water_min',
             'Products.price_water_max'];
         $conditions = [
-            'Likes.fan_id'           => $fan['id'],
-            'Likes.type'             => 1,
+            'Likes.fan_id'          => $fan['id'],
+            'Likes.type'            => 1,
             'Products.is_visible'   => 1,
             'Categories.is_visible' => 1];
-        $contain = ['Products' => 'Categories'];
+        $contain  = ['Products' => 'Categories'];
         $order    = ['Likes.created desc', 'Products.sort desc', 'Products.id desc'];
         $limit    = 20;
         $offset   = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
