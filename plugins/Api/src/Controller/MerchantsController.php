@@ -44,8 +44,8 @@ class MerchantsController extends AppController
         $fan = $this->_getFanFormPkey($this->request->getData('pkey'));
         $pkey = $fan['pkey'];
         $fan_id  = $fan['id'];
-        $merchant->liked = $this->loadModel('MerchantLikes')->find('all', [
-            'conditions' => ['merchant_id' => $merchant->id,'fan_id' => $fan_id],
+        $merchant->liked = $this->loadModel('Likes')->find('all', [
+            'conditions' => ['foreign_id' => $merchant->id,'fan_id' => $fan_id,'type' => 2],
         ])->count();
         $merchant->logos = $this->_getMerchantLogoUrl($merchant);
         $this->ret(0, compact('merchant','pkey'), '产品加载成功');
@@ -125,12 +125,12 @@ class MerchantsController extends AppController
         $action       = $params['type'];
         $conditions = compact('foreign_id', 'fan_id','type');
         if ($action === 'dislike') {
-            $this->loadModel('MerchantLikes')->deleteAll($conditions);
+            $this->loadModel('Likes')->deleteAll($conditions);
         } else {
-            $like = $this->loadModel('MerchantLikes')->find('all')->where($conditions)->first();
+            $like = $this->loadModel('Likes')->find('all')->where($conditions)->first();
             if (!$like) {
                 $conditions['created'] = date('Y-m-d H:i:s');
-                $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'foreign_id', 'created','type'])->values($conditions)->execute();
+                $this->loadModel('Likes')->query()->insert(['fan_id', 'foreign_id', 'created','type'])->values($conditions)->execute();
             }
         }
         $this->ret(0, ['pkey' => $fan['pkey']], '加载成功');
