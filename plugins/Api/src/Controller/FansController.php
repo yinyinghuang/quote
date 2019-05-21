@@ -87,9 +87,10 @@ class FansController extends AppController
         $products   = $this->loadModel('Likes')
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
-                $row->cover = $this->_getProductCover($row->id, $row->album);
+                $row->product->cover = $this->_getProductCover($row->product->id, $row->product->album);
                 return $row;
             })
+            ->extract('product')
             ->toArray();
 
         // $products = $this->loadModel('Products')
