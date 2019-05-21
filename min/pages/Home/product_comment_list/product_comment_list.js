@@ -44,7 +44,7 @@ Page({
       success: function (res) {
         let detail = res.data.data
         if (detail.rating == 0 && detail.meta_data && detail.meta_data.comment_score_total && detail.meta_data.comment_count) {
-          detail.rating = Math.cell(detail.meta_data.comment_score_total / detail.meta_data.comment_count)
+          detail.rating = Math.ceil(detail.meta_data.comment_score_total / detail.meta_data.comment_count)
         }
         detail.albums.forEach((item) => {
           item.middle = glbd.hosts + item.middle
@@ -77,7 +77,6 @@ Page({
           ...detail,
           attribute_group
         })
-        _this._saveTrack()
       }
     })
   },

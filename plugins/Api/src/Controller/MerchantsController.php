@@ -107,6 +107,7 @@ class MerchantsController extends AppController
             ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
             ->map(function ($row) {
                 $row->cover = $this->_getProductCover($row->id, $row->album);
+                $row->modified = (new Time($row->modified))->i18nFormat('yyyy-MM-dd');
                 return $row;
             })
             ->toArray();
