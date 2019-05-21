@@ -43,11 +43,11 @@ class LikesTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsTo('Products', [
-            'foreignKey' => 'product_id',
+            'foreignKey' => 'foreign_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Fans', [
-            'foreignKey' => 'fan_id',
+            'foreignKey' => 'foreign_id',
             'joinType' => 'INNER'
         ]);
     }
