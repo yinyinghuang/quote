@@ -92,14 +92,6 @@ class FansController extends AppController
             })
             ->extract('product')
             ->toArray();
-
-        // $products = $this->loadModel('Products')
-        //     ->find('all', compact('fields', 'conditions', 'contain', 'order', 'offset', 'limit'))
-        //     ->map(function ($row) {
-        //         $row->cover = $this->_getProductCover($row->id, $row->album);
-        //         return $row;
-        //     })
-        //     ->toArray();
         $this->ret(0, compact('products', 'pkey'), '加载成功');
     }
 
