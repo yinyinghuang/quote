@@ -77,9 +77,9 @@ class FansController extends AppController
             'Products.price_water_min',
             'Products.price_water_max',
         ];
-        $conditions = ['fan_id' => $fan['id'],'Products.is_visible' => 1];
+        $conditions = ['fan_id' => $fan['id'],'Products.is_visible' => 1,'Categories.is_visible' => 1];
         $contain    = ['Products' => function($query){
-            return $query->contain('Categories')->where(['Categories.is_visible' => 1]);
+            return $query->contain('Categories');
         }];
         $order      = ['Likes.created desc', 'Products.sort desc', 'Products.id desc'];
         $limit      = 20;
