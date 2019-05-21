@@ -120,15 +120,17 @@ class MerchantsController extends AppController
         $params     = $this->request->getData();
         $fan = $this->_getFanFormPkey($params['pkey']);
         $fan_id = $fan['id'];
-        $type       = $params['type'];
-        $conditions = compact('merchant_id', 'fan_id');
-        if ($type === 'dislike') {
+        $foreign_id = $merchant_id;
+        $type = 2;
+        $action       = $params['type'];
+        $conditions = compact('foreign_id', 'fan_id','type');
+        if ($action === 'dislike') {
             $this->loadModel('MerchantLikes')->deleteAll($conditions);
         } else {
             $like = $this->loadModel('MerchantLikes')->find('all')->where($conditions)->first();
             if (!$like) {
                 $conditions['created'] = date('Y-m-d H:i:s');
-                $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'merchant_id', 'created'])->values($conditions)->execute();
+                $this->loadModel('MerchantLikes')->query()->insert(['fan_id', 'foreign_id', 'created','type'])->values($conditions)->execute();
             }
         }
         $this->ret(0, ['pkey' => $fan['pkey']], '加载成功');
