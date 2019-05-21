@@ -299,27 +299,16 @@ class AppController extends Controller
 
         $order = [$controller . '.sort' => 'desc', $controller . '.modified' => 'desc', $controller . '.id' => 'desc', $controller . '.created' => 'desc'];
 
-        list($fields, $where, $contain, $order) = $sqlFn();
+        list($fields, $conditions, $contain, $order) = $sqlFn();
 
         if (isset($params['order']) && is_array($params['order'])) {
             foreach ($params['order'] as $key => $value) {
                 $order = [$controller . '.' . $key => $value] + $order;
             }
         }
-        $sql = [
-            'contain'    => $contain,
-            'fields'     => $fields,
-            'conditions' => $where,
-            'limit'      => $limit,
-            'offset'     => $offset,
-            'order'      => $order,
-
-        ];
+        $sql = compact('contain','fields','conditions','limit','offset','order');
         $data  = $mapFn ? $this->$controller->find('all', $sql)->map($mapFn)->toArray() : $this->$controller->find('all', $sql)->toArray();
-        $count = $this->$controller->find('all', [
-            'contain'    => $contain,
-            'conditions' => $where,
-        ])->count();
+        $count = $this->$controller->find('all',compact('contain','conditions'))->count();
 
         $this->resApi(0, $data, '加载完成', ['count' => $count]);
     }
