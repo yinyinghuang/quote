@@ -116,7 +116,7 @@ class ProductsController extends AppController
             'conditions' => ['product_id' => $product->id, 'fan_id' => $fan_id],
         ])->count();
         $product->liked = $this->loadModel('Likes')->find('all', [
-            'conditions' => ['product_id' => $product->id, 'fan_id' => $fan_id],
+            'conditions' => ['foreign_id' => $product->id, 'fan_id' => $fan_id],
         ])->count();
         $product->attributes = $this->loadModel('ProductsAttributes')->find('all', [
             'conditions' => ['ProductsAttributes.product_id' => $id, 'CategoriesAttributes.is_visible' => 1],
