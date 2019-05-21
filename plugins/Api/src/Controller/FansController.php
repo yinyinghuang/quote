@@ -77,8 +77,8 @@ class FansController extends AppController
             'Products.price_water_min',
             'Products.price_water_max'];
         $conditions = [
-            'Like.fan_id'           => $fan['id'],
-            'Like.type'             => 1,
+            'Likes.fan_id'           => $fan['id'],
+            'Likes.type'             => 1,
             'Products.is_visible'   => 1,
             'Categories.is_visible' => 1];
         $contain = ['Products' => 'Categories'];

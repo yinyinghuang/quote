@@ -144,7 +144,7 @@ class ProductsController extends AppController
         ];
         $conditions = ['Quotes.is_visible' => 1, 'Quotes.product_id' => $product_id];
         $contain    = ['Merchants'];
-        $order      = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.modified desc','Quotes.id desc', 'Merchants.id desc'];
+        $order      = ['Quotes.sort desc', 'Merchants.sort desc', 'Quotes.modified desc', 'Quotes.id desc', 'Merchants.id desc'];
         $limit      = 100;
         $offset     = $this->getOffset(isset($params['page']) ? $params['page'] : 1, $limit);
 
@@ -197,11 +197,13 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params     = $this->request->getData();
+        $foreign_id = $product_id;
         $fan        = $this->_getFanFormPkey($params['pkey']);
         $fan_id     = $fan['id'];
-        $type       = $params['type'];
-        $conditions = compact('product_id', 'fan_id');
-        if ($type === 'dislike') {
+        $action     = $params['type'];
+        $type       = 1;
+        $conditions = compact('foreign_id', 'fan_id','type');
+        if ($action === 'dislike') {
             $delt = -1;
             $this->loadModel('Likes')->deleteAll($conditions);
         } else {
@@ -209,7 +211,7 @@ class ProductsController extends AppController
             $like = $this->loadModel('Likes')->find('all')->where($conditions)->first();
             if (!$like) {
                 $conditions['created'] = date('Y-m-d H:i:s');
-                $this->loadModel('Likes')->query()->insert(['fan_id', 'product_id', 'created'])->values($conditions)->execute();
+                $this->loadModel('Likes')->query()->insert(['fan_id', 'foreign_id', 'created','type'])->values($conditions)->execute();
             }
         }
         //更新产品数据统计
