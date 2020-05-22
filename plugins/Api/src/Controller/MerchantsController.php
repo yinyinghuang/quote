@@ -45,7 +45,8 @@ class MerchantsController extends AppController
         if (empty($merchant)) {
             $this->ret(1, null, '商户不存在或已被删除');
         }
-        $fan             = $this->_getFanFormPkey($this->request->getData('pkey'));
+        // $fan             = $this->_getFanFormPkey($this->request->getData('pkey'));
+        $fan     = [];
         $pkey            = $fan['pkey'];
         $fan_id          = $fan['id'];
         $merchant->liked = $this->loadModel('Likes')->find('all', [
@@ -124,7 +125,8 @@ class MerchantsController extends AppController
             $this->ret(1, null, '商户id缺失');
         }
         $params     = $this->request->getData();
-        $fan        = $this->_getFanFormPkey($params['pkey']);
+        // $fan        = $this->_getFanFormPkey($params['pkey']);
+        $fan     = [];
         $fan_id     = $fan['id'];
         $foreign_id = $merchant_id;
         $type       = 2;

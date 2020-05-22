@@ -4,18 +4,24 @@ App({
   // 判断用户是否授权
   openSetting:function(_fn = function(){}){
     const _this = this;
+    console.log('是否已经取消', _this.globalData.cancel)
     wx.getSetting({
       success:(res) =>{
         const userInfo = res.authSetting['scope.userInfo']
-        if (userInfo){
-          _this.initPage(_fn)
-          
+        if (!_this.globalData.cancel){
+          if (userInfo) {
+            _this.initPage(_fn)
+
+          } else {
+            const page = getCurrentPages()[0];
+            wx.redirectTo({
+              url: '../../login/login?pb=/' + page.route + '&op=' + JSON.stringify(page.options),
+            })
+          }
         }else{
-          const page = getCurrentPages()[0];
-          wx.redirectTo({
-            url: '../../login/login?pb=/' + page.route + '&op=' + JSON.stringify(page.options),
-          })
+          _this.initPage(_fn)
         }
+        
       }
     })
   },

@@ -10,5 +10,8 @@
     <button class='bottoms' type='primary' open-type='getUserInfo' bindgetuserinfo='redirectPb'>
       授权登录
     </button>
+    <button class='bottoms' type='default' bindtap='cancel'>
+      取消
+    </button>
   
 </view>

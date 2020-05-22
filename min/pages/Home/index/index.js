@@ -19,7 +19,8 @@ Page({
    */
   onLoad: function (options) {
     //每个页面必须判断用户是否授权
-    app.openSetting(this.initPage)
+    // app.openSetting(this.initPage)
+    this.initPage()
   },
 
   /**

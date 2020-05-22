@@ -29,3 +29,6 @@
   font-size: 35rpx;
   border-radius: 80rpx;
 }
+.bottoms{
+  margin-bottom: 10px;
+}

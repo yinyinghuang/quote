@@ -97,7 +97,8 @@ class ProductsController extends AppController
             $this->ret(1, null, '产品id缺失');
         }
         $params  = $this->request->getData();
-        $fan     = $this->_getFanFormPkey($params['pkey']);
+        // $fan     = $this->_getFanFormPkey($params['pkey']);
+        $fan     = [];
         $pkey    = $fan['pkey'];
         $fan_id  = $fan['id'];
         $product = $this->loadModel('Products')->find('all', [
@@ -198,7 +199,8 @@ class ProductsController extends AppController
         }
         $params     = $this->request->getData();
         $foreign_id = $product_id;
-        $fan        = $this->_getFanFormPkey($params['pkey']);
+        // $fan        = $this->_getFanFormPkey($params['pkey']);
+        $fan     = [];
         $fan_id     = $fan['id'];
         $action     = $params['type'];
         $type       = 1;
@@ -250,7 +252,8 @@ class ProductsController extends AppController
         if ((!isset($params['content'])) || strlen($params['content']) < 10) {
             $this->ret(0, 0, '评价内容必填');
         }
-        $fan    = $this->_getFanFormPkey($this->request->getData('pkey'));
+        // $fan    = $this->_getFanFormPkey($this->request->getData('pkey'));
+        $fan     = [];
         $pkey   = $fan['pkey'];
         $fan_id = $fan['id'];
 
