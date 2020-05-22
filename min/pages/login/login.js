@@ -35,12 +35,14 @@ Page({
     const _this = this
     if (res.detail.errMsg === "getUserInfo:fail auth deny"){
       getApp().globalData.cancel = true
+      getApp().globalData.code = ''
     }
     _this.redirect()
   },
   cancel:function(){
     const _this = this
     getApp().globalData.cancel = true
+    getApp().globalData.code = ''
     _this.redirect()
   },
 

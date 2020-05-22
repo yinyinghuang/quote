@@ -4,6 +4,7 @@ App({
   // 判断用户是否授权
   openSetting:function(_fn = function(){}){
     const _this = this;
+    _this.initPage(_fn)
     console.log('是否已经取消', _this.globalData.cancel)
     wx.getSetting({
       success:(res) =>{
