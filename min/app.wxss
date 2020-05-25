@@ -30,6 +30,13 @@ page {
     background-color: #ededed;
     box-sizing: border-box;
 }
+page::after{
+  content:'技術支持：志華數碼媒體資本集團有限公司';
+  margin:0 auto 10px;
+  text-align: center;
+  display: block;
+  color: #333;
+}
 .flex-row {
   display: flex;
   flex-direction: row;
