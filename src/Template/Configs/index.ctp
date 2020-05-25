@@ -8,13 +8,13 @@
   <div class="layui-form-item">
     <label class="layui-form-label">小程序appid</label>
     <div class="layui-input-block">
-      <input type="text" name="xcx_appid" value="<?= $xcx_appid?>">
+      <input type="text" name="xcx_appid" value="<?= $xcx_appid?>" class="layui-input">
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">小程序appsecret</label>
     <div class="layui-input-block">
-      <input type="text" name="xcx_appsecret" value="<?= $xcx_appsecret?>">
+      <input type="text" name="xcx_appsecret" value="<?= $xcx_appsecret?>" class="layui-input">
     </div>
   </div>
   <div class="layui-form-item">
