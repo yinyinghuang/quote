@@ -145,7 +145,7 @@ class AppController extends BaseController
     {
         $this->sessionKey = $this->getSessionKey($code);
         if (array_key_exists('errcode', $this->sessionKey->json)) {
-            $this->ret(2, $this->sessionKey->json, $this->sessionKey->json['errmsg']);
+            $this->ret(2, '', $this->sessionKey->json['errmsg']);
         } else {
             $openid = $this->sessionKey->json['openid'];
             return $openid;

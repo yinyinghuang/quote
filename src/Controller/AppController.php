@@ -106,11 +106,11 @@ class AppController extends Controller
             'name' => '粉丝',
             'tabs' => ['Fans'],
         ],
-        // 'Configs'      => [
-        //     'url'  => '/configs',
-        //     'name' => '配置',
-        //     'tabs' => ['Configs'],
-        // ],
+        'Configs'      => [
+            'url'  => '/configs',
+            'name' => '配置',
+            'tabs' => ['Configs'],
+        ],
     ];
     /**
      * Initialization hook method.

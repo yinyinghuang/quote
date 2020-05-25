@@ -17,7 +17,9 @@ class ConfigsController extends AppController
     public function index()
     {
         $comment_need_check = $this->Configs->findByName('comment_need_check')->first()->value;
-        $this->set(compact('comment_need_check'));
+        $xcx_appid = $this->Configs->findByName('xcx_appid')->first()->value;
+        $xcx_appsecret = $this->Configs->findByName('xcx_appsecret')->first()->value;
+        $this->set(compact('comment_need_check','xcx_appid','xcx_appsecret'));
     }
     //ajax修改产品
     public function apiSave()
@@ -30,6 +32,13 @@ class ConfigsController extends AppController
         $params         = $this->request->getData();
         $params['comment_need_check']                       = isset($params['comment_need_check']) ? $params['comment_need_check'] : 0;
         $this->Configs->query()->update()->set(['value' => $params['comment_need_check']])->where(['name' => 'comment_need_check'])->execute();
+
+        $params['xcx_appid']                       = isset($params['xcx_appid']) ? $params['xcx_appid'] : $this->resApi($code, 3, $msg_arr[3]);
+        $this->Configs->query()->update()->set(['value' => $params['xcx_appid']])->where(['name' => 'xcx_appid'])->execute();
+
+        $params['xcx_appsecret']                       = isset($params['xcx_appsecret']) ? $params['xcx_appsecret'] : $this->resApi($code, 3, $msg_arr[3]);
+        $this->Configs->query()->update()->set(['value' => $params['xcx_appsecret']])->where(['name' => 'xcx_appsecret'])->execute();
+        
         $data = 0;
         $this->resApi($code, $data, $msg_arr[$data]);
 

@@ -6,6 +6,18 @@
     </div>
   </div>
   <div class="layui-form-item">
+    <label class="layui-form-label">小程序appid</label>
+    <div class="layui-input-block">
+      <input type="text" name="xcx_appid" value="<?= $xcx_appid?>">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">小程序appsecret</label>
+    <div class="layui-input-block">
+      <input type="text" name="xcx_appsecret" value="<?= $xcx_appsecret?>">
+    </div>
+  </div>
+  <div class="layui-form-item">
     <div class="layui-input-block">
       <button class="layui-btn" lay-submit="" lay-filter="demo1">保存</button>
     </div>
