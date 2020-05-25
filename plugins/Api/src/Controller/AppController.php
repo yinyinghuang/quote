@@ -11,8 +11,8 @@ use Cake\I18n\Time;
 
 class AppController extends BaseController
 {
-    protected $appid  = 'wx594d39c9d198444b';
-    protected $secret = '3896265393bd937b00683664282f01f8';
+    protected $appid  = 'wxb688fea3a37666df';
+    protected $secret = '4ea9a0f2d3141fa1da5b6506545a4a1e';
 
     public function beforeFilter(Event $event)
     {

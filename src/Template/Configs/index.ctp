@@ -43,9 +43,7 @@
             },
         url:'/configs/api-save',
         type:'post',
-        data:{
-          comment_need_check
-        },
+        data:data.field,
         success:function(res){
           var msg = res.data?res.msg : '保存成功';
           layer.msg(msg)
