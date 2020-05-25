@@ -18,6 +18,9 @@ class AppController extends BaseController
     {
         $this->redis = new Cache;
         $this->Auth->allow();
+        $configModel = $this->loadModel('Configs');
+        $this->appid = $configModel->findByName('xcx_appid')->first()->value;
+        $this->secret = $configModel->findByName('xcx_appsecret')->first()->value;
     }
 
     //返回结果
